@@ -1,0 +1,160 @@
+# Lượt khám tổng hợp cho demo: 4–6 dòng như thật, có cặp lần tích 1 → 2.
+# Phần lớn dòng nên ra Phù hợp: công cụ phải im lặng ở ca bình thường.
+
+- id: DEMO-01
+  ten: "Sốt ho 2 tuổi — lần tích 1, chưa có ICD"
+  lan_tich: 1
+  luot_kham: LK-DEMO-01
+  benh_nhan: { tuoi_thang: 24 }
+  icd: []
+  sinh_hieu: { nhiet_do: 38.9, mach: 150, nhip_tho: 46 }
+  phieu_kham: "Ho, sốt 3 ngày, thở nhanh. Phổi ran ẩm nhỏ hạt đáy phổi phải. Họng đỏ."
+  chi_dinh:
+    - { ma: "22.0121.1369", ten: "Tổng phân tích tế bào máu ngoại vi" }
+    - { ma: "23.0228.1483", ten: "Định lượng CRP" }
+    - { ma: "18.0119.0028", ten: "Chụp X-quang ngực thẳng" }
+    - { ma: "24.0243.1671", ten: "Influenza virus A, B test nhanh" }
+    - { ma: null, ten: "Test nhanh RSV" }
+  ky_vong:
+    - { ma: "22.0121.1369", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "23.0228.1483", trang_thai: "Cần xem lại · đủ căn cứ", trich_dan: "Phổi ran ẩm nhỏ hạt đáy phổi phải" }
+    - { ma: "18.0119.0028", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "24.0243.1671", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ten: "Test nhanh RSV", trang_thai: "Không được chi trả" }
+  diem_mo_ho: [M-02, M-13]
+
+- id: DEMO-02
+  ten: "Cùng lượt — lần tích 2, có ICD và thêm PCT"
+  muc_dich: "Kết quả các dòng cũ không đổi; log có bản ghi thứ hai. PCT thêm vào ra Cần xem lại."
+  lan_tich: 2
+  luot_kham: LK-DEMO-01
+  benh_nhan: { tuoi_thang: 24 }
+  icd: [J18.9]
+  sinh_hieu: { nhiet_do: 38.9, mach: 150, nhip_tho: 46 }
+  phieu_kham: "Ho, sốt 3 ngày, thở nhanh. Phổi ran ẩm nhỏ hạt đáy phổi phải. Họng đỏ. X-quang: đám mờ đáy phải. Trẻ tỉnh, ăn kém, SpO2 95%."
+  chi_dinh:
+    - { ma: "22.0121.1369", ten: "Tổng phân tích tế bào máu ngoại vi" }
+    - { ma: "23.0228.1483", ten: "Định lượng CRP" }
+    - { ma: "18.0119.0028", ten: "Chụp X-quang ngực thẳng" }
+    - { ma: "24.0243.1671", ten: "Influenza virus A, B test nhanh" }
+    - { ma: null, ten: "Test nhanh RSV" }
+    - { ma: "23.0130.1549", ten: "Định lượng Procalcitonin" }
+  ky_vong:
+    - { ma: "22.0121.1369", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "23.0228.1483", trang_thai: "Cần xem lại · đủ căn cứ" }
+    - { ma: "18.0119.0028", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "24.0243.1671", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ten: "Test nhanh RSV", trang_thai: "Không được chi trả" }
+    - { ma: "23.0130.1549", trang_thai: "Cần xem lại", ly_do: "Chưa thấy nhiễm trùng huyết hoặc rối loạn ≥ 2 cơ quan trong phiếu khám" }
+  diem_mo_ho: [M-02, M-08, M-13]
+
+- id: DEMO-03
+  ten: "Đau bụng 5 tuổi R10.4 (thay ví dụ cũ)"
+  muc_dich: "Siêu âm bụng không điều kiện → Phù hợp; CRP không sốt → Không được chi trả."
+  benh_nhan: { tuoi_thang: 60 }
+  icd: [R10.4]
+  sinh_hieu: { nhiet_do: 37.2, mach: 100, nhip_tho: 24 }
+  phieu_kham: "Đau bụng quanh rốn 1 ngày, nôn 1 lần. Ấn đau hố chậu phải, không phản ứng thành bụng."
+  chi_dinh:
+    - { ma: "22.0121.1369", ten: "Tổng phân tích tế bào máu ngoại vi" }
+    - { ma: "23.0228.1483", ten: "Định lượng CRP" }
+    - { ma: "18.0015.0001", ten: "Siêu âm ổ bụng" }
+    - { ma: "23.0206.1596", ten: "Tổng phân tích nước tiểu" }
+  ky_vong:
+    - { ma: "22.0121.1369", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "23.0228.1483", trang_thai: "Không được chi trả", ly_do: "Nhiệt độ 37,2°C chưa đạt ngưỡng" }
+    - { ma: "18.0015.0001", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "23.0206.1596", trang_thai: "Phù hợp quy tắc BHYT" }
+  diem_mo_ho: [M-16]
+
+- id: DEMO-04
+  ten: "Tiêu chảy cấp 14 tháng — ca sạch"
+  benh_nhan: { tuoi_thang: 14 }
+  icd: [A09]
+  sinh_hieu: { nhiet_do: 37.9, mach: 130, nhip_tho: 32 }
+  phieu_kham: "Tiêu chảy 6 lần/ngày, nôn 2 lần. Mắt hơi trũng, uống háo hức."
+  chi_dinh:
+    - { ma: "24.0263.1665", ten: "Soi phân: hồng cầu, bạch cầu" }
+    - { ma: "24.0249.1697", ten: "Rotavirus test nhanh" }
+    - { ma: "23.0058.1487", ten: "Điện giải đồ (Na, K, Cl)" }
+    - { ma: "22.0121.1369", ten: "Tổng phân tích tế bào máu ngoại vi" }
+  ky_vong:
+    - { ma: "24.0263.1665", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "24.0249.1697", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "23.0058.1487", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "22.0121.1369", trang_thai: "Phù hợp quy tắc BHYT" }
+  diem_mo_ho: []
+
+- id: DEMO-05
+  ten: "Thiếu máu 3 tuổi"
+  benh_nhan: { tuoi_thang: 36 }
+  icd: [D50.9]
+  sinh_hieu: { nhiet_do: 36.7, mach: 115, nhip_tho: 26 }
+  phieu_kham: "Da xanh, niêm mạc nhợt, biếng ăn. Không gan lách to."
+  chi_dinh:
+    - { ma: "22.0121.1369", ten: "Tổng phân tích tế bào máu ngoại vi" }
+    - { ma: "22.0135.1313", ten: "Xét nghiệm hồng cầu lưới" }
+    - { ma: "23.0143.1503", ten: "Định lượng Sắt [Máu]" }
+    - { ma: "23.0063.1514", ten: "Định lượng Ferritin" }
+    - { ma: null, ten: "Định lượng Kẽm" }
+  ky_vong:
+    - { ma: "22.0121.1369", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "22.0135.1313", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "23.0143.1503", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "23.0063.1514", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ten: "Định lượng Kẽm", trang_thai: "Cần xem lại" }
+  diem_mo_ho: [M-13]
+
+- id: DEMO-06
+  ten: "Sốt xuất huyết 9 tuổi — ca sạch"
+  benh_nhan: { tuoi_thang: 108 }
+  icd: [A97.0]
+  sinh_hieu: { nhiet_do: 39.0, mach: 110, nhip_tho: 22 }
+  phieu_kham: "Sốt cao 3 ngày, đau cơ, chấm xuất huyết 2 cẳng chân. Gan không to."
+  chi_dinh:
+    - { ma: "24.0183.1637", ten: "Dengue virus NS1Ag test nhanh" }
+    - { ma: "24.0187.1637", ten: "Dengue virus IgM/IgG test nhanh" }
+    - { ma: "22.0121.1369", ten: "Tổng phân tích tế bào máu ngoại vi" }
+    - { ma: "23.0020.1493", ten: "Đo hoạt độ AST (GOT)" }
+    - { ma: "23.0019.1493", ten: "Đo hoạt độ ALT (GPT)" }
+    - { ma: "18.0015.0001", ten: "Siêu âm ổ bụng" }
+  ky_vong:
+    - { ma: "24.0183.1637", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "24.0187.1637", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "22.0121.1369", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "23.0020.1493", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "23.0019.1493", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "18.0015.0001", trang_thai: "Phù hợp quy tắc BHYT" }
+  diem_mo_ho: []
+
+- id: DEMO-07
+  ten: "Chậm tăng trưởng 7 tuổi — ca sạch"
+  benh_nhan: { tuoi_thang: 84 }
+  icd: [R62.8]
+  sinh_hieu: { nhiet_do: 36.6, mach: 90, nhip_tho: 20 }
+  phieu_kham: "Chiều cao dưới -2SD, tốc độ tăng chiều cao 3 cm/năm."
+  chi_dinh:
+    - { ma: "18.0107.0028", ten: "Chụp X-quang xương cổ tay (tuổi xương)" }
+    - { ma: "23.0162.1570", ten: "Định lượng TSH" }
+    - { ma: "23.0069.1561", ten: "Định lượng FT4" }
+    - { ma: "23.0055.1489", ten: "Định lượng 25OH Vitamin D (D3)" }
+  ky_vong:
+    - { ma: "18.0107.0028", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "23.0162.1570", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "23.0069.1561", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "23.0055.1489", trang_thai: "Phù hợp quy tắc BHYT" }
+  diem_mo_ho: []
+
+- id: DEMO-08
+  ten: "Thổi tim 4 tháng"
+  benh_nhan: { tuoi_thang: 4 }
+  icd: [R01.1]
+  sinh_hieu: { nhiet_do: 36.8, mach: 140, nhip_tho: 40 }
+  phieu_kham: "Phát hiện tiếng thổi khi tiêm chủng. Bú tốt, không tím."
+  chi_dinh:
+    - { ma: "02.0085.1778", ten: "Điện tim thường" }
+    - { ma: "18.0052.0004", ten: "Siêu âm doppler tim, van tim" }
+  ky_vong:
+    - { ma: "02.0085.1778", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "18.0052.0004", trang_thai: "Phù hợp quy tắc BHYT" }
+  diem_mo_ho: [M-11]

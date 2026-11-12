@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><title>Đề xuất — Trợ lý kiểm tra BHYT khi chỉ định cận lâm sàng</title>
+<link rel="stylesheet" href="style.css"></head><body>
+
+<div class="hdr">
+  <div class="l">CHƯƠNG TRÌNH AI THỰC CHIẾN<b>NHÓM HỌC VIÊN</b><div class="line"></div></div>
+  <div class="r"><b>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</b><b>Độc lập - Tự do - Hạnh phúc</b><div class="line w"></div></div>
+</div>
+<p class="date">Hà Nội, ngày 12 tháng 11 năm 2026</p>
+
+<p class="title">ĐỀ XUẤT</p>
+<p class="sub">Về việc thử nghiệm Trợ lý kiểm tra BHYT khi chỉ định cận lâm sàng<br>tại khám ngoại trú Trung tâm Nhi</p>
+<p class="to">Kính gửi: BS. Lê Thị Minh Hương</p>
+
+<p>Nhóm học viên Chương trình AI Thực chiến (Vingroup) đang thực tập tại Trung tâm Nhi gồm Từ Hoàng Giang và Nguyễn Văn Xuân Lộc kính trình bác sĩ đề xuất thử nghiệm công cụ hỗ trợ bác sĩ tích BHYT khi chỉ định cận lâm sàng, với các nội dung như sau:</p>
+
+<h2>I. SỰ CẦN THIẾT</h2>
+<h3>1. Quy trình hiện tại</h3>
+<p>Khi khám ngoại trú, bác sĩ chỉ định xét nghiệm, chẩn đoán hình ảnh, thăm dò chức năng. Với bệnh nhi có thẻ BHYT, bác sĩ tự tích từng dòng được BHYT chi trả. Hồ sơ sau đó được gửi lên cơ quan BHXH; giám định viên đọc lại hồ sơ, bao gồm cả phiếu khám. Sau 1–2 quý, BHXH thông báo xuất toán các dòng không hợp lệ.</p>
+
+<h3>2. Khó khăn</h3>
+<p>Với mỗi dòng chỉ định, trong lúc đang khám bệnh, bác sĩ phải tự đối chiếu cùng lúc nhiều nội dung:</p>
+<ul>
+  <li>Dịch vụ có nằm trong danh mục BHYT chi trả hay không;</li>
+  <li>Thẻ BHYT còn hạn hay không, mức hưởng bao nhiêu;</li>
+  <li>Dịch vụ có điều kiện chi trả riêng hay không, và hồ sơ đã thể hiện đủ hay chưa. Ví dụ, xét nghiệm CRP ở trẻ em cần đủ ba điều kiện (nhiệt độ, nhịp thở hoặc nhịp tim theo tuổi, nghi ngờ có ổ nhiễm trùng); Procalcitonin chỉ được chi trả khi có nhiễm trùng huyết hoặc rối loạn chức năng từ 2 cơ quan trở lên, và không làm lại trong vòng 24 giờ;</li>
+  <li>Dịch vụ có trùng với dòng khác trong cùng lượt khám hay không.</li>
+</ul>
+<p>Các quy định trên nằm rải rác trong Thông tư 35/2016/TT-BYT (sửa đổi, bổ sung bởi Thông tư 39/2024/TT-BYT) và thay đổi theo thời gian. Giám định viên không chỉ xem số liệu mà còn đọc nội dung phiếu khám. Hiện chưa có công cụ hỗ trợ tại thời điểm tích, bác sĩ chủ yếu dựa vào kinh nghiệm và trí nhớ.</p>
+
+<h3>3. Hậu quả</h3>
+<ul>
+  <li>Tích nhầm dòng không đủ điều kiện dẫn đến bị xuất toán, bác sĩ phải giải trình hoặc bù tiền. Qua trao đổi tại Trung tâm Nhi, đã có trường hợp bác sĩ phải bù tiền xuất toán;</li>
+  <li>Bỏ sót dòng đủ điều kiện làm bệnh nhân mất quyền lợi BHYT;</li>
+  <li>Thông báo xuất toán đến sau 3–6 tháng, khi bác sĩ không còn nhớ ca bệnh, gây khó khăn cho việc giải trình và dễ lặp lại cùng một lỗi.</li>
+</ul>
+
+<h2>II. GIẢI PHÁP ĐỀ XUẤT</h2>
+<h3>1. Mô tả chung</h3>
+<p>Xây dựng một trợ lý hiển thị cạnh danh sách chỉ định. Mỗi khi bác sĩ tích BHYT, ở cả lần tích trước khi thực hiện và lần tích sau khi có kết quả, trợ lý kiểm tra từng dòng và hiển thị kết quả ngay trên màn hình, kèm lý do và căn cứ. Bác sĩ xác nhận hoặc điều chỉnh; mỗi lần xác nhận được lưu lại để phục vụ giải trình. Bác sĩ là người quyết định cuối cùng.</p>
+
+<h3>2. Nội dung kiểm tra</h3>
+<table>
+  <tr><th style="width:8%">STT</th><th style="width:24%">Nội dung</th><th>Yêu cầu kiểm tra</th><th style="width:27%">Phương pháp</th></tr>
+  <tr><td class="c">1</td><td>Danh mục</td><td>Dịch vụ có trong danh mục BHYT chi trả</td><td>Tra bảng danh mục</td></tr>
+  <tr><td class="c">2</td><td>Thẻ BHYT</td><td>Thẻ còn hạn; hiển thị mức hưởng (trẻ dưới 6 tuổi)</td><td>Tra thông tin thẻ</td></tr>
+  <tr><td class="c">3</td><td>Điều kiện chi trả riêng</td><td>Với CRP, Procalcitonin, siêu âm Doppler tim: kiểm tra từng điều kiện</td><td>Số liệu: quy tắc cố định; nội dung bằng lời: AI đọc phiếu khám</td></tr>
+  <tr><td class="c">4</td><td>Trùng lặp, tần suất</td><td>Trùng trong cùng lượt khám; làm lại sớm hơn quy định</td><td>Đối chiếu lịch sử chỉ định</td></tr>
+</table>
+
+<h3>3. Phân công giữa quy tắc và AI</h3>
+<p>Số liệu có sẵn (tuổi, nhiệt độ, nhịp thở, mã ICD, hạn thẻ) được kiểm tra bằng quy tắc cố định, xây dựng từ văn bản quy định; kết quả ổn định và giải thích được.</p>
+<p>Điều kiện được viết bằng lời, ví dụ “nghi ngờ có ổ nhiễm trùng”, do AI đọc phiếu khám theo cách giám định viên đọc hồ sơ và trích nguyên văn câu làm căn cứ. Hệ thống tự kiểm tra câu trích có đúng từng chữ trong phiếu khám; nếu không khớp, kết quả của AI bị loại bỏ. AI xử lý được câu phủ định và viết tắt (“không ho”, “phổi không ran”, “T° 38,5”), là những trường hợp mà cách tìm từ khóa thông thường dễ nhận định sai.</p>
+
+<h3>4. Kết quả hiển thị cho bác sĩ</h3>
+<p>Mỗi dòng chỉ định nhận một trong bốn trạng thái, kèm một câu lý do. Trợ lý điền sẵn ô BHYT theo trạng thái, bác sĩ bấm xác nhận hoặc sửa:</p>
+<table>
+  <tr><th style="width:26%">Trạng thái</th><th>Ý nghĩa</th><th style="width:28%">Ô BHYT</th></tr>
+  <tr><td>Phù hợp quy tắc BHYT</td><td>Có trong danh mục; không có điều kiện riêng, hoặc điều kiện đã đạt theo số liệu</td><td>Tích sẵn, bác sĩ xác nhận</td></tr>
+  <tr><td>Cần xem lại – đủ căn cứ</td><td>Đạt điều kiện; một phần căn cứ do AI tìm thấy trong phiếu khám</td><td>Tích sẵn, đánh dấu câu trích dẫn</td></tr>
+  <tr><td>Cần xem lại</td><td>Còn điều kiện chưa thấy trong hồ sơ, hoặc chưa đủ dữ liệu</td><td>Để trống, bác sĩ quyết định</td></tr>
+  <tr><td>Không được chi trả</td><td>Không có trong danh mục, thẻ hết hạn, hoặc rõ ràng không đạt điều kiện</td><td>Để trống</td></tr>
+</table>
+<p>Trên mỗi dòng có nút “Vì sao?” hiển thị nguyên văn điều khoản căn cứ và danh sách từng điều kiện đạt hoặc chưa thấy. Khi bác sĩ làm khác gợi ý (bỏ tích dòng được tích sẵn, hoặc tích dòng “Không được chi trả”), bác sĩ chọn nhanh một lý do, ví dụ “Người nhà yêu cầu, chuyển tự túc”; trợ lý không ngăn chặn thao tác. Mỗi lần xác nhận được lưu lại gồm trạng thái, lựa chọn của bác sĩ, căn cứ và câu trích, để tra cứu khi có yêu cầu giải trình.</p>
+
+<h3>5. Ví dụ minh họa</h3>
+<p><i>Ví dụ 1 – chưa đủ căn cứ.</i> Trẻ 4 tháng tuổi, ICD R50.9, nhiệt độ 38,5°C, nhịp thở 55 lần/phút, được chỉ định xét nghiệm CRP. Phiếu khám ghi: “Sốt từ chiều qua, sau tiêm vắc xin 6 trong 1 sáng qua. Bú tốt, không ho, không chảy mũi. Họng không đỏ, phổi không ran.” Đối chiếu ba điều kiện của CRP ở trẻ em: nhiệt độ ≥ 38,3°C hoặc ≤ 36°C – đạt; nhịp thở hoặc nhịp tim vượt giới hạn sinh lý theo tuổi – đạt; nghi ngờ có ổ nhiễm trùng – chưa thấy trong phiếu khám. Trợ lý báo “Cần xem lại”, để trống ô BHYT và hiển thị các câu liên quan để bác sĩ quyết định. Nếu chỉ so sánh số liệu, trường hợp này sẽ được đánh giá là đạt, trong khi giám định viên đọc phiếu khám có thể từ chối thanh toán.</p>
+<p><i>Ví dụ 2 – đủ căn cứ.</i> Trẻ 3 tuổi, nhiệt độ 39,2°C, nhịp thở 44 lần/phút, được chỉ định CRP. Phiếu khám ghi: “Amidan 2 bên sưng to, có mủ trắng.” Trợ lý báo “Cần xem lại – đủ căn cứ”, tích sẵn ô BHYT và đánh dấu câu trích. Câu trích được lưu lại làm căn cứ giải trình khi cần.</p>
+
+<h2>III. NGUYÊN TẮC</h2>
+<p>Công cụ chỉ đóng vai trò hỗ trợ, bác sĩ là người quyết định. Cụ thể:</p>
+<ul>
+  <li>Không tự tích thay bác sĩ, không ngăn chặn thao tác; mọi dòng đều do bác sĩ xác nhận;</li>
+  <li>Không gợi ý hoặc thay đổi mã ICD; không gợi ý thêm chỉ định để được chi trả;</li>
+  <li>Không đánh giá chỉ định đúng hay sai về chuyên môn; chỉ đối chiếu với điều kiện chi trả;</li>
+  <li>Không yêu cầu bác sĩ ghi thêm vào bệnh án; chỉ thông báo điều kiện nào “chưa thấy”;</li>
+  <li>AI không tự kết luận “Phù hợp” hoặc “Không được chi trả”; trường hợp không chắc chắn đều chuyển thành “Cần xem lại”;</li>
+  <li>Giai đoạn thử nghiệm chỉ sử dụng dữ liệu giả lập; không sử dụng dữ liệu bệnh nhân thật, không kết nối hệ thống của bệnh viện.</li>
+</ul>
+
+<h2>IV. PHẠM VI THỬ NGHIỆM</h2>
+<table>
+  <tr><th style="width:55%">Trong phạm vi</th><th>Ngoài phạm vi</th></tr>
+  <tr><td>50 dịch vụ xét nghiệm, chẩn đoán hình ảnh, thăm dò chức năng thường gặp tại khám ngoại trú Nhi</td><td>Thuốc; phẫu thuật, thủ thuật; nội trú</td></tr>
+  <tr><td>Điều kiện chi trả riêng của CRP, Procalcitonin, siêu âm Doppler tim</td><td>Kết nối với hệ thống Eform/VIS</td></tr>
+  <tr><td>Hạn thẻ và mức hưởng (trẻ dưới 6 tuổi)</td><td>Tuyến, giấy chuyển tuyến</td></tr>
+  <tr><td>Màn hình mô phỏng trên khoảng 55 ca bệnh giả lập</td><td>Sử dụng trên bệnh nhân thật</td></tr>
+</table>
+
+<h2>V. KẾT QUẢ DỰ KIẾN</h2>
+<p>Đến ngày 01/12/2026, nhóm bàn giao:</p>
+<ul>
+  <li>Bản demo trên màn hình mô phỏng;</li>
+  <li>Số liệu tại Trung tâm về thời gian và mức độ tự tin của bác sĩ khi tích BHYT (khảo sát, bấm giờ);</li>
+  <li>Tỷ lệ trong 50 dịch vụ: kiểm tra được hoàn toàn bằng quy tắc, cần AI đọc phiếu khám, chưa kiểm tra được;</li>
+  <li>Kết quả trên bộ ca thử nghiệm, mức độ đồng thuận với nhận định của bác sĩ, và báo cáo khả thi kèm các giới hạn.</li>
+</ul>
+<p>Kính trình bác sĩ xem xét, cho ý kiến.</p>
+
+<div class="sign">
+  <div class="nn"><b>Nơi nhận:</b><br>- Như trên;<br>- Lưu: Nhóm học viên.</div>
+  <div class="ky"><b>NGƯỜI ĐỀ XUẤT</b><div class="names">Từ Hoàng Giang<br>Nguyễn Văn Xuân Lộc</div></div>
+</div>
+
+</body></html>

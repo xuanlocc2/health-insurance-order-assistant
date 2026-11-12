@@ -1,0 +1,99 @@
+# Bộ ca mock đầu tiên cho A1 (đọc hồ sơ theo từng vế điều kiện).
+# Dữ liệu giả, nhóm tự dựng 11/11/2026, bác sĩ chưa duyệt.
+# Căn cứ: TT 35/2016 sửa bởi TT 39/2024, Danh mục 1 mục 7 (CRP), mục 8 (Procalcitonin).
+# Ngưỡng nhịp thở theo tuổi tạm dùng WHO (< 2 tháng ≥ 60; 2–11 tháng ≥ 50; 1–5 tuổi ≥ 40), chờ bác sĩ duyệt (M-02).
+# ket_qua của từng vế: dat | khong_dat | chua_thay | chua_du_du_lieu (vế trong khối loại trừ: dat = điều khoản loại trừ khớp)
+# he_chi_rule: kết quả mà một hệ chỉ dùng rule (không đọc phiếu khám) sẽ trả, để so sánh.
+# Thứ tự demo gợi ý: A1-02 → A1-01 → A1-04.
+
+- id: A1-01
+  ten: "CRP — sinh hiệu đạt nhưng sốt sau tiêm"
+  muc_dich: "Ca quan trọng nhất. Hệ chỉ rule báo Phù hợp, giám định viên đọc phiếu sẽ cắt. Từ khóa 'ho', 'phổi', 'họng' khớp nhưng đều phủ định."
+  benh_nhan: { tuoi_thang: 4 }
+  icd: [R50.9]
+  sinh_hieu: { nhiet_do: 38.5, mach: null, nhip_tho: 55 }
+  phieu_kham: "Sốt từ chiều qua, sau tiêm vắc xin 6 trong 1 sáng qua. Bú tốt, không ho, không chảy mũi. Họng không đỏ, phổi không ran, bụng mềm. Vết tiêm sưng nhẹ."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Cần xem lại"
+      ve:
+        - { id: V1, mo_ta: "Nhiệt độ ≤ 36°C hoặc ≥ 38,3°C", kiem_bang: rule, ket_qua: dat, bang_chung: "38,5°C" }
+        - { id: V2, mo_ta: "Nhịp tim hoặc nhịp thở quá giới hạn sinh lý theo tuổi", kiem_bang: rule, ket_qua: dat, bang_chung: "nhịp thở 55, ngưỡng 2–11 tháng ≥ 50" }
+        - { id: V3, mo_ta: "Nghi ngờ có ổ nhiễm trùng", kiem_bang: ai, ket_qua: chua_thay, trich_lien_quan: ["sau tiêm vắc xin 6 trong 1 sáng qua", "không ho", "phổi không ran"] }
+  he_chi_rule: "Phù hợp quy tắc BHYT"
+  diem_mo_ho: [M-02, M-04]
+
+- id: A1-02
+  ten: "CRP — có ổ nhiễm trùng rõ (đối chứng)"
+  muc_dich: "Ca đủ căn cứ; đoạn trích lưu vào log để giải trình."
+  benh_nhan: { tuoi_thang: 36 }
+  icd: [J03.9]
+  sinh_hieu: { nhiet_do: 39.2, mach: 150, nhip_tho: 44 }
+  phieu_kham: "Sốt cao 2 ngày, đau họng, bỏ ăn. Amidan 2 bên sưng to, có mủ trắng. Hạch dưới hàm 2 bên."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Cần xem lại · đủ căn cứ"   # mọi vế đạt, có vế do AI kiểm
+      ve:
+        - { id: V1, mo_ta: "Nhiệt độ ≤ 36°C hoặc ≥ 38,3°C", kiem_bang: rule, ket_qua: dat, bang_chung: "39,2°C" }
+        - { id: V2, mo_ta: "Nhịp tim hoặc nhịp thở quá giới hạn sinh lý theo tuổi", kiem_bang: rule, ket_qua: dat, bang_chung: "nhịp thở 44 ≥ 40 (mạch 150: chưa có ngưỡng nhịp tim)" }
+        - { id: V3, mo_ta: "Nghi ngờ có ổ nhiễm trùng", kiem_bang: ai, ket_qua: dat, trich_dan: "Amidan 2 bên sưng to, có mủ trắng" }
+  he_chi_rule: "Phù hợp quy tắc BHYT"
+  diem_mo_ho: [M-02]
+
+- id: A1-03
+  ten: "CRP — ô nhịp thở trống, số liệu nằm trong chữ"
+  muc_dich: "A1 đọc con số trong phiếu khám, rule so ngưỡng. AI đọc, rule kết luận."
+  benh_nhan: { tuoi_thang: 8 }
+  icd: [J18.9]
+  sinh_hieu: { nhiet_do: 38.6, mach: null, nhip_tho: null }
+  phieu_kham: "Ho 4 ngày, sốt. Khám: thở nhanh 58 l/p, rút lõm lồng ngực nhẹ, ran ẩm nhỏ hạt 2 đáy phổi."
+  a1_gia_lap: { so_lieu: [{ truong: nhip_tho, gia_tri: 58, trich_dan: "thở nhanh 58 l/p" }] }
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Cần xem lại · đủ căn cứ"
+      ve:
+        - { id: V1, mo_ta: "Nhiệt độ ≤ 36°C hoặc ≥ 38,3°C", kiem_bang: rule, ket_qua: dat, bang_chung: "38,6°C" }
+        - { id: V2, mo_ta: "Nhịp tim hoặc nhịp thở quá giới hạn sinh lý theo tuổi", kiem_bang: rule, nguon_ket_qua: a1, ket_qua: dat, bang_chung: "A1 trích 'thở nhanh 58 l/p' → 58 ≥ 50" }
+        - { id: V3, mo_ta: "Nghi ngờ có ổ nhiễm trùng", kiem_bang: ai, ket_qua: dat, trich_dan: "ran ẩm nhỏ hạt 2 đáy phổi" }
+  he_chi_rule: "Cần xem lại (thiếu nhịp thở)"
+  diem_mo_ho: [M-02, M-17]
+
+- id: A1-04
+  ten: "Procalcitonin ngoại trú — sốt cao nhưng trẻ tỉnh táo"
+  muc_dich: "Cặp CRP + PCT cùng ngày ở ca sốt ngoại trú là kiểu hay bị cắt. A1 không nói 'đừng làm', chỉ nói vế nào chưa có căn cứ."
+  benh_nhan: { tuoi_thang: 24 }
+  icd: [R50.9]
+  sinh_hieu: { nhiet_do: 39.5, mach: 140, nhip_tho: 32 }
+  phieu_kham: "Sốt cao 1 ngày. Trẻ tỉnh, chơi ngoan, ăn uống được. Môi hồng, chi ấm, CRT < 2 giây. Tiểu bình thường."
+  chi_dinh:
+    - { ma: "23.0228.1483", ten: "Định lượng CRP" }
+    - { ma: "23.0130.1549", ten: "Định lượng Procalcitonin" }
+  ky_vong:
+    - ma: "23.0130.1549"
+      trang_thai: "Cần xem lại"
+      ve:   # trẻ em: đạt MỘT trong hai nhánh
+        - { id: N1, mo_ta: "Nhiễm trùng huyết", kiem_bang: ai, ket_qua: chua_thay }
+        - { id: N2, mo_ta: "Rối loạn chức năng từ 2 cơ quan trở lên", kiem_bang: ai, ket_qua: chua_thay, trich_lien_quan: ["Trẻ tỉnh", "chi ấm, CRT < 2 giây", "Tiểu bình thường"] }
+  he_chi_rule: "Cần xem lại (không đọc được điều kiện)"
+  diem_mo_ho: [M-08, M-09]
+
+- id: A1-05
+  ten: "Procalcitonin tái khám — rơi vào điều khoản loại trừ"
+  muc_dich: "A1 không chỉ tìm bằng chứng ủng hộ mà cả bằng chứng thuộc điều khoản loại trừ."
+  benh_nhan: { tuoi_thang: 60 }
+  icd: [A41.9]
+  sinh_hieu: { nhiet_do: 36.8, mach: 100, nhip_tho: 24 }
+  phieu_kham: "Tái khám sau 3 ngày. Hết sốt 48 giờ, ăn ngủ tốt, không ho."
+  lich_su: [{ ma: "23.0130.1549", ngay_cach: 3, ket_qua: 0.4, tham_chieu_tren: 0.5, don_vi: "ng/mL" }]
+  chi_dinh: [{ ma: "23.0130.1549", ten: "Định lượng Procalcitonin" }]
+  ky_vong:
+    - ma: "23.0130.1549"
+      trang_thai: "Cần xem lại"   # loại trừ cần cả 2 vế; vế 'hết dấu hiệu' do AI → không tự kết luận Không được chi trả
+      ve:
+        - { id: X1, mo_ta: "Loại trừ: hết dấu hiệu chỉ định", kiem_bang: ai, ket_qua: dat, trich_dan: "Hết sốt 48 giờ, ăn ngủ tốt" }
+        - { id: X2, mo_ta: "Loại trừ: Procalcitonin ≤ 02 lần giá trị tham chiếu", kiem_bang: rule, ket_qua: dat, bang_chung: "0,4 ≤ 1,0" }
+  he_chi_rule: "Cần xem lại"
+  diem_mo_ho: [M-10]

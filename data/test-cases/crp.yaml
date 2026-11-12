@@ -1,0 +1,340 @@
+# CRP — Định lượng CRP (23.0228.1483), TT 35/2016 sđ TT 39/2024, DM1 mục 7.
+# Nhánh trẻ em (a): V1 nhiệt độ ≤ 36 hoặc ≥ 38,3 (rule) · V2 nhịp tim HOẶC nhịp thở quá giới hạn theo tuổi (rule) · V3 nghi ổ nhiễm trùng (ai).
+# Nhánh b: nhiễm trùng sơ sinh (≤ 28 ngày, M-06). Nhánh c, d: chưa áp dụng (M-07).
+# Ngưỡng nhịp thở tạm (M-02): < 2 tháng ≥ 60; 2–11 tháng ≥ 50; 1–5 tuổi ≥ 40; > 5 tuổi: chưa có. Nhịp tim: chưa có.
+# Quy ước: xem README.md.
+
+- id: CRP-01
+  ten: "Đúng ngưỡng 38,3°C, viêm tai giữa"
+  benh_nhan: { tuoi_thang: 18 }
+  icd: [H66.9]
+  sinh_hieu: { nhiet_do: 38.3, mach: 140, nhip_tho: 44 }
+  phieu_kham: "Sốt 2 ngày, quấy khóc, hay kéo tai phải. Màng nhĩ phải đỏ, phồng, mất nón sáng. Họng đỏ nhẹ, phổi thông khí đều."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Cần xem lại · đủ căn cứ"
+      ve:
+        - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, ket_qua: dat, bang_chung: "38,3 ≥ 38,3 (biên)" }
+        - { id: V2, mo_ta: "nhịp tim/thở", kiem_bang: rule, ket_qua: dat, bang_chung: "nhịp thở 44 ≥ 40" }
+        - { id: V3, mo_ta: "ổ nhiễm trùng", kiem_bang: ai, ket_qua: dat, trich_dan: "Màng nhĩ phải đỏ, phồng, mất nón sáng" }
+  he_chi_rule: "Phù hợp quy tắc BHYT"
+  diem_mo_ho: [M-02]
+
+- id: CRP-02
+  ten: "38,2°C — dưới ngưỡng 0,1 độ"
+  muc_dich: "Rule kết luận Không được chi trả, AI không cần chạy."
+  benh_nhan: { tuoi_thang: 18 }
+  icd: [J06.9]
+  sinh_hieu: { nhiet_do: 38.2, mach: 135, nhip_tho: 46 }
+  phieu_kham: "Sốt 1 ngày, ho, chảy mũi trong. Họng đỏ, amidan không mủ. Phổi không ran."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Không được chi trả"
+      ly_do: "Nhiệt độ 38,2°C chưa đạt ngưỡng ≥ 38,3°C"
+      ve:
+        - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, ket_qua: khong_dat, bang_chung: "38,2 < 38,3" }
+  he_chi_rule: "Không được chi trả"
+  diem_mo_ho: []
+
+- id: CRP-03
+  ten: "Hạ thân nhiệt 35,8°C"
+  muc_dich: "Nhánh ≤ 36°C của V1, ít người nhớ."
+  benh_nhan: { tuoi_thang: 30 }
+  icd: [J18.9]
+  sinh_hieu: { nhiet_do: 35.8, mach: 150, nhip_tho: 48 }
+  phieu_kham: "Ho đờm 5 ngày, 1 ngày nay li bì, ăn kém. Chi lạnh. Phổi ran ẩm nhỏ hạt đáy phổi phải."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Cần xem lại · đủ căn cứ"
+      ve:
+        - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, ket_qua: dat, bang_chung: "35,8 ≤ 36" }
+        - { id: V2, mo_ta: "nhịp tim/thở", kiem_bang: rule, ket_qua: dat, bang_chung: "nhịp thở 48 ≥ 40" }
+        - { id: V3, mo_ta: "ổ nhiễm trùng", kiem_bang: ai, ket_qua: dat, trich_dan: "Phổi ran ẩm nhỏ hạt đáy phổi phải" }
+  he_chi_rule: "Phù hợp quy tắc BHYT"
+  diem_mo_ho: [M-02]
+
+- id: CRP-04
+  ten: "Nhịp thở chưa vượt, mạch nhanh — chưa có ngưỡng nhịp tim"
+  muc_dich: "V2 là HOẶC: nhịp thở không đạt, nhịp tim không có ngưỡng → chưa đủ dữ liệu, không được kết luận Không được chi trả."
+  benh_nhan: { tuoi_thang: 7 }
+  icd: [N39.0]
+  sinh_hieu: { nhiet_do: 39.0, mach: 175, nhip_tho: 46 }
+  phieu_kham: "Sốt 39 độ 2 ngày, quấy, bú kém. Nước tiểu đục, mùi hôi. Họng không đỏ, phổi không ran."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Cần xem lại"
+      ve:
+        - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, ket_qua: dat, bang_chung: "39,0" }
+        - { id: V2, mo_ta: "nhịp tim/thở", kiem_bang: rule, ket_qua: chua_du_du_lieu, bang_chung: "nhịp thở 46 < 50; mạch 175 nhưng chưa có ngưỡng nhịp tim" }
+        - { id: V3, mo_ta: "ổ nhiễm trùng", kiem_bang: ai, ket_qua: dat, trich_dan: "Nước tiểu đục, mùi hôi" }
+  he_chi_rule: "Cần xem lại"
+  diem_mo_ho: [M-02]
+
+- id: CRP-05
+  ten: "7 tháng, nhịp thở 52 — đạt băng 2–11 tháng"
+  benh_nhan: { tuoi_thang: 7 }
+  icd: [N39.0]
+  sinh_hieu: { nhiet_do: 39.0, mach: 170, nhip_tho: 52 }
+  phieu_kham: "Sốt 39 độ 2 ngày, quấy, bú kém. Nước tiểu đục, mùi hôi. Họng không đỏ, phổi không ran."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Cần xem lại · đủ căn cứ"
+      ve:
+        - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, ket_qua: dat, bang_chung: "39,0" }
+        - { id: V2, mo_ta: "nhịp tim/thở", kiem_bang: rule, ket_qua: dat, bang_chung: "nhịp thở 52 ≥ 50" }
+        - { id: V3, mo_ta: "ổ nhiễm trùng", kiem_bang: ai, ket_qua: dat, trich_dan: "Nước tiểu đục, mùi hôi" }
+  he_chi_rule: "Phù hợp quy tắc BHYT"
+  diem_mo_ho: [M-02]
+
+- id: CRP-06
+  ten: "50 ngày tuổi, nhịp thở 56 — chưa đạt băng < 2 tháng"
+  muc_dich: "Cặp với CRP-07: cùng nhịp thở 56, khác băng tuổi."
+  benh_nhan: { tuoi_ngay: 50 }
+  icd: [R50.9]
+  sinh_hieu: { nhiet_do: 38.6, mach: null, nhip_tho: 56 }
+  phieu_kham: "Sốt từ sáng, bú giảm. Thóp phẳng. Họng không đỏ, phổi không ran, bụng mềm, rốn khô. Chưa rõ ổ nhiễm trùng."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Cần xem lại"
+      ve:
+        - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, ket_qua: dat, bang_chung: "38,6" }
+        - { id: V2, mo_ta: "nhịp tim/thở", kiem_bang: rule, ket_qua: chua_du_du_lieu, bang_chung: "nhịp thở 56 < 60; mạch trống" }
+        - { id: V3, mo_ta: "ổ nhiễm trùng", kiem_bang: ai, ket_qua: chua_thay, trich_lien_quan: ["Chưa rõ ổ nhiễm trùng"] }
+  he_chi_rule: "Cần xem lại"
+  diem_mo_ho: [M-02, M-04]
+
+- id: CRP-07
+  ten: "2 tháng, nhịp thở 56 — đạt; sốt chưa rõ nguồn"
+  muc_dich: "Sinh hiệu đạt hết nhưng phiếu khám ghi rõ không thấy ổ. Rule-only báo Phù hợp."
+  benh_nhan: { tuoi_thang: 2 }
+  icd: [R50.9]
+  sinh_hieu: { nhiet_do: 38.6, mach: null, nhip_tho: 56 }
+  phieu_kham: "Sốt từ sáng, bú giảm. Thóp phẳng. Họng không đỏ, phổi không ran, bụng mềm, rốn khô. Chưa rõ ổ nhiễm trùng."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Cần xem lại"
+      ve:
+        - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, ket_qua: dat, bang_chung: "38,6" }
+        - { id: V2, mo_ta: "nhịp tim/thở", kiem_bang: rule, ket_qua: dat, bang_chung: "nhịp thở 56 ≥ 50" }
+        - { id: V3, mo_ta: "ổ nhiễm trùng", kiem_bang: ai, ket_qua: chua_thay, trich_lien_quan: ["Chưa rõ ổ nhiễm trùng"] }
+  he_chi_rule: "Phù hợp quy tắc BHYT"
+  diem_mo_ho: [M-02, M-04]
+
+- id: CRP-08
+  ten: "8 tuổi — chưa có ngưỡng nhịp thở trên 5 tuổi"
+  benh_nhan: { tuoi_thang: 96 }
+  icd: [J18.9]
+  sinh_hieu: { nhiet_do: 39.0, mach: 125, nhip_tho: 32 }
+  phieu_kham: "Sốt, ho 4 ngày, đau ngực phải khi ho. Phổi giảm thông khí, ran nổ đáy phải."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Cần xem lại"
+      ve:
+        - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, ket_qua: dat, bang_chung: "39,0" }
+        - { id: V2, mo_ta: "nhịp tim/thở", kiem_bang: rule, ket_qua: chua_du_du_lieu, bang_chung: "chưa có ngưỡng cho > 5 tuổi" }
+        - { id: V3, mo_ta: "ổ nhiễm trùng", kiem_bang: ai, ket_qua: dat, trich_dan: "ran nổ đáy phải" }
+  he_chi_rule: "Cần xem lại"
+  diem_mo_ho: [M-02]
+
+- id: CRP-09
+  ten: "Sốt 39,5 ở nhà, đo tại viện 37,6 sau hạ sốt"
+  muc_dich: "Theo cách hiểu tạm M-03 chỉ tính nhiệt độ đo được → Không được chi trả. Ca này cần bác sĩ xem trước nhất."
+  benh_nhan: { tuoi_thang: 48 }
+  icd: [J03.9]
+  sinh_hieu: { nhiet_do: 37.6, mach: 120, nhip_tho: 42 }
+  phieu_kham: "Ở nhà sốt 39,5 độ, đã uống paracetamol 1 giờ trước khi đến. Đau họng, amidan sưng đỏ có giả mạc trắng."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Không được chi trả"
+      ly_do: "Nhiệt độ đo tại phòng khám 37,6°C chưa đạt ngưỡng"
+      ve:
+        - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, ket_qua: khong_dat, bang_chung: "37,6 (sốt 39,5 theo lời kể không tính, M-03)" }
+  he_chi_rule: "Không được chi trả"
+  diem_mo_ho: [M-03]
+
+- id: CRP-10
+  ten: "Sinh hiệu trống, phiếu khám không có số"
+  muc_dich: "AC-10: chưa đủ dữ liệu → Cần xem lại, không đoán."
+  benh_nhan: { tuoi_thang: 36 }
+  icd: []
+  lan_tich: 1
+  sinh_hieu: { nhiet_do: null, mach: null, nhip_tho: null }
+  phieu_kham: "Sốt cao, ho nhiều, thở nhanh. Phổi ran ẩm 2 bên."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Cần xem lại"
+      ve:
+        - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, ket_qua: chua_du_du_lieu, bang_chung: "ô trống, phiếu khám chỉ ghi 'sốt cao' không có số" }
+        - { id: V2, mo_ta: "nhịp tim/thở", kiem_bang: rule, ket_qua: chua_du_du_lieu, bang_chung: "'thở nhanh' không có số" }
+        - { id: V3, mo_ta: "ổ nhiễm trùng", kiem_bang: ai, ket_qua: dat, trich_dan: "Phổi ran ẩm 2 bên" }
+  he_chi_rule: "Cần xem lại"
+  diem_mo_ho: [M-17]
+
+- id: CRP-11
+  ten: "Ô trống, số liệu viết tắt trong phiếu khám"
+  muc_dich: "A1 đọc viết tắt T°, NT; rule so ngưỡng."
+  benh_nhan: { tuoi_thang: 36 }
+  icd: [J20.9]
+  sinh_hieu: { nhiet_do: null, mach: null, nhip_tho: null }
+  phieu_kham: "BN sốt 3 ngày, ho khò khè. T° 38,8; NT 45 l/p; SpO2 96%. Phổi: ran rít, ran ngáy 2 phế trường. CĐ: VPQ."
+  a1_gia_lap: { so_lieu: [{ truong: nhiet_do, gia_tri: 38.8, trich_dan: "T° 38,8" }, { truong: nhip_tho, gia_tri: 45, trich_dan: "NT 45 l/p" }] }
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Cần xem lại · đủ căn cứ"
+      ve:
+        - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, nguon_ket_qua: a1, ket_qua: dat, bang_chung: "A1 trích 'T° 38,8'" }
+        - { id: V2, mo_ta: "nhịp tim/thở", kiem_bang: rule, nguon_ket_qua: a1, ket_qua: dat, bang_chung: "A1 trích 'NT 45 l/p' → 45 ≥ 40" }
+        - { id: V3, mo_ta: "ổ nhiễm trùng", kiem_bang: ai, ket_qua: dat, trich_dan: "ran rít, ran ngáy 2 phế trường" }
+  he_chi_rule: "Cần xem lại"
+  diem_mo_ho: [M-02, M-17]
+
+- id: CRP-12
+  ten: "Sơ sinh 10 ngày, ICD nhiễm trùng sơ sinh — đạt hết bằng rule"
+  muc_dich: "Đường duy nhất trong bộ CRP tới Phù hợp: nhánh b toàn vế rule."
+  benh_nhan: { tuoi_ngay: 10 }
+  icd: [P36.9]
+  sinh_hieu: { nhiet_do: 37.2, mach: 160, nhip_tho: 58 }
+  phieu_kham: "Bú kém, ngủ nhiều. Da vàng nhẹ. Theo dõi nhiễm trùng sơ sinh, chuyển nhập viện sau khi lấy máu."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Phù hợp quy tắc BHYT"
+      nhanh: b_so_sinh
+      ve:
+        - { id: B1, mo_ta: "Nhiễm trùng sơ sinh", kiem_bang: rule, ket_qua: dat, bang_chung: "ICD P36.9" }
+  he_chi_rule: "Phù hợp quy tắc BHYT"
+  diem_mo_ho: [M-06]
+
+- id: CRP-13
+  ten: "Sơ sinh 20 ngày, chưa có ICD, phiếu khám tả nhiễm trùng rốn"
+  muc_dich: "Nhánh b, vế nhiễm trùng do A1 đọc. Nhánh a không đạt (37,8) nhưng nhánh b đủ → đủ căn cứ."
+  benh_nhan: { tuoi_ngay: 20 }
+  icd: []
+  lan_tich: 1
+  sinh_hieu: { nhiet_do: 37.8, mach: 165, nhip_tho: 54 }
+  phieu_kham: "Bú kém 1 ngày. Rốn chảy dịch đục mùi hôi, da quanh rốn đỏ lan rộng khoảng 1 cm."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Cần xem lại · đủ căn cứ"
+      nhanh: b_so_sinh
+      ve:
+        - { id: B1, mo_ta: "Nhiễm trùng sơ sinh", kiem_bang: ai, ket_qua: dat, trich_dan: "Rốn chảy dịch đục mùi hôi, da quanh rốn đỏ lan rộng" }
+  he_chi_rule: "Cần xem lại (nhánh a trượt 37,8°C; nhánh b thiếu ICD, không đọc được phiếu)"
+  diem_mo_ho: [M-06]
+
+- id: CRP-14
+  ten: "16 tuổi 2 tháng — sang nhánh người lớn"
+  muc_dich: "Nhánh người lớn (2/4 tiêu chuẩn) chưa mã hóa → Cần xem lại."
+  benh_nhan: { tuoi_thang: 194 }
+  icd: [J18.9]
+  sinh_hieu: { nhiet_do: 38.9, mach: 105, nhip_tho: 24 }
+  phieu_kham: "Sốt, ho đờm vàng 3 ngày. Ran nổ đáy phổi trái."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Cần xem lại"
+      ly_do: "≥ 16 tuổi áp nhánh người lớn, chưa có checklist"
+  he_chi_rule: "Cần xem lại"
+  diem_mo_ho: [M-01]
+
+- id: CRP-15
+  ten: "Toàn câu phủ định"
+  muc_dich: "Từ khóa ho/họng/tai/nước tiểu xuất hiện nhưng đều phủ định."
+  benh_nhan: { tuoi_thang: 24 }
+  icd: [R50.9]
+  sinh_hieu: { nhiet_do: 38.6, mach: 150, nhip_tho: 44 }
+  phieu_kham: "Sốt 1 ngày. Không ho, không nôn, không tiêu chảy. Tai không chảy mủ, họng không đỏ, phổi không ran, bụng mềm, nước tiểu trong. Trẻ chơi bình thường khi hết sốt."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Cần xem lại"
+      ve:
+        - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, ket_qua: dat, bang_chung: "38,6" }
+        - { id: V2, mo_ta: "nhịp tim/thở", kiem_bang: rule, ket_qua: dat, bang_chung: "nhịp thở 44 ≥ 40" }
+        - { id: V3, mo_ta: "ổ nhiễm trùng", kiem_bang: ai, ket_qua: chua_thay, trich_lien_quan: ["Không ho", "họng không đỏ, phổi không ran", "nước tiểu trong"] }
+  he_chi_rule: "Phù hợp quy tắc BHYT"
+  diem_mo_ho: [M-02, M-04]
+
+- id: CRP-16
+  ten: "CRP theo dõi, tái khám đã hết sốt"
+  muc_dich: "M-05 tạm: làm lại phải thỏa lại điều kiện."
+  benh_nhan: { tuoi_thang: 40 }
+  icd: [J18.9]
+  sinh_hieu: { nhiet_do: 36.9, mach: 105, nhip_tho: 28 }
+  phieu_kham: "Tái khám sau 3 ngày kháng sinh. Hết sốt 2 ngày, còn ho ít. Phổi ran ẩm giảm nhiều."
+  lich_su: [{ ma: "23.0228.1483", ngay_cach: 3, ket_qua: 48, don_vi: "mg/L" }]
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Không được chi trả"
+      ly_do: "Nhiệt độ 36,9°C chưa đạt ngưỡng"
+      ve:
+        - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, ket_qua: khong_dat, bang_chung: "36,9" }
+  he_chi_rule: "Không được chi trả"
+  diem_mo_ho: [M-05]
+
+- id: CRP-17
+  ten: "Từ khóa bẫy: bệnh của người nhà"
+  muc_dich: "'viêm họng', 'viêm phổi' là của mẹ và anh, không phải của trẻ."
+  benh_nhan: { tuoi_thang: 36 }
+  icd: [R50.9]
+  sinh_hieu: { nhiet_do: 38.5, mach: 140, nhip_tho: 42 }
+  phieu_kham: "Sốt 1 ngày. Mẹ đang viêm họng, anh trai mới khỏi viêm phổi tuần trước. Khám: họng hồng, phổi không ran, tai bình thường."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Cần xem lại"
+      ve:
+        - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, ket_qua: dat, bang_chung: "38,5" }
+        - { id: V2, mo_ta: "nhịp tim/thở", kiem_bang: rule, ket_qua: dat, bang_chung: "nhịp thở 42 ≥ 40" }
+        - { id: V3, mo_ta: "ổ nhiễm trùng", kiem_bang: ai, ket_qua: chua_thay, trich_lien_quan: ["Mẹ đang viêm họng", "họng hồng, phổi không ran"] }
+  he_chi_rule: "Phù hợp quy tắc BHYT"
+  diem_mo_ho: [M-02, M-04]
+
+- id: CRP-18
+  ten: "Ô nhiệt độ trống, phiếu ghi T° 37,5 — số AI không được gây Không được chi trả"
+  muc_dich: "AC-13. Số A1 trích cho khong_dat bị hạ thành chua_du_du_lieu. Bẫy thêm: SpO2 96% không phải nhịp thở."
+  benh_nhan: { tuoi_thang: 36 }
+  icd: [J20.9]
+  sinh_hieu: { nhiet_do: null, mach: null, nhip_tho: null }
+  phieu_kham: "Ho 3 ngày. T° 37,5; NT 45 l/p; SpO2 96%. Phổi ran rít 2 bên."
+  a1_gia_lap: { so_lieu: [{ truong: nhiet_do, gia_tri: 37.5, trich_dan: "T° 37,5" }, { truong: nhip_tho, gia_tri: 45, trich_dan: "NT 45 l/p" }] }
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Cần xem lại"
+      ve:
+        - { id: V1, mo_ta: "Nhiệt độ", kiem_bang: rule, nguon_ket_qua: a1, ket_qua: chua_du_du_lieu, bang_chung: "A1 trích 37,5 → không đạt, nhưng số do AI đọc nên hạ" }
+        - { id: V2, mo_ta: "Nhịp tim/thở", kiem_bang: rule, nguon_ket_qua: a1, ket_qua: dat, bang_chung: "NT 45 ≥ 40 (không lấy SpO2 96)" }
+  he_chi_rule: "Cần xem lại"
+  diem_mo_ho: [M-02, M-17]
+
+- id: CRP-19
+  ten: "Ô nhiệt độ trống, phiếu chỉ có sốt theo lời kể"
+  muc_dich: "A1 không được trích '39,5' vì không phải số đo tại lần khám (M-03)."
+  benh_nhan: { tuoi_thang: 48 }
+  icd: [J03.9]
+  sinh_hieu: { nhiet_do: null, mach: 120, nhip_tho: 42 }
+  phieu_kham: "Ở nhà sốt 39,5 độ, đã uống hạ sốt. Amidan sưng đỏ có giả mạc trắng."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Cần xem lại"
+      ve:
+        - { id: V1, mo_ta: "Nhiệt độ", kiem_bang: rule, ket_qua: chua_du_du_lieu, bang_chung: "chỉ có sốt theo lời kể" }
+        - { id: V2, mo_ta: "Nhịp tim/thở", kiem_bang: rule, ket_qua: dat, bang_chung: "nhịp thở 42 ≥ 40" }
+        - { id: V3, mo_ta: "Ổ nhiễm trùng", kiem_bang: ai, ket_qua: dat, trich_dan: "Amidan sưng đỏ có giả mạc trắng" }
+  he_chi_rule: "Cần xem lại"
+  diem_mo_ho: [M-03]

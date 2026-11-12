@@ -1,0 +1,28 @@
+@page { size: A4; margin: 20mm 18mm 20mm 30mm; }
+body { font-family: "Times New Roman", Times, serif; font-size: 13pt; line-height: 1.35; color: #000; margin: 0; }
+p { margin: 0 0 5pt; text-align: justify; text-indent: 1cm; }
+p.ni { text-indent: 0; }
+.hdr { display: flex; justify-content: space-between; text-align: center; font-size: 11.5pt; line-height: 1.3; }
+.hdr .l { width: 46%; } .hdr .r { width: 54%; }
+.hdr b { display: block; }
+.hdr .line { width: 40%; margin: 2pt auto 0; border-top: 1px solid #000; }
+.hdr .line.w { width: 62%; }
+.date { text-align: right; font-style: italic; margin: 8pt 0 14pt; text-indent: 0; }
+.title { text-align: center; font-weight: bold; font-size: 14pt; margin: 0; text-indent: 0; }
+.sub { text-align: center; font-weight: bold; margin: 2pt 0 10pt; text-indent: 0; }
+.to { text-align: center; margin: 0 0 10pt; text-indent: 0; }
+h2 { font-size: 13pt; font-weight: bold; margin: 9pt 0 4pt; break-after: avoid; }
+h3 { font-size: 13pt; font-weight: bold; margin: 6pt 0 3pt; text-indent: 1cm; break-after: avoid; }
+ul { margin: 0 0 5pt; padding-left: 0; list-style: none; }
+ul li { text-indent: 1cm; text-align: justify; margin: 0 0 3pt; }
+ul li::before { content: "- "; }
+table { width: 100%; border-collapse: collapse; margin: 4pt 0 8pt; font-size: 11.5pt; }
+tr { break-inside: avoid; }
+th, td { border: 1px solid #000; padding: 3pt 5pt; vertical-align: top; text-align: left; }
+th { font-weight: bold; text-align: center; }
+td.c { text-align: center; }
+.sign { display: flex; justify-content: space-between; margin-top: 14pt; break-inside: avoid; }
+.sign .nn { width: 45%; font-size: 11pt; }
+.sign .nn b { font-size: 12pt; font-style: italic; }
+.sign .ky { width: 50%; text-align: center; }
+.sign .ky .names { margin-top: 60pt; font-weight: bold; }

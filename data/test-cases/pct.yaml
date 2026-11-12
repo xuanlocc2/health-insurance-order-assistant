@@ -1,0 +1,85 @@
+# Procalcitonin (23.0130.1549), TT 35/2016 sđ TT 39/2024, DM1 mục 8. Nhánh trẻ em, đạt MỘT trong hai:
+#   N1 nhiễm trùng huyết (ai) · N2 rối loạn chức năng ≥ 2 cơ quan (ai, M-09: chỉ trích, không đếm → không tự đạt)
+# Tần suất (M-10): < 24 giờ → Không được chi trả; [24, 48) giờ → Cần xem lại. Loại trừ: hết dấu hiệu chỉ định (ai) VÀ PCT ≤ 2 × tham chiếu (rule, tạm 0,5).
+# Ca PCT khác: a1-seed.yaml A1-04, A1-05.
+
+- id: PCT-01
+  ten: "Nghi nhiễm trùng huyết, ghi rõ trong phiếu"
+  benh_nhan: { tuoi_thang: 36 }
+  icd: [A41.9]
+  sinh_hieu: { nhiet_do: 39.8, mach: 175, nhip_tho: 44 }
+  phieu_kham: "Sốt cao 1 ngày, li bì. Ban xuất huyết rải rác 2 chi dưới, chi lạnh, CRT 3 giây. Theo dõi nhiễm trùng huyết, chuyển cấp cứu."
+  chi_dinh: [{ ma: "23.0130.1549", ten: "Định lượng Procalcitonin" }]
+  ky_vong:
+    - ma: "23.0130.1549"
+      trang_thai: "Cần xem lại · đủ căn cứ"
+      ve:
+        - { id: N1, mo_ta: "nhiễm trùng huyết", kiem_bang: ai, ket_qua: dat, trich_dan: "Theo dõi nhiễm trùng huyết" }
+  he_chi_rule: "Cần xem lại"
+  diem_mo_ho: [M-08]
+
+- id: PCT-02
+  ten: "Dấu hiệu nhiều cơ quan nhưng không ghi nhiễm trùng huyết"
+  muc_dich: "M-09: A1 trích dấu hiệu, không tự đếm cơ quan → vẫn Cần xem lại."
+  benh_nhan: { tuoi_thang: 20 }
+  icd: [J18.9]
+  sinh_hieu: { nhiet_do: 39.0, mach: 170, nhip_tho: 60 }
+  phieu_kham: "Viêm phổi ngày 4. Thở nhanh, rút lõm, SpO2 89%. Tiểu ít từ sáng. Lơ mơ, gọi mới mở mắt."
+  chi_dinh: [{ ma: "23.0130.1549", ten: "Định lượng Procalcitonin" }]
+  ky_vong:
+    - ma: "23.0130.1549"
+      trang_thai: "Cần xem lại"
+      ve:
+        - { id: N1, mo_ta: "nhiễm trùng huyết", kiem_bang: ai, ket_qua: chua_thay }
+        - { id: N2, mo_ta: "rối loạn ≥ 2 cơ quan", kiem_bang: ai, ket_qua: chua_thay, trich_lien_quan: ["SpO2 89%", "Tiểu ít từ sáng", "Lơ mơ"] }
+  he_chi_rule: "Cần xem lại"
+  diem_mo_ho: [M-09]
+
+- id: PCT-03
+  ten: "Viêm phổi ngoại trú thường"
+  benh_nhan: { tuoi_thang: 48 }
+  icd: [J18.9]
+  sinh_hieu: { nhiet_do: 38.7, mach: 130, nhip_tho: 36 }
+  phieu_kham: "Ho sốt 3 ngày. Ran ẩm đáy phổi trái. Trẻ tỉnh, ăn được, SpO2 97%."
+  chi_dinh: [{ ma: "23.0130.1549", ten: "Định lượng Procalcitonin" }]
+  ky_vong:
+    - ma: "23.0130.1549"
+      trang_thai: "Cần xem lại"
+      ve:
+        - { id: N1, mo_ta: "nhiễm trùng huyết", kiem_bang: ai, ket_qua: chua_thay }
+        - { id: N2, mo_ta: "rối loạn ≥ 2 cơ quan", kiem_bang: ai, ket_qua: chua_thay, trich_lien_quan: ["Trẻ tỉnh, ăn được, SpO2 97%"] }
+  he_chi_rule: "Cần xem lại"
+  diem_mo_ho: [M-08, M-09]
+
+- id: PCT-04
+  ten: "Làm lại sau 24 giờ — vượt tần suất 48 giờ"
+  benh_nhan: { tuoi_thang: 36 }
+  icd: [A41.9]
+  sinh_hieu: { nhiet_do: 38.9, mach: 160, nhip_tho: 40 }
+  phieu_kham: "Tái khám hôm sau. Còn sốt. Theo dõi nhiễm trùng huyết, đang chờ giường."
+  lich_su: [{ ma: "23.0130.1549", ngay_cach: 1, ket_qua: 3.2, tham_chieu_tren: 0.5, don_vi: "ng/mL" }]
+  chi_dinh: [{ ma: "23.0130.1549", ten: "Định lượng Procalcitonin" }]
+  ky_vong:
+    - ma: "23.0130.1549"
+      trang_thai: "Cần xem lại"
+      ly_do: "Đã làm cách 24 giờ; giới hạn 48 giờ (cách hiểu tạm M-10, chưa được bác sĩ duyệt)"   # [24, 48) giờ: có thể hợp lệ nếu sốc nhiễm trùng
+  he_chi_rule: "Cần xem lại"
+  diem_mo_ho: [M-10]
+
+- id: PCT-05
+  ten: "Làm lại sau 3 ngày, PCT cũ còn cao — không rơi vào loại trừ"
+  muc_dich: "Đối chứng của A1-05: vế rule loại trừ không đạt (2,5 > 1,0) → loại trừ không áp dụng."
+  benh_nhan: { tuoi_thang: 60 }
+  icd: [A41.9]
+  sinh_hieu: { nhiet_do: 37.9, mach: 120, nhip_tho: 26 }
+  phieu_kham: "Tái khám sau ra viện 3 ngày, đang uống kháng sinh. Theo dõi nhiễm trùng huyết. Còn sốt nhẹ về chiều."
+  lich_su: [{ ma: "23.0130.1549", ngay_cach: 3, ket_qua: 2.5, tham_chieu_tren: 0.5, don_vi: "ng/mL" }]
+  chi_dinh: [{ ma: "23.0130.1549", ten: "Định lượng Procalcitonin" }]
+  ky_vong:
+    - ma: "23.0130.1549"
+      trang_thai: "Cần xem lại · đủ căn cứ"
+      ve:
+        - { id: N1, mo_ta: "nhiễm trùng huyết", kiem_bang: ai, ket_qua: dat, trich_dan: "Theo dõi nhiễm trùng huyết" }
+        - { id: X2, mo_ta: "Loại trừ: PCT ≤ 2 × tham chiếu", kiem_bang: rule, ket_qua: khong_dat, bang_chung: "2,5 > 1,0" }
+  he_chi_rule: "Cần xem lại"
+  diem_mo_ho: [M-08, M-10]

@@ -1,0 +1,189 @@
+# R1 (danh mục), R2 (thẻ), R4 (trùng). Không có điều kiện riêng, A1 không chạy.
+# Toàn bộ 50 dịch vụ: test vòng lặp qua data/danh-muc/nhi-ngoai-tru-de-xuat.md, không viết ca ở đây.
+# R2 tạm (nguon: tu_dung) đến khi tra xong Luật BHYT sđ 51/2024, TT 01/2025.
+
+# ---------- R1 ----------
+- id: R1-01
+  ten: "Bộ test nhanh hô hấp: cúm có, RSV và Adeno không thấy"
+  benh_nhan: { tuoi_thang: 20 }
+  icd: [J06.9]
+  sinh_hieu: { nhiet_do: 38.4, mach: 140, nhip_tho: 38 }
+  phieu_kham: "Sốt, ho, chảy mũi 2 ngày. Nhà trẻ nhiều bạn ốm."
+  chi_dinh:
+    - { ma: "24.0243.1671", ten: "Influenza virus A, B test nhanh" }
+    - { ma: null, ten: "Test nhanh RSV" }
+    - { ma: null, ten: "Test nhanh Adenovirus" }
+  ky_vong:
+    - { ma: "24.0243.1671", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ten: "Test nhanh RSV", trang_thai: "Không được chi trả", ly_do: "Không có trong danh mục kỹ thuật BHYT" }
+    - { ten: "Test nhanh Adenovirus", trang_thai: "Không được chi trả", ly_do: "Không có trong danh mục kỹ thuật BHYT" }
+  diem_mo_ho: [M-13]
+
+- id: R1-02
+  ten: "Test nhanh liên cầu nhóm A"
+  benh_nhan: { tuoi_thang: 72 }
+  icd: [J02.9]
+  sinh_hieu: { nhiet_do: 38.8, mach: 115, nhip_tho: 24 }
+  phieu_kham: "Đau họng, sốt. Amidan sưng đỏ, có chấm xuất huyết vòm họng, hạch cổ đau."
+  chi_dinh: [{ ma: null, ten: "Test nhanh liên cầu nhóm A" }]
+  ky_vong:
+    - { ten: "Test nhanh liên cầu nhóm A", trang_thai: "Không được chi trả", ly_do: "Không có trong danh mục kỹ thuật BHYT" }
+  diem_mo_ho: [M-13]
+
+- id: R1-03
+  ten: "SARS-CoV-2 Ag và PCR đa tác nhân — chưa xác minh"
+  benh_nhan: { tuoi_thang: 30 }
+  icd: [J18.9]
+  sinh_hieu: { nhiet_do: 38.9, mach: 145, nhip_tho: 44 }
+  phieu_kham: "Ho sốt 5 ngày, không đỡ với kháng sinh. Ran ẩm 2 phổi."
+  chi_dinh:
+    - { ma: null, ten: "Test nhanh SARS-CoV-2 (Ag)" }
+    - { ma: null, ten: "PCR đa tác nhân hô hấp" }
+  ky_vong:
+    - { ten: "Test nhanh SARS-CoV-2 (Ag)", trang_thai: "Cần xem lại", ly_do: "Chưa xác minh trong danh mục" }
+    - { ten: "PCR đa tác nhân hô hấp", trang_thai: "Cần xem lại", ly_do: "Chưa xác minh trong danh mục" }
+  diem_mo_ho: [M-13]
+
+- id: R1-04
+  ten: "Kẽm — chưa xác minh mã"
+  benh_nhan: { tuoi_thang: 26 }
+  icd: [R62.8]
+  sinh_hieu: { nhiet_do: 36.7, mach: 115, nhip_tho: 28 }
+  phieu_kham: "Biếng ăn, chậm tăng cân 3 tháng. Cân nặng dưới -2SD."
+  chi_dinh: [{ ma: null, ten: "Định lượng Kẽm" }]
+  ky_vong:
+    - { ten: "Định lượng Kẽm", trang_thai: "Cần xem lại", ly_do: "Mã BS_ có quy định riêng, chưa xác minh" }
+  diem_mo_ho: [M-13]
+
+- id: R1-05
+  ten: "Vitamin D và IgE toàn phần — tưởng có điều kiện nhưng không"
+  benh_nhan: { tuoi_thang: 40 }
+  icd: [L20.9]
+  sinh_hieu: { nhiet_do: 36.8, mach: 110, nhip_tho: 26 }
+  phieu_kham: "Chàm tái đi tái lại 2 bên má, khuỷu. Ngứa nhiều về đêm."
+  chi_dinh:
+    - { ma: "23.0055.1489", ten: "Định lượng 25OH Vitamin D (D3)" }
+    - { ma: "23.0093.1527", ten: "Định lượng IgE toàn phần" }
+  ky_vong:
+    - { ma: "23.0055.1489", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "23.0093.1527", trang_thai: "Phù hợp quy tắc BHYT" }
+  diem_mo_ho: []
+
+- id: R1-06
+  ten: "IgE đặc hiệu — ngoài danh sách 50"
+  muc_dich: "Dịch vụ chưa tra thì không đoán Phù hợp."
+  benh_nhan: { tuoi_thang: 40 }
+  icd: [L20.9]
+  sinh_hieu: { nhiet_do: 36.8, mach: 110, nhip_tho: 26 }
+  phieu_kham: "Chàm, nghi dị ứng sữa bò."
+  chi_dinh: [{ ma: null, ten: "Định lượng IgE đặc hiệu (sữa bò)" }]
+  ky_vong:
+    - { ten: "Định lượng IgE đặc hiệu (sữa bò)", trang_thai: "Cần xem lại", ly_do: "Ngoài danh sách MVP, chưa tra" }
+  diem_mo_ho: []
+
+# ---------- R2 ----------
+- id: R2-01
+  ten: "Thẻ hết hạn hôm qua"
+  muc_dich: "AC-09: mọi dòng Không được chi trả."
+  benh_nhan: { tuoi_thang: 84, the: { han_den: 2026-11-11, muc_huong: 80 } }
+  icd: [J06.9]
+  sinh_hieu: { nhiet_do: 38.0, mach: 110, nhip_tho: 24 }
+  phieu_kham: "Sốt, ho 2 ngày."
+  chi_dinh:
+    - { ma: "22.0121.1369", ten: "Tổng phân tích tế bào máu ngoại vi" }
+    - { ma: "18.0119.0028", ten: "Chụp X-quang ngực thẳng" }
+  ky_vong:
+    - { ma: "22.0121.1369", trang_thai: "Không được chi trả", ly_do: "Thẻ BHYT hết hạn 11/11/2026" }
+    - { ma: "18.0119.0028", trang_thai: "Không được chi trả", ly_do: "Thẻ BHYT hết hạn 11/11/2026" }
+  diem_mo_ho: []
+
+- id: R2-02
+  ten: "Thẻ hết hạn đúng ngày khám — vẫn còn hạn"
+  benh_nhan: { tuoi_thang: 84, the: { han_den: 2026-11-12, muc_huong: 80 } }
+  icd: [J06.9]
+  sinh_hieu: { nhiet_do: 38.0, mach: 110, nhip_tho: 24 }
+  phieu_kham: "Sốt, ho 2 ngày."
+  chi_dinh: [{ ma: "22.0121.1369", ten: "Tổng phân tích tế bào máu ngoại vi" }]
+  ky_vong:
+    - { ma: "22.0121.1369", trang_thai: "Phù hợp quy tắc BHYT", muc_huong: 80 }
+  diem_mo_ho: []
+
+- id: R2-03
+  ten: "Trẻ 3 tuổi — hiển thị mức hưởng 100%"
+  benh_nhan: { tuoi_thang: 36, the: { han_den: 2029-11-30, muc_huong: 100 } }
+  icd: [A09]
+  sinh_hieu: { nhiet_do: 37.8, mach: 125, nhip_tho: 30 }
+  phieu_kham: "Tiêu chảy 3 lần/ngày, phân lỏng không máu."
+  chi_dinh: [{ ma: "24.0249.1697", ten: "Rotavirus test nhanh" }]
+  ky_vong:
+    - { ma: "24.0249.1697", trang_thai: "Phù hợp quy tắc BHYT", muc_huong: 100 }
+  diem_mo_ho: []
+
+- id: R2-04
+  ten: "Trẻ 8 tuổi thẻ học sinh — mức hưởng 80%"
+  benh_nhan: { tuoi_thang: 96, the: { han_den: 2026-12-31, muc_huong: 80 } }
+  icd: [J45.9]
+  sinh_hieu: { nhiet_do: 36.8, mach: 95, nhip_tho: 22 }
+  phieu_kham: "Hen phế quản tái khám, khò khè khi gắng sức."
+  chi_dinh: [{ ma: "02.0024.1791", ten: "Đo chức năng hô hấp" }]
+  ky_vong:
+    - { ma: "02.0024.1791", trang_thai: "Phù hợp quy tắc BHYT", muc_huong: 80 }
+  diem_mo_ho: []
+
+- id: R2-05
+  ten: "Khám gấp, chưa có thông tin thẻ"
+  muc_dich: "Theo khảo sát: khám trước, xác minh thẻ sau. Không đoán → Cần xem lại."
+  benh_nhan: { tuoi_thang: 14, the: null }
+  icd: []
+  lan_tich: 1
+  sinh_hieu: { nhiet_do: 39.1, mach: 160, nhip_tho: 48 }
+  phieu_kham: "Sốt cao, co giật 1 cơn ở nhà khoảng 2 phút. Hiện tỉnh."
+  chi_dinh:
+    - { ma: "22.0121.1369", ten: "Tổng phân tích tế bào máu ngoại vi" }
+    - { ma: "23.0075.1494", ten: "Định lượng Glucose [Máu]" }
+  ky_vong:
+    - { ma: "22.0121.1369", trang_thai: "Cần xem lại", ly_do: "Chưa có thông tin thẻ BHYT" }
+    - { ma: "23.0075.1494", trang_thai: "Cần xem lại", ly_do: "Chưa có thông tin thẻ BHYT" }
+  diem_mo_ho: []
+
+# ---------- R4 ----------
+- id: R4-01
+  ten: "CRP chỉ định 2 lần trong cùng lượt"
+  muc_dich: "AC-08."
+  benh_nhan: { tuoi_thang: 24 }
+  icd: [J18.9]
+  sinh_hieu: { nhiet_do: 38.8, mach: 150, nhip_tho: 46 }
+  phieu_kham: "Ho sốt 3 ngày, ran ẩm đáy phổi phải."
+  chi_dinh:
+    - { ma: "23.0228.1483", ten: "Định lượng CRP" }
+    - { ma: "23.0228.1483", ten: "Định lượng CRP" }
+  ky_vong:
+    - { ma: "23.0228.1483", thu_tu: 1, trang_thai: "Cần xem lại · đủ căn cứ" }
+    - { ma: "23.0228.1483", thu_tu: 2, trang_thai: "Cần xem lại", ly_do: "Trùng dịch vụ trong cùng lượt khám" }
+  diem_mo_ho: [M-15]
+
+- id: R4-02
+  ten: "CTM hôm nay, CTM lượt trước 2 ngày"
+  benh_nhan: { tuoi_thang: 24 }
+  icd: [A09]
+  sinh_hieu: { nhiet_do: 37.5, mach: 125, nhip_tho: 30 }
+  phieu_kham: "Tái khám tiêu chảy, còn mệt."
+  lich_su: [{ ma: "22.0121.1369", ngay_cach: 2 }]
+  chi_dinh: [{ ma: "22.0121.1369", ten: "Tổng phân tích tế bào máu ngoại vi" }]
+  ky_vong:
+    - { ma: "22.0121.1369", trang_thai: "Phù hợp quy tắc BHYT" }
+  diem_mo_ho: [M-15]
+
+- id: R4-03
+  ten: "X-quang ngực chụp lại trong cùng lượt"
+  benh_nhan: { tuoi_thang: 30 }
+  icd: [J18.9]
+  sinh_hieu: { nhiet_do: 38.5, mach: 140, nhip_tho: 42 }
+  phieu_kham: "Ho sốt. Phim lần 1 trẻ cử động, chụp lại."
+  chi_dinh:
+    - { ma: "18.0119.0028", ten: "Chụp X-quang ngực thẳng" }
+    - { ma: "18.0119.0028", ten: "Chụp X-quang ngực thẳng" }
+  ky_vong:
+    - { ma: "18.0119.0028", thu_tu: 1, trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "18.0119.0028", thu_tu: 2, trang_thai: "Cần xem lại", ly_do: "Trùng dịch vụ trong cùng lượt khám" }
+  diem_mo_ho: [M-15]

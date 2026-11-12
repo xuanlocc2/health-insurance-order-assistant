@@ -1,0 +1,54 @@
+# Siêu âm doppler tim, van tim (18.0052.0004), DM2 mục 48: không thanh toán khi làm cùng thời điểm với siêu âm tim cản âm.
+# "Cùng thời điểm" tạm = cùng lượt khám (M-11). Mã siêu âm tim cản âm chưa tra → ma: null.
+
+- id: DOP-01
+  ten: "Doppler tim đơn thuần, tiếng thổi"
+  benh_nhan: { tuoi_thang: 6 }
+  icd: [R01.1]
+  sinh_hieu: { nhiet_do: 36.8, mach: 130, nhip_tho: 36 }
+  phieu_kham: "Khám sức khỏe, phát hiện thổi tâm thu 2/6 bờ trái xương ức. Bú tốt, tăng cân đều."
+  chi_dinh: [{ ma: "18.0052.0004", ten: "Siêu âm doppler tim, van tim" }]
+  ky_vong:
+    - { ma: "18.0052.0004", trang_thai: "Phù hợp quy tắc BHYT" }
+  diem_mo_ho: [M-11]
+
+- id: DOP-02
+  ten: "Doppler + siêu âm tim cản âm cùng lượt"
+  benh_nhan: { tuoi_thang: 48 }
+  icd: [Q21.1]
+  sinh_hieu: { nhiet_do: 36.7, mach: 105, nhip_tho: 24 }
+  phieu_kham: "Theo dõi thông liên nhĩ. Chỉ định siêu âm tim cản âm đánh giá luồng thông."
+  chi_dinh:
+    - { ma: "18.0052.0004", ten: "Siêu âm doppler tim, van tim" }
+    - { ma: null, ten: "Siêu âm tim cản âm" }
+  ky_vong:
+    - { ma: "18.0052.0004", trang_thai: "Không được chi trả", ly_do: "Làm cùng lượt với siêu âm tim cản âm" }
+    - { ten: "Siêu âm tim cản âm", trang_thai: "Cần xem lại", ly_do: "Ngoài danh sách MVP, chưa tra" }
+  diem_mo_ho: [M-11]
+
+- id: DOP-03
+  ten: "Doppler hôm nay, cản âm ở lượt khám trước"
+  benh_nhan: { tuoi_thang: 48 }
+  icd: [Q21.1]
+  sinh_hieu: { nhiet_do: 36.7, mach: 102, nhip_tho: 24 }
+  phieu_kham: "Tái khám sau 3 ngày, đọc kết quả siêu âm cản âm. Làm lại doppler đánh giá áp lực động mạch phổi."
+  lich_su: [{ ten: "Siêu âm tim cản âm", ngay_cach: 3 }]
+  chi_dinh: [{ ma: "18.0052.0004", ten: "Siêu âm doppler tim, van tim" }]
+  ky_vong:
+    - { ma: "18.0052.0004", trang_thai: "Phù hợp quy tắc BHYT" }
+  diem_mo_ho: [M-11, M-15]
+
+- id: CA-01
+  ten: "Canxi ion hóa"
+  muc_dich: "M-12 tạm: máy Vinmec đo trực tiếp → Phù hợp. Bác sĩ trả lời 'tính toán' thì đổi thành Không được chi trả."
+  benh_nhan: { tuoi_thang: 10 }
+  icd: [E55.0]
+  sinh_hieu: { nhiet_do: 36.6, mach: 120, nhip_tho: 32 }
+  phieu_kham: "Ra mồ hôi trộm, chậm mọc răng, bờ thóp mềm. Theo dõi còi xương."
+  chi_dinh:
+    - { ma: "23.0030.1472", ten: "Định lượng Canxi ion hóa" }
+    - { ma: "23.0055.1489", ten: "Định lượng 25OH Vitamin D (D3)" }
+  ky_vong:
+    - { ma: "23.0030.1472", trang_thai: "Phù hợp quy tắc BHYT" }
+    - { ma: "23.0055.1489", trang_thai: "Phù hợp quy tắc BHYT" }
+  diem_mo_ho: [M-12]

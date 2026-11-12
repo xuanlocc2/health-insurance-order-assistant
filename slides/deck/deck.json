@@ -1,0 +1,34 @@
+{
+  "v": 4,
+  "attachments": {},
+  "createdOnFiles": {
+    "at": "2026-11-10T09:00:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "faces": {
+    "be-vietnam-pro": {
+      "family": "Be Vietnam Pro",
+      "href": "https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap"
+    }
+  },
+  "lists": "css",
+  "order": [
+    "van-de",
+    "giai-phap",
+    "vi-du",
+    "loi-ich",
+    "ho-tro"
+  ],
+  "sections": {
+    "s1": {
+      "description": "Vấn đề bác sĩ gặp khi tích BHYT và giải pháp đề xuất",
+      "start": "van-de"
+    },
+    "s2": {
+      "description": "Ví dụ minh họa và những khó khăn khi xây dựng",
+      "start": "vi-du"
+    }
+  },
+  "title": "Trợ lý kiểm tra BHYT khi chỉ định"
+}
