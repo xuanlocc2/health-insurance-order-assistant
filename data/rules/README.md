@@ -2,6 +2,16 @@
 
 Thư mục này chứa các quy tắc dùng để kiểm tra dòng chỉ định có phù hợp quy tắc BHYT hay không (R1–R4 trong [docs/02-giai-phap.md](../../docs/02-giai-phap.md)). Quy tắc viết bằng **YAML**. YAML là nguồn duy nhất. Bảng để bác sĩ duyệt được xuất từ YAML, không sửa tay.
 
+## File đang dùng (MVP)
+
+| File | Nội dung |
+|---|---|
+| [danh-muc.yaml](danh-muc.yaml) | R1: 50 dịch vụ (55 dòng mã), tên theo PL01 TT 23/2024, trạng thái `co`, `dieu_kien`, `khong_thay`, `xac_minh` |
+| [dieu-kien.yaml](dieu-kien.yaml) | R3: điều kiện thanh toán của các dịch vụ `dieu_kien`, kèm nguyên văn |
+| [tham-so.yaml](tham-so.yaml) | Ngưỡng và bảng tự dựng, mỗi giá trị gắn một điểm mơ hồ M-xx |
+| [NGUON.md](NGUON.md) | Sổ kiểm chứng: file, trang, câu nguyên văn và cách hiểu của từng quy tắc; mục "R2 thẻ BHYT" |
+| [check_rules.py](check_rules.py) | Kiểm tra ba file YAML: `python data/rules/check_rules.py` |
+
 ## Ba lớp
 
 | Lớp | Thư mục | Nội dung | Ai sửa |

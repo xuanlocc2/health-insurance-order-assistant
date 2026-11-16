@@ -1,0 +1,258 @@
+# Điều kiện thanh toán BHYT (R3) cho dịch vụ có `bhyt: dieu_kien` trong danh-muc.yaml. Schema: docs/09-spec.md mục 2.
+# Nhánh (HOẶC) → vế (VÀ) → loại trừ. Khoảng nửa mở [tu, den). "@ten" trỏ sang tham-so.yaml.
+# nguyen_van và trich: chép đúng chữ từ phụ lục TT 39/2024 (kể cả lỗi in của bản gốc), chỉ gộp xuống dòng thành dấu cách.
+# Mọi giá trị không có nguyên chữ trong văn bản: nguon: tu_dung + diem_mo_ho (docs/06). Chi tiết nguồn: NGUON.md.
+# can_cu[].stt = STT trong phụ lục TT 39/2024; stt_tt35 = STT trong Danh mục của TT 35/2016 (VBHN 17). trang = trang PDF.
+
+"23.0228.1483":
+  ten: "Định lượng CRP (C-Reactive Protein)"
+  ten_trong_van_ban: "Định lượng CRP/CRP hs [Máu]"
+  nguyen_van: >-
+    Chẩn đoán, theo dõi một trong các trường hợp sau đây:
+    a) Nghi ngờ có ổ nhiễm trùng, có ít nhất 02 trong 04 tiêu chuẩn sau:
+    - Nhiệt độ cơ thể < 36°c hoặc > 38°C;
+    - Nhịp tim nhanh > 90 lần/phút;
+    - Nhịp thở > 22 lần/phút hoặc PaCO2 <32 mmHg;
+    - Bạch cầu máu >12G/L, hoặc < 4G/L hoặc > 10% bạch cầu non.
+    Đối với trẻ em: Khi nghi ngờ có ô nhiễm trùng, có nhiệt độ cơ thể ≤ 36°C hoặc ≥ 38,3°C
+    và có nhịp tim hoặc nhịp thở thay đổi quá giới hạn sinh lý theo tuổi.
+    b) Nhiễm trùng sơ sinh;
+    c) Bệnh mạch vành, nhồi máu cơ tim;
+    d) Viêm da nhiễm độc, các bệnh tự miễn.
+  ty_le_nguyen_van: "Thanh toán bằng giá DVKT"
+  can_cu:
+    - van_ban: "TT 35/2016/TT-BYT, sửa đổi bởi TT 39/2024/TT-BYT"
+      phu_luc: "Danh mục 1 (phụ lục TT 39/2024; STT theo TT 35: 11)"
+      stt: 7
+      stt_tt35: 11
+      file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-39-2024-TT-BYT_phu-luc-danh-muc-1-2_dieu-kien-thanh-toan.pdf
+      trang: [8, 9]
+      doi_chieu: "VBHN 17/VBHN-BYT trang 27, Danh mục 1 mục 11"
+  nhanh:
+    - id: a_tre_em
+      trich: "Đối với trẻ em: Khi nghi ngờ có ô nhiễm trùng, có nhiệt độ cơ thể ≤ 36°C hoặc ≥ 38,3°C và có nhịp tim hoặc nhịp thở thay đổi quá giới hạn sinh lý theo tuổi."
+      ap_dung: { tuoi_thang: [0, "@tre_em_den_thang"] }   # "trẻ em" không được định nghĩa trong văn bản → M-01
+      ve:
+        - id: V1
+          mo_ta: "Nhiệt độ ≤ 36°C hoặc ≥ 38,3°C"
+          trich: "có nhiệt độ cơ thể ≤ 36°C hoặc ≥ 38,3°C"
+          nguon: van_ban
+          diem_mo_ho: [M-03, M-05]   # chỉ tính nhiệt độ đo được, không tính sốt theo lời kể; CRP theo dõi phải thỏa lại (M-05)
+          hoac:
+            - { loai: so_sanh, truong: nhiet_do, toan_tu: "<=", gia_tri: 36, don_vi: "°C" }
+            - { loai: so_sanh, truong: nhiet_do, toan_tu: ">=", gia_tri: 38.3, don_vi: "°C" }
+        - id: V2
+          mo_ta: "Nhịp tim hoặc nhịp thở quá giới hạn sinh lý theo tuổi"
+          trich: "có nhịp tim hoặc nhịp thở thay đổi quá giới hạn sinh lý theo tuổi"
+          hoac:   # văn bản không dẫn bảng ngưỡng → bảng tự dựng M-02 (tham-so.yaml); nhịp tim chưa có bảng
+            - { loai: nguong_theo_tuoi, truong: nhip_tho, bang: "@nhip_tho_nhanh", don_vi: "l/p" }
+            - { loai: nguong_theo_tuoi, truong: mach, bang: "@nhip_tim_nhanh", don_vi: "l/p" }
+        - id: V3
+          mo_ta: "Nghi ngờ có ổ nhiễm trùng"
+          trich: "Khi nghi ngờ có ô nhiễm trùng"
+          kiem:
+            loai: ai_doc
+            cau_hoi: "Phiếu khám có ghi nghi ngờ ổ nhiễm trùng, hoặc ghi dấu hiệu nhiễm trùng cụ thể của chính bệnh nhân này không?"
+            diem_mo_ho: M-04
+    - id: a_nguoi_lon
+      trich: "a) Nghi ngờ có ổ nhiễm trùng, có ít nhất 02 trong 04 tiêu chuẩn sau: - Nhiệt độ cơ thể < 36°c hoặc > 38°C; - Nhịp tim nhanh > 90 lần/phút; - Nhịp thở > 22 lần/phút hoặc PaCO2 <32 mmHg; - Bạch cầu máu >12G/L, hoặc < 4G/L hoặc > 10% bạch cầu non."
+      ap_dung: { tuoi_thang: ["@tre_em_den_thang", null] }
+      # Tự dựng: trẻ em chỉ xét câu "Đối với trẻ em", không xét 2/4 tiêu chuẩn người lớn (mốc < 16 tuổi đã được bác sĩ duyệt).
+      nguon: tu_dung
+      diem_mo_ho: M-01
+      ve:
+        # Chưa mã hóa (ngoài phạm vi Nhi): không có `kiem` → engine trả "Cần xem lại".
+        - { id: A1, mo_ta: "Nghi ngờ có ổ nhiễm trùng và có ít nhất 02 trong 04 tiêu chuẩn (người lớn) — chưa mã hóa" }
+    - id: b_so_sinh
+      trich: "b) Nhiễm trùng sơ sinh;"
+      ap_dung: { tuoi_ngay: [0, 29], nguon: tu_dung, diem_mo_ho: M-06 }   # sơ sinh = 0–28 ngày tuổi
+      ve:
+        - id: B1
+          mo_ta: "Nhiễm trùng sơ sinh"
+          kiem:
+            loai: icd_trong
+            ds: ["P36"]
+            nguon: tu_dung
+            diem_mo_ho: M-06
+            neu_khong_khop: ai_doc
+            cau_hoi: "Phiếu khám có ghi nghi ngờ nhiễm trùng sơ sinh, hoặc ghi dấu hiệu nhiễm trùng của chính bệnh nhân này không?"
+    - id: c_mach_vanh
+      trich: "c) Bệnh mạch vành, nhồi máu cơ tim;"
+      ve:
+        - id: C1
+          mo_ta: "Bệnh mạch vành, nhồi máu cơ tim"
+          kiem: { loai: icd_trong, ds: ["I20", "I21", "I22", "I23", "I24", "I25"], nguon: tu_dung, diem_mo_ho: M-07 }
+    - id: d_tu_mien
+      trich: "d) Viêm da nhiễm độc, các bệnh tự miễn."
+      ve:
+        - id: D1
+          mo_ta: "Viêm da nhiễm độc, các bệnh tự miễn"
+          # Danh sách tự dựng (cách C, chốt 14/11): văn bản không liệt kê bệnh. Không khớp → khong_dat, lý do mang hậu tố M-07.
+          # Giả định GD-02 (docs/10-gia-dinh.md). So khớp theo tiền tố mã.
+          kiem:
+            loai: icd_trong
+            nguon: tu_dung
+            diem_mo_ho: M-07
+            ds:
+              # viêm da nhiễm độc
+              - L27     # viêm da do chất dùng đường trong (thuốc)
+              - L51     # hồng ban đa dạng, gồm Stevens-Johnson, TEN
+              - L53.0   # hồng ban nhiễm độc
+              # bệnh tự miễn: khớp, mô liên kết, mạch máu
+              - M05     # viêm khớp dạng thấp có huyết thanh dương tính
+              - M06     # viêm khớp dạng thấp khác
+              - M08     # viêm khớp thiếu niên
+              - M09     # viêm khớp thiếu niên trong bệnh khác
+              - M30     # viêm nút quanh động mạch và bệnh liên quan, gồm Kawasaki M30.3
+              - M31     # bệnh mạch máu hoại tử khác (Takayasu M31.4…)
+              - M32     # lupus ban đỏ hệ thống
+              - M33     # viêm da cơ, viêm đa cơ
+              - M34     # xơ cứng bì hệ thống
+              - M35     # bệnh mô liên kết hệ thống khác (Sjögren, bệnh mô liên kết hỗn hợp…)
+              # bệnh tự miễn: máu, da, cơ quan
+              - D69.0   # ban xuất huyết dị ứng (Henoch-Schönlein)
+              - D69.3   # xuất huyết giảm tiểu cầu miễn dịch
+              - D59.1   # thiếu máu tan máu tự miễn khác
+              - L10     # pemphigus
+              - L12     # pemphigoid
+              - L93     # lupus ban đỏ ở da
+              - K75.4   # viêm gan tự miễn
+              - E06.3   # viêm tuyến giáp tự miễn
+              - G70.0   # nhược cơ
+              # Chưa đưa vào, chờ bác sĩ (docs/10 GD-02): E10 đái tháo đường typ 1, K50/K51 viêm ruột, L40 vảy nến, G35 xơ cứng rải rác
+  diem_mo_ho: [M-01, M-02, M-03, M-04, M-05, M-06, M-07]
+
+"23.0130.1549":
+  ten: "Định lượng Pro-calcitonin [Máu]"
+  ten_trong_van_ban: "Định lượng Pro-calcitonin [Máu]"
+  nguyen_van: >-
+    [Cột Điều kiện thanh toán]
+    a) Chẩn đoán và theo dõi tình trạng nhiễm trùng nặng khi đáp ứng 01 trong 02 tiêu chuẩn sau đây:
+    - Điểm suy đa tạng (SOFA) ≥ 2;
+    - Nghi ngờ có ổ nhiễm trùng và có 2 trong 3 tiêu chuẩn: Nhịp thở ≥ 22 lần/phút;
+    Huyết áp tâm thu ≤ 100 mmHg; Glasgow <15 điểm.
+    b) Đối với trẻ em:
+    - Chẩn đoán và theo dõi các trường hợp nhiễm trùng huyết;
+    - Theo dõi và tiên lượng suy đa tạng khi có rối loạn chức năng từ 2 cơ quan trở lên.
+    [Cột Tỷ lệ, mức giá thanh toán]
+    Thanh toán bằng giá DVKT.
+    Khi sử dụng xét nghiệm Procalcitonin để theo dõi tình trạng nhiễm trùng nặng và đáp ứng điều trị
+    theo quy định tại khoản 1 Mục này:
+    + Thanh toán tối đa 01 lần/mỗi 24 giờ đối với người bệnh sốc nhiễm trùng;
+    + Thanh toán tối đa 01 lần/mỗi 48 giờ đối với người bệnh nhiễm trùng nặng;
+    + Không thanh toán đối với các trường hợp đã có bằng chứng chứng minh:
+    hết dấu hiệu chỉ định và Procalcitonin ≤ 02 lần giá trị tham chiếu.
+  can_cu:
+    - van_ban: "TT 35/2016/TT-BYT, sửa đổi bởi TT 39/2024/TT-BYT"
+      phu_luc: "Danh mục 1 (phụ lục TT 39/2024; STT theo TT 35: 12)"
+      stt: 8
+      stt_tt35: 12
+      file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-39-2024-TT-BYT_phu-luc-danh-muc-1-2_dieu-kien-thanh-toan.pdf
+      trang: [9, 10]
+      doi_chieu: "VBHN 17/VBHN-BYT trang 27–28, Danh mục 1 mục 12"
+  nhanh:
+    - id: n1_nhiem_trung_huyet
+      trich: "b) Đối với trẻ em: - Chẩn đoán và theo dõi các trường hợp nhiễm trùng huyết;"
+      ap_dung: { tuoi_thang: [0, "@tre_em_den_thang"] }
+      ve:
+        - id: N1
+          mo_ta: "Nhiễm trùng huyết"
+          kiem:
+            loai: ai_doc
+            cau_hoi: "Phiếu khám có ghi chẩn đoán hoặc nghi ngờ nhiễm trùng huyết của chính bệnh nhân này không?"
+            diem_mo_ho: M-08
+    - id: n2_suy_da_co_quan
+      trich: "- Theo dõi và tiên lượng suy đa tạng khi có rối loạn chức năng từ 2 cơ quan trở lên."
+      ap_dung: { tuoi_thang: [0, "@tre_em_den_thang"] }
+      ve:
+        - id: N2
+          mo_ta: "Rối loạn chức năng từ 2 cơ quan trở lên"
+          kiem:
+            loai: ai_doc
+            cau_hoi: "Phiếu khám có ghi dấu hiệu rối loạn chức năng cơ quan nào của chính bệnh nhân này không?"
+            toi_da: chua_thay   # A1 chỉ trích dấu hiệu, không đếm cơ quan → không bao giờ tự đạt
+            diem_mo_ho: M-09
+    - id: a_nguoi_lon
+      trich: "a) Chẩn đoán và theo dõi tình trạng nhiễm trùng nặng khi đáp ứng 01 trong 02 tiêu chuẩn sau đây: - Điểm suy đa tạng (SOFA) ≥ 2; - Nghi ngờ có ổ nhiễm trùng và có 2 trong 3 tiêu chuẩn: Nhịp thở ≥ 22 lần/phút; Huyết áp tâm thu ≤ 100 mmHg; Glasgow <15 điểm."
+      ap_dung: { tuoi_thang: ["@tre_em_den_thang", null] }
+      ve:
+        # Chưa mã hóa (ngoài phạm vi Nhi): không có `kiem` → engine trả "Cần xem lại".
+        - { id: A1, mo_ta: "Nhiễm trùng nặng: SOFA ≥ 2, hoặc nghi ngờ ổ nhiễm trùng và 2 trong 3 tiêu chuẩn (điểm a) — chưa mã hóa" }
+  tan_suat:
+    trich: "Khi sử dụng xét nghiệm Procalcitonin để theo dõi tình trạng nhiễm trùng nặng và đáp ứng điều trị theo quy định tại khoản 1 Mục này: + Thanh toán tối đa 01 lần/mỗi 24 giờ đối với người bệnh sốc nhiễm trùng; + Thanh toán tối đa 01 lần/mỗi 48 giờ đối với người bệnh nhiễm trùng nặng;"
+    toi_thieu_gio: 24   # số 24 và 48 có trong văn bản; cách áp cho ngoại trú Nhi là tự dựng
+    nen_gio: 48
+    nguon: tu_dung
+    diem_mo_ho: M-20
+  loai_tru:
+    mo_ta: "Hết dấu hiệu chỉ định và Procalcitonin ≤ 02 lần giá trị tham chiếu"
+    nguon: tu_dung      # áp loại trừ (viết cho "theo dõi nhiễm trùng nặng") cho mọi lượt PCT của trẻ là cách hiểu
+    diem_mo_ho: [M-10, M-20]
+    trich: "Khi sử dụng xét nghiệm Procalcitonin để theo dõi tình trạng nhiễm trùng nặng và đáp ứng điều trị theo quy định tại khoản 1 Mục này: + Không thanh toán đối với các trường hợp đã có bằng chứng chứng minh: hết dấu hiệu chỉ định và Procalcitonin ≤ 02 lần giá trị tham chiếu."
+    ve:
+      - id: X1
+        mo_ta: "Hết dấu hiệu chỉ định"
+        kiem:
+          loai: ai_doc
+          cau_hoi: "Phiếu khám có ghi các dấu hiệu nhiễm trùng hoặc rối loạn chức năng cơ quan của chính bệnh nhân này đã hết không?"
+      - id: X2
+        mo_ta: "Procalcitonin lần trước ≤ 2 × giá trị tham chiếu"
+        kiem: { loai: lich_su_so_sanh, ma: "23.0130.1549", toan_tu: "<=", he_so: 2, tham_chieu: "@pct_tham_chieu" }
+  diem_mo_ho: [M-01, M-08, M-09, M-10, M-20]
+
+"18.0052.0004":
+  ten: "Siêu âm doppler tim, van tim"
+  ten_trong_van_ban: "Siêu âm Doppler tim"
+  nguyen_van: "Không thanh toán khi thực hiện dịch vụ kỹ thuật Siêu âm tim có cản âm khi chỉ định thực hiện cùng một thời điểm."
+  can_cu:
+    - van_ban: "TT 35/2016/TT-BYT, sửa đổi bởi TT 39/2024/TT-BYT"
+      phu_luc: "Danh mục 2 (phụ lục TT 39/2024; STT theo TT 35: 109)"
+      stt: 48
+      stt_tt35: 109
+      file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-39-2024-TT-BYT_phu-luc-danh-muc-1-2_dieu-kien-thanh-toan.pdf
+      trang: [22]
+      doi_chieu: "VBHN 17/VBHN-BYT trang 51, Danh mục 2 mục 109"
+  nhanh:
+    - id: khong_cung_can_am
+      ve:
+        - id: D1
+          mo_ta: "Không làm cùng lượt khám với siêu âm tim cản âm"
+          kiem:
+            loai: khong_cung_luot
+            # "cùng một thời điểm" = cùng lượt khám (M-11). Tên và mã siêu âm tim cản âm lấy từ PL01 TT 23/2024 và QĐ 3500 (tự ghép).
+            ma_hoac_bi_danh:
+              - "Siêu âm tim cản âm"
+              - "Siêu âm tim có cản âm"
+              - "Siêu âm tim cản âm cấp cứu tại giường"
+              - "Siêu âm tim, mạch máu có cản âm"
+              - "02.0115.0005"
+              - "02.0444.0005"
+              - "18.0051.0005"
+            nguon: tu_dung
+            diem_mo_ho: M-11
+  diem_mo_ho: [M-11]
+
+"02.0085.1778":
+  ten: "Điện tim thường"
+  ten_trong_van_ban: "Lập trình máy tạo nhịp tim (điều kiện nhắc tới dịch vụ kỹ thuật Điện tâm đồ)"
+  nguyen_van: "Không thanh toán thêm dịch vụ kỹ thuật Điện tâm đồ trong cùng thời điểm lập trình máy tạo nhịp tim."
+  can_cu:
+    - van_ban: "TT 35/2016/TT-BYT, sửa đổi bởi TT 39/2024/TT-BYT"
+      phu_luc: "Danh mục 2 (phụ lục TT 39/2024; STT theo TT 35: 104; dòng Lập trình máy tạo nhịp tim)"
+      stt: 47
+      stt_tt35: 104
+      file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-39-2024-TT-BYT_phu-luc-danh-muc-1-2_dieu-kien-thanh-toan.pdf
+      trang: [21]
+      doi_chieu: "VBHN 17/VBHN-BYT trang 50, Danh mục 2 mục 104"
+  nhanh:
+    - id: khong_cung_lap_trinh_may_tao_nhip
+      ve:
+        - id: E1
+          mo_ta: "Không làm cùng lượt khám với lập trình máy tạo nhịp tim"
+          kiem:
+            loai: khong_cung_luot
+            # Tự dựng: coi "Điện tâm đồ" = "Điện tim thường"; "cùng thời điểm" = cùng lượt khám (M-19).
+            ma_hoac_bi_danh: ["Lập trình máy tạo nhịp tim", "02.0100.0069"]
+            nguon: tu_dung
+            diem_mo_ho: M-19
+  diem_mo_ho: [M-19]

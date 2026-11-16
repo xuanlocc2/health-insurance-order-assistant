@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bảng + ngăn kéo</title>
+<style>
+/* ===== THEME: chỉnh toàn bộ giao diện tại đây ===== */
+:root{
+  /* Font */
+  --font: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  --font-mono: Consolas, "SF Mono", monospace;
+  --fs: 14px;            /* cỡ chữ gốc */
+  --fs-sm: 12px;         /* chữ phụ, chip */
+  /* Bo góc & khoảng cách */
+  --radius: 8px;
+  --radius-sm: 4px;
+  --gap: 12px;
+  --pad: 16px;
+  --drawer-w: 460px;     /* độ rộng ngăn kéo */
+  /* Nền & chữ */
+  --bg: #f5f7f9;
+  --surface: #ffffff;
+  --border: #dde3e8;
+  --text: #1c2630;
+  --muted: #5f6b76;
+  --accent: #0b6e8a;     /* nút chính */
+  --accent-text: #ffffff;
+  --shadow: 0 8px 28px rgba(15,30,45,.18);
+  /* 4 trạng thái: màu chữ/viền + nền nhạt */
+  --ok: #1f7a3d;     --ok-bg: #e6f4ea;        /* Phù hợp quy tắc BHYT */
+  --du: #0b62a4;     --du-bg: #e3effa;        /* Cần xem lại · đủ căn cứ */
+  --row-du: #f1f7fd;                          /* tô màu dòng đủ căn cứ */
+  --rv: #9a6200;     --rv-bg: #fdf1d8;        /* Cần xem lại */
+  --no: #b3261e;     --no-bg: #fbe5e3;        /* Không được chi trả */
+  /* Đoạn trích A1 trong phiếu khám */
+  --hl: #ffe58a;     --hl-text: #1c2630;
+  --tag: #6b3fa0;    --tag-bg: #f0e8fa;       /* nhãn "cách hiểu tạm" */
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#12171c; --surface:#1b2229; --border:#2e3943; --text:#e4eaef; --muted:#97a3ad;
+    --accent:#3fb3d3; --accent-text:#0d1a20; --shadow:0 8px 28px rgba(0,0,0,.5);
+    --ok:#6fd08f; --ok-bg:#183323; --du:#78b8f0; --du-bg:#162b40; --row-du:#17222e;
+    --rv:#f0bd5a; --rv-bg:#3a2c12; --no:#f3867e; --no-bg:#3d1c1a;
+    --hl:#6b5a12; --hl-text:#fff7d6; --tag:#c7a6f0; --tag-bg:#2d2140;
+  }
+}
+/* ===== hết THEME ===== */
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:var(--fs)/1.5 var(--font)}
+header{display:flex;flex-wrap:wrap;gap:var(--gap);align-items:center;padding:10px var(--pad);background:var(--surface);border-bottom:1px solid var(--border)}
+header h1{font-size:15px;margin:0 auto 0 0}
+select,button,input{font:inherit;color:inherit}
+select,input[type=text]{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px 8px}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden}
+.seg button{border:0;background:var(--surface);padding:4px 12px;cursor:pointer}
+.seg button.on{background:var(--accent);color:var(--accent-text)}
+.seg button:disabled{opacity:.4;cursor:not-allowed}
+main{padding:var(--pad);max-width:1200px;margin:auto}
+.strip{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px var(--pad);margin-bottom:var(--gap)}
+.strip .k{color:var(--muted);font-size:var(--fs-sm);margin-right:4px}
+.chip{display:inline-block;padding:1px 8px;border-radius:999px;border:1px solid var(--border);font-size:var(--fs-sm);margin-right:4px}
+.chip.empty{color:var(--muted);font-style:italic}
+.counter{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:var(--gap)}
+.pill{padding:3px 10px;border-radius:999px;font-size:var(--fs-sm);font-weight:600;white-space:nowrap}
+.s-ok{color:var(--ok);background:var(--ok-bg)} .s-du{color:var(--du);background:var(--du-bg)}
+.s-rv{color:var(--rv);background:var(--rv-bg)} .s-no{color:var(--no);background:var(--no-bg)}
+.tablewrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+th{font-size:var(--fs-sm);color:var(--muted);font-weight:600}
+tr.du>td{background:var(--row-du)}
+tr.sel>td{outline:2px solid var(--accent);outline-offset:-2px}
+td.bh{width:60px;text-align:center} td.bh input{width:18px;height:18px;cursor:pointer}
+.ma{font-family:var(--font-mono);font-size:var(--fs-sm);color:var(--muted)}
+.reason{color:var(--muted);font-size:var(--fs-sm)}
+.why{background:none;border:1px solid var(--border);border-radius:var(--radius-sm);padding:2px 10px;cursor:pointer;white-space:nowrap}
+.why:hover{border-color:var(--accent);color:var(--accent)}
+.tag{display:inline-block;font-size:11px;padding:0 6px;border-radius:var(--radius-sm);color:var(--tag);background:var(--tag-bg);margin-left:4px}
+.picker{margin-top:8px;padding:8px;border:1px dashed var(--border);border-radius:var(--radius-sm);font-size:var(--fs-sm);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.picker label{display:inline-flex;gap:4px;align-items:center;cursor:pointer}
+.picker input[type=text]{flex:1;min-width:140px}
+.actions{display:flex;justify-content:flex-end;gap:var(--gap);margin-top:var(--gap);align-items:center}
+.btn{background:var(--accent);color:var(--accent-text);border:0;border-radius:var(--radius-sm);padding:8px 20px;cursor:pointer;font-weight:600}
+pre.log{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:var(--pad);font:12px/1.45 var(--font-mono);white-space:pre-wrap;word-break:break-all;max-height:360px;overflow:auto}
+/* Drawer */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .2s}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(var(--drawer-w),100vw);background:var(--surface);box-shadow:var(--shadow);transform:translateX(100%);transition:transform .22s ease;overflow-y:auto;padding:var(--pad)}
+body.open .scrim{opacity:1;pointer-events:auto} body.open .drawer{transform:none}
+.drawer h2{font-size:16px;margin:4px 0 8px} .drawer h3{font-size:var(--fs-sm);text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:18px 0 6px}
+.close{float:right;background:none;border:0;font-size:20px;cursor:pointer;color:var(--muted)}
+blockquote{margin:0;padding:8px 12px;border-left:3px solid var(--border);background:var(--bg);border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:13px}
+blockquote cite{display:block;font-style:normal;color:var(--muted);font-size:var(--fs-sm);margin-top:4px}
+.ck{list-style:none;padding:0;margin:0} .ck li{padding:8px 0;border-bottom:1px solid var(--border)}
+.ck .res{font-weight:600;font-size:var(--fs-sm)} .src{font-size:11px;color:var(--muted);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0 5px;margin-left:4px}
+.r-dat{color:var(--ok)} .r-chua_thay{color:var(--rv)} .r-chua_du{color:var(--muted)} .r-khong_dat{color:var(--no)}
+.ev{font-size:var(--fs-sm);color:var(--muted)}
+mark{background:var(--hl);color:var(--hl-text);padding:0 2px;border-radius:2px}
+details summary{cursor:pointer;color:var(--accent);font-size:var(--fs-sm);margin-top:8px}
+.note{font-size:var(--fs-sm);color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Trợ lý chỉ định BHYT · Nhi ngoại trú <span class="note">(mẫu thử)</span></h1>
+  <label>Ca: <select id="caseSel"></select></label>
+  <span class="seg" id="lanSeg"><button data-l="1">Lần tích 1</button><button data-l="2">Lần 2</button></span>
+</header>
+<main>
+  <section class="strip" id="strip"></section>
+  <div class="counter" id="counter"></div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>BHYT</th><th>Dịch vụ</th><th>Trạng thái</th><th>Lý do</th><th></th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table></div>
+  <div class="actions"><span class="note">Ô BHYT chỉ là gợi ý — bác sĩ quyết định.</span><button class="btn" id="confirm">Xác nhận</button></div>
+  <div id="logOut"></div>
+</main>
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer"></aside>
+
+<script>
+// Mock data — rút từ data/test-cases/demo.yaml (DEMO-01/02 cùng lượt, DEMO-03). Căn cứ & thẻ là dữ liệu giả để minh hoạ.
+const ST = {ok:"Phù hợp quy tắc BHYT", du:"Cần xem lại · đủ căn cứ", rv:"Cần xem lại", no:"Không được chi trả"};
+const THE = {so:"TE1797900012345", han_den:"31/12/2027", con_han:true, muc_huong:100};
+const CC_CRP = {van_ban:"TT 35/2016/TT-BYT, Phụ lục (mock)", trich:"Chỉ định định lượng CRP khi trẻ sốt kèm dấu hiệu nghi nhiễm khuẩn hoặc viêm phổi trên lâm sàng."};
+const CC_PCT = {van_ban:"TT 35/2016/TT-BYT, Phụ lục (mock)", trich:"Procalcitonin được thanh toán khi nghi ngờ nhiễm trùng huyết hoặc rối loạn chức năng từ 2 cơ quan trở lên."};
+const CC_DM = {van_ban:"Danh mục kỹ thuật BHYT đã tra (mock)", trich:"Không có mã dịch vụ tương ứng cho \"Test nhanh RSV\"."};
+const ok = (ma,ten)=>({ma,ten,st:"ok",ly_do:"Có trong danh mục, không có điều kiện riêng",checklist:[],can_cu:[]});
+const rowsLK1 = (icd)=>[
+  ok("22.0121.1369","Tổng phân tích tế bào máu ngoại vi"),
+  {ma:"23.0228.1483",ten:"Định lượng CRP",st:"du",
+   ly_do:"Đủ các vế điều kiện; vế lâm sàng dựa trên trích dẫn phiếu khám (cách hiểu tạm M-02, chưa được bác sĩ duyệt)",
+   quote:"Phổi ran ẩm nhỏ hạt đáy phổi phải", can_cu:[CC_CRP],
+   checklist:[
+     {id:"V1",mo_ta:"Nhiệt độ ≥ 38,5°C",ket_qua:"dat",nguon:"nhap",bang_chung:"Nhiệt độ nhập 38,9°C"},
+     {id:"V2",mo_ta:"Thở nhanh theo tuổi (12–59 tháng: ≥ 40 l/p)",ket_qua:"dat",nguon:"nhap",bang_chung:"Nhịp thở 46 ≥ 40",m:"M-02"},
+     {id:"V3",mo_ta:"Dấu hiệu viêm phổi trên lâm sàng",ket_qua:"dat",nguon:"a1",bang_chung:"A1 trích nguyên văn, khớp phiếu khám"},
+     {id:"V4",mo_ta:"ICD nhóm nhiễm khuẩn hô hấp",ket_qua:icd?"dat":"chua_du",nguon:"nhap",bang_chung:icd?"ICD J18.9":"Chưa nhập ICD — vế phụ, không bắt buộc ở nhánh trẻ em"}]},
+  ok("18.0119.0028","Chụp X-quang ngực thẳng"),
+  ok("24.0243.1671","Influenza virus A, B test nhanh"),
+  {ma:null,ten:"Test nhanh RSV",st:"no",ly_do:"Không tìm thấy trong danh mục kỹ thuật đã tra",can_cu:[CC_DM],
+   checklist:[{id:"R1",mo_ta:"Có trong danh mục BHYT",ket_qua:"khong_dat",nguon:"nhap",bang_chung:"Không có mã",m:"M-13"}]}];
+const CASES = {
+  "LK-DEMO-01":{ten:"Sốt ho 2 tuổi (LK-DEMO-01)",tuoi_thang:24,the:THE,lan:{
+    1:{icd:[],sinh_hieu:{nhiet_do:38.9,mach:150,nhip_tho:46},
+       phieu:"Ho, sốt 3 ngày, thở nhanh. Phổi ran ẩm nhỏ hạt đáy phổi phải. Họng đỏ.",rows:rowsLK1(false)},
+    2:{icd:["J18.9"],sinh_hieu:{nhiet_do:38.9,mach:150,nhip_tho:46},
+       phieu:"Ho, sốt 3 ngày, thở nhanh. Phổi ran ẩm nhỏ hạt đáy phổi phải. Họng đỏ. X-quang: đám mờ đáy phải. Trẻ tỉnh, ăn kém, SpO2 95%.",
+       rows:[...rowsLK1(true),
+        {ma:"23.0130.1549",ten:"Định lượng Procalcitonin",st:"rv",
+         ly_do:"Điều kiện có vế 'Nghi nhiễm trùng huyết hoặc rối loạn ≥ 2 cơ quan'; phiếu khám chưa thấy nội dung tương ứng (cách hiểu tạm M-08, chưa được bác sĩ duyệt)",
+         can_cu:[CC_PCT],quote:"Trẻ tỉnh, ăn kém, SpO2 95%",
+         checklist:[
+          {id:"V1",mo_ta:"Nghi nhiễm trùng huyết",ket_qua:"chua_thay",nguon:"a1",bang_chung:"A1: phiếu khám chưa thấy",m:"M-08"},
+          {id:"V2",mo_ta:"Rối loạn chức năng ≥ 2 cơ quan",ket_qua:"chua_thay",nguon:"a1",bang_chung:"A1: đoạn liên quan nhất được tô bên dưới"}]}]}}},
+  "LK-DEMO-03":{ten:"Đau bụng 5 tuổi (LK-DEMO-03)",tuoi_thang:60,the:THE,lan:{
+    1:{icd:["R10.4"],sinh_hieu:{nhiet_do:37.2,mach:100,nhip_tho:24},
+       phieu:"Đau bụng quanh rốn 1 ngày, nôn 1 lần. Ấn đau hố chậu phải, không phản ứng thành bụng.",
+       rows:[ok("22.0121.1369","Tổng phân tích tế bào máu ngoại vi"),
+        {ma:"23.0228.1483",ten:"Định lượng CRP",st:"no",ly_do:"Nhiệt độ ≥ 38,5°C: nhiệt độ nhập 37,2°C chưa đạt (cách hiểu tạm M-16, chưa được bác sĩ duyệt)",can_cu:[CC_CRP],
+         checklist:[{id:"V1",mo_ta:"Nhiệt độ ≥ 38,5°C",ket_qua:"khong_dat",nguon:"nhap",bang_chung:"37,2 < 38,5",m:"M-16"},
+                    {id:"V3",mo_ta:"Dấu hiệu viêm phổi trên lâm sàng",ket_qua:"chua_thay",nguon:"a1",bang_chung:"A1: phiếu khám chưa thấy"}]},
+        ok("18.0015.0001","Siêu âm ổ bụng"),ok("23.0206.1596","Tổng phân tích nước tiểu")]}}}
+};
+const RES = {dat:"Đạt",chua_thay:"Chưa thấy",chua_du:"Chưa đủ dữ liệu",khong_dat:"Chưa đạt"};
+const REASONS = {nguoi_nha_yeu_cau:"Người nhà yêu cầu → tự túc",loai_tru_theo_doi:"Loại trừ, theo dõi nghi ngờ",khac:"Khác"};
+const goiY = st => st==="ok"||st==="du" ? "tich" : st==="no" ? "trong" : null; // spec §8
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+let caseId = "LK-DEMO-01", lan = 1, state = [], openIdx = null;
+const cur = () => CASES[caseId].lan[lan];
+const needReason = (r,s) => (goiY(r.st)==="tich" && !s.tick) || (r.st==="no" && s.tick);
+
+function load(){
+  state = cur().rows.map(r=>({tick:goiY(r.st)==="tich",loai:null,ghi_chu:""}));
+  document.getElementById("logOut").innerHTML=""; closeDrawer(); render();
+}
+function render(){
+  const c = CASES[caseId], d = cur(), sh = d.sinh_hieu;
+  document.querySelectorAll("#lanSeg button").forEach(b=>{
+    b.classList.toggle("on", +b.dataset.l===lan); b.disabled = !c.lan[b.dataset.l];});
+  const age = c.tuoi_thang>=24 && c.tuoi_thang%12===0 ? `${c.tuoi_thang/12} tuổi` : `${c.tuoi_thang} tháng`;
+  document.getElementById("strip").innerHTML =
+    `<span><span class="k">Tuổi</span><b>${age}</b></span>
+     <span><span class="k">Thẻ</span><span class="pill ${c.the.con_han?"s-ok":"s-no"}">${c.the.con_han?"Còn hạn":"Hết hạn"} đến ${c.the.han_den}</span></span>
+     <span><span class="k">Mức hưởng</span><b>${c.the.muc_huong}%</b></span>
+     <span><span class="k">ICD</span>${d.icd.length?d.icd.map(i=>`<span class="chip">${i}</span>`).join(""):`<span class="chip empty">chưa nhập</span>`}</span>
+     <span><span class="k">Sinh hiệu</span><span class="chip">T ${sh.nhiet_do}°C</span><span class="chip">Mạch ${sh.mach}</span><span class="chip">NT ${sh.nhip_tho} l/p</span></span>`;
+  const n = {ok:0,du:0,rv:0,no:0}; d.rows.forEach(r=>n[r.st]++);
+  document.getElementById("counter").innerHTML = Object.keys(ST).filter(k=>n[k]).map(k=>`<span class="pill s-${k}">${n[k]} ${ST[k]}</span>`).join("");
+  document.getElementById("rows").innerHTML = d.rows.map((r,i)=>{
+    const s = state[i], m = [...new Set(r.checklist.filter(x=>x.m).map(x=>x.m))];
+    const picker = needReason(r,s) ? `<div class="picker" data-i="${i}"><span>Lý do (không bắt buộc ngay):</span>
+      ${Object.entries(REASONS).map(([k,v])=>`<label><input type="radio" name="lr${i}" value="${k}" ${s.loai===k?"checked":""}>${v}</label>`).join("")}
+      ${s.loai==="khac"?`<input type="text" placeholder="Ghi chú…" value="${esc(s.ghi_chu)}">`:""}</div>` : "";
+    return `<tr class="${r.st==="du"?"du":""} ${openIdx===i?"sel":""}">
+      <td class="bh"><input type="checkbox" data-i="${i}" ${s.tick?"checked":""} aria-label="BHYT ${esc(r.ten)}"></td>
+      <td><div>${esc(r.ten)}</div><div class="ma">${r.ma||"— không mã"}</div></td>
+      <td><span class="pill s-${r.st}">${ST[r.st]}</span>${m.map(x=>`<span class="tag">cách hiểu tạm ${x}</span>`).join("")}</td>
+      <td class="reason">${esc(r.ly_do)}${picker}</td>
+      <td><button class="why" data-i="${i}">Vì sao?</button></td></tr>`;}).join("");
+}
+// Mở rộng trích dẫn A1 ra trọn câu chứa nó
+function highlight(text, q){
+  const at = q ? text.indexOf(q) : -1; if(at<0) return {full:esc(text),sent:null};
+  let a = text.lastIndexOf(".", at-1)+1, b = text.indexOf(".", at+q.length); b = b<0?text.length:b+1;
+  const sent = text.slice(a,b).trim();
+  return {full: esc(text.slice(0,a))+" <mark>"+esc(text.slice(a,b).trim())+"</mark>"+esc(text.slice(b)), sent:esc(sent).replace(esc(q),`<b>${esc(q)}</b>`)};
+}
+function openDrawer(i){
+  openIdx = i; const r = cur().rows[i], h = highlight(cur().phieu, r.quote);
+  document.getElementById("drawer").innerHTML = `<button class="close" aria-label="Đóng">×</button>
+    <span class="pill s-${r.st}">${ST[r.st]}</span><h2>${esc(r.ten)}</h2><div class="ma">${r.ma||"— không mã"}</div>
+    <h3>Lý do</h3><div>${esc(r.ly_do)}</div>
+    <h3>Căn cứ (nguyên văn)</h3>${r.can_cu.length?r.can_cu.map(c=>`<blockquote>“${esc(c.trich)}”<cite>${esc(c.van_ban)}</cite></blockquote>`).join(""):`<div class="note">Không có điều kiện riêng cho dịch vụ này.</div>`}
+    ${r.checklist.length?`<h3>Kiểm tra từng vế</h3><ul class="ck">${r.checklist.map(x=>`<li><span class="res r-${x.ket_qua}">${RES[x.ket_qua]}</span> · ${esc(x.mo_ta)}
+      <span class="src">${x.nguon==="a1"?"a1":"nhập"}</span>${x.m?`<span class="tag">cách hiểu tạm ${x.m}</span>`:""}<div class="ev">${esc(x.bang_chung)}</div></li>`).join("")}</ul>`:""}
+    <h3>Phiếu khám</h3>${h.sent?`<blockquote>${h.sent}<cite>Trích A1 (đã khớp nguyên văn), mở rộng trọn câu</cite></blockquote>`:`<div class="note">Không có đoạn trích A1 cho dòng này.</div>`}
+    <details><summary>Xem toàn văn phiếu khám</summary><blockquote>${h.full}</blockquote></details>`;
+  document.body.classList.add("open"); render();
+}
+function closeDrawer(){ document.body.classList.remove("open"); openIdx=null; }
+
+const rows = document.getElementById("rows");
+rows.addEventListener("change", e=>{
+  const t = e.target;
+  if(t.type==="checkbox"){ state[t.dataset.i].tick = t.checked; render(); }
+  if(t.type==="radio"){ state[t.closest(".picker").dataset.i].loai = t.value; render(); }
+});
+rows.addEventListener("input", e=>{ if(e.target.type==="text") state[e.target.closest(".picker").dataset.i].ghi_chu = e.target.value; });
+rows.addEventListener("click", e=>{ const b=e.target.closest(".why"); if(b) openDrawer(+b.dataset.i); });
+document.getElementById("drawer").addEventListener("click", e=>{ if(e.target.closest(".close")){closeDrawer();render();} });
+document.getElementById("scrim").onclick = ()=>{closeDrawer();render();};
+document.addEventListener("keydown", e=>{ if(e.key==="Escape"&&openIdx!==null){closeDrawer();render();} });
+document.getElementById("lanSeg").onclick = e=>{ const b=e.target.closest("button"); if(b&&!b.disabled){lan=+b.dataset.l;load();} };
+const sel = document.getElementById("caseSel");
+sel.innerHTML = Object.entries(CASES).map(([k,v])=>`<option value="${k}">${v.ten}</option>`).join("");
+sel.onchange = ()=>{ caseId=sel.value; lan=1; load(); };
+
+document.getElementById("confirm").onclick = ()=>{
+  const c = CASES[caseId], d = cur(), now = new Date().toISOString();
+  const lines = d.rows.map((r,i)=>{ const s=state[i];
+    return JSON.stringify({thoi_gian:now,luot_kham:caseId,lan_tich:lan,thu_tu:i+1,ma:r.ma,ten:r.ten,
+      trang_thai:ST[r.st],o_bhyt_goi_y:goiY(r.st),bac_si_chon:s.tick?"tich":"khong_tich",
+      ly_do_bac_si: needReason(r,s) ? {loai:s.loai,ghi_chu:s.loai==="khac"?s.ghi_chu:null} : null,
+      checklist:r.checklist.map(x=>({id:x.id,mo_ta:x.mo_ta,ket_qua:x.ket_qua,nguon_ket_qua:x.nguon,bang_chung:x.bang_chung,
+        trich_dan:x.nguon==="a1"&&x.ket_qua==="dat"?r.quote:null,diem_mo_ho:x.m?[x.m]:[]})),
+      can_cu:r.can_cu,phien_ban_rule:"sha1:mock-3f9a2c",
+      dau_vao:{tuoi:c.tuoi_thang,the:c.the,icd:d.icd,sinh_hieu:d.sinh_hieu,lich_su_da_dung:[]}});});
+  const miss = d.rows.filter((r,i)=>needReason(r,state[i])&&!state[i].loai).length;
+  document.getElementById("logOut").innerHTML = `<h3>Sẽ ghi thêm vào logs/xac-nhan.jsonl (${lines.length} dòng)</h3>
+    ${miss?`<p class="note">${miss} dòng chưa chọn lý do — vẫn ghi, ly_do_bac_si.loai = null.</p>`:""}<pre class="log">${esc(lines.join("\n"))}</pre>`;
+};
+load();
+</script>
+</body>
+</html>

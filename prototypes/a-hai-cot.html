@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trợ lý BHYT · Hai cột</title>
+<style>
+/* ===== THEME: sửa ở đây để đổi giao diện ===== */
+:root {
+  /* Font */
+  --font: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  --font-mono: Consolas, "Cascadia Mono", monospace;
+  --fs: 13px;            /* cỡ chữ gốc */
+  --fs-sm: 12px;         /* chữ phụ, badge */
+  /* Khoảng cách & bo góc */
+  --gap: 12px;           /* khoảng giữa khối */
+  --pad: 10px;           /* padding trong khối */
+  --radius: 6px;         /* bo góc khối */
+  --radius-pill: 999px;  /* bo góc badge */
+  /* Màu nền / chữ */
+  --bg: #f4f6f8;
+  --panel: #ffffff;
+  --text: #1c2530;
+  --muted: #64707d;
+  --border: #dde2e8;
+  --accent: #1f6feb;     /* nút chính, viền chọn */
+  --row-sel: #eaf2ff;    /* dòng đang chọn */
+  /* 4 trạng thái: chữ / nền */
+  --ok: #17703a;      --ok-bg: #e3f4e8;      /* Phù hợp quy tắc BHYT */
+  --cc: #0e6b78;      --cc-bg: #ddf3f5;      /* Cần xem lại · đủ căn cứ */
+  --rv: #8a5a00;      --rv-bg: #fdf1d6;      /* Cần xem lại */
+  --no: #b42318;      --no-bg: #fde7e4;      /* Không được chi trả */
+  --tint-cc: #f0fafb;    /* tô dòng đủ căn cứ */
+  --hl: #fff09a;         /* tô trích dẫn A1 trong phiếu khám */
+  --tag: #6941c6; --tag-bg: #f0eaff; /* nhãn cách hiểu tạm M-xx */
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12161b; --panel: #1b2128; --text: #e3e8ee; --muted: #94a0ad; --border: #2d3540;
+    --accent: #58a6ff; --row-sel: #1d2b3d;
+    --ok: #6fd391; --ok-bg: #173323;  --cc: #63d0de; --cc-bg: #12343a;
+    --rv: #f2c35b; --rv-bg: #3a2e10;  --no: #ff8b7e; --no-bg: #3d1a17;
+    --tint-cc: #15292d; --hl: #6b5d00; --tag: #c3a8ff; --tag-bg: #2b2141;
+  }
+}
+/* ===== hết THEME ===== */
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:var(--fs)/1.45 var(--font)}
+header{display:flex;gap:var(--gap);align-items:center;flex-wrap:wrap;padding:var(--pad) 16px;background:var(--panel);border-bottom:1px solid var(--border)}
+header h1{font-size:15px;margin:0 auto 0 0}
+select,button,input{font:inherit;color:inherit}
+select,input[type=text]{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:4px 6px}
+button{cursor:pointer;border:1px solid var(--border);background:var(--panel);border-radius:var(--radius);padding:4px 10px}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.seg button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.seg button:disabled{opacity:.4;cursor:default}
+main{display:grid;grid-template-columns:minmax(260px,1fr) 2fr;gap:var(--gap);padding:var(--gap) 16px}
+@media (max-width:820px){main{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:var(--pad);margin-bottom:var(--gap)}
+.card h2{font-size:var(--fs-sm);text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 6px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:2px 10px}
+.kv dt{color:var(--muted)} .kv dd{margin:0;font-weight:600}
+.expired{color:var(--no)}
+.phieu{white-space:pre-wrap;line-height:1.6}
+mark{background:var(--hl);color:inherit;border-radius:3px;padding:0 2px}
+table{width:100%;border-collapse:collapse}
+th{font-size:var(--fs-sm);color:var(--muted);text-align:left;font-weight:600;padding:4px 6px;border-bottom:1px solid var(--border)}
+td{padding:6px;border-bottom:1px solid var(--border);vertical-align:top}
+tr.row{cursor:pointer} tr.row:hover td{background:var(--row-sel)}
+tr.tint td{background:var(--tint-cc)}
+tr.sel td{background:var(--row-sel);box-shadow:inset 0 0 0 0 var(--accent)} tr.sel td:first-child{box-shadow:inset 3px 0 var(--accent)}
+td.cb{width:34px;text-align:center} td.cb input{width:16px;height:16px}
+.ma{font-family:var(--font-mono);font-size:11px;color:var(--muted)}
+.badge{display:inline-block;white-space:nowrap;font-size:var(--fs-sm);font-weight:600;padding:1px 8px;border-radius:var(--radius-pill)}
+.s-ok{color:var(--ok);background:var(--ok-bg)} .s-cc{color:var(--cc);background:var(--cc-bg)}
+.s-rv{color:var(--rv);background:var(--rv-bg)} .s-no{color:var(--no);background:var(--no-bg)}
+.lydo{color:var(--muted)}
+.tag{display:inline-block;font-size:11px;padding:0 6px;border-radius:var(--radius-pill);color:var(--tag);background:var(--tag-bg);margin-left:4px}
+.picker{margin-top:6px;display:flex;flex-wrap:wrap;gap:4px;align-items:center;font-size:var(--fs-sm)}
+.picker button{padding:2px 8px;font-size:var(--fs-sm)} .picker button.on{border-color:var(--accent);color:var(--accent);font-weight:600}
+.picker .hint{color:var(--muted)}
+.canc{border-left:3px solid var(--accent);padding:4px 8px;margin:6px 0;font-style:italic;background:var(--bg)}
+.cl td{font-size:var(--fs-sm)}
+.r-dat{color:var(--ok);font-weight:600} .r-chua_thay{color:var(--rv);font-weight:600} .r-chua_du{color:var(--muted);font-weight:600} .r-khong_dat{color:var(--no);font-weight:600}
+.src{font-family:var(--font-mono);font-size:11px;padding:0 4px;border:1px solid var(--border);border-radius:3px}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:var(--gap);margin-top:var(--pad)}
+pre{font:11px/1.5 var(--font-mono);white-space:pre-wrap;word-break:break-all;margin:0;max-height:340px;overflow:auto}
+.muted{color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Trợ lý tích BHYT · Nhi ngoại trú</h1>
+  <label>Ca: <select id="ca"></select></label>
+  <span class="seg" id="lan"><button data-l="1">Lần tích 1</button><button data-l="2">Lần 2</button></span>
+</header>
+<main>
+  <section id="left"></section>
+  <section>
+    <div class="card">
+      <h2>Chỉ định</h2>
+      <table><thead><tr><th>BHYT</th><th>Dịch vụ</th><th>Trạng thái</th><th>Lý do</th><th></th></tr></thead><tbody id="rows"></tbody></table>
+      <div class="foot"><span class="muted" id="sum"></span><button class="primary" id="ok">Xác nhận</button></div>
+    </div>
+    <div class="card" id="why" hidden></div>
+    <div class="card" id="log" hidden><h2>Sẽ ghi vào logs/xac-nhan.jsonl</h2><pre id="logtxt"></pre></div>
+  </section>
+</main>
+<script>
+// ---- Mock (rút từ data/test-cases/demo.yaml; thẻ, căn cứ, checklist là giả lập) ----
+const S = {ok:"Phù hợp quy tắc BHYT", cc:"Cần xem lại · đủ căn cứ", rv:"Cần xem lại", no:"Không được chi trả"};
+const GOI_Y = {ok:"tich", cc:"tich", rv:null, no:"trong"}; // F-10
+const RULE_V = "rules@3f9a1c2";
+const CTH = "TT 35/2016 & danh mục DVKT (giả lập)";
+const L = {
+  ctm:{ma:"22.0121.1369",ten:"Tổng phân tích tế bào máu ngoại vi",st:"ok",ly:"Không có điều kiện riêng; thẻ còn hạn",cl:[],cc:[]},
+  crp1:{ma:"23.0228.1483",ten:"Định lượng CRP",st:"cc",ly:"Đạt nhánh trẻ em, có vế do AI đọc phiếu khám",
+    a1:"Phổi ran ẩm nhỏ hạt đáy phổi phải",
+    cc:["CRP được thanh toán khi: sốt ≥ 38°C HOẶC có dấu hiệu nghi nhiễm khuẩn (lâm sàng) …"],
+    cl:[{nhanh:"a_tre_em",id:"V1",mo_ta:"Nhiệt độ ≥ 38°C",ket_qua:"dat",nguon:"nhap",bc:"38.9 ≥ 38"},
+        {nhanh:"a_tre_em",id:"V2",mo_ta:"Nhịp thở nhanh theo tuổi",ket_qua:"dat",nguon:"nhap",bc:"NT 46 ≥ 40 (12–59 tháng)",m:"M-02"},
+        {nhanh:"a_tre_em",id:"V3",mo_ta:"Dấu hiệu nghi nhiễm khuẩn hô hấp dưới",ket_qua:"dat",nguon:"a1",bc:"A1 trích nguyên văn",trich:"Phổi ran ẩm nhỏ hạt đáy phổi phải"}]},
+  xq:{ma:"18.0119.0028",ten:"Chụp X-quang ngực thẳng",st:"ok",ly:"Không có điều kiện riêng; thẻ còn hạn",cl:[],cc:[]},
+  flu:{ma:"24.0243.1671",ten:"Influenza virus A, B test nhanh",st:"ok",ly:"Không có điều kiện riêng; thẻ còn hạn",cl:[],cc:[]},
+  rsv:{ma:null,ten:"Test nhanh RSV",st:"no",ly:"Không tìm thấy trong danh mục kỹ thuật đã tra",m:"M-13",
+    cc:["Danh mục DVKT BHYT (bản đã tra 10/2026): không có mục 'RSV test nhanh'"],
+    cl:[{nhanh:"R1",id:"R1",mo_ta:"Có trong danh mục BHYT",ket_qua:"khong_dat",nguon:"nhap",bc:"không có mã",m:"M-13"}]},
+  pct:{ma:"23.0130.1549",ten:"Định lượng Procalcitonin",st:"rv",ly:"Điều kiện có vế 'nhiễm trùng huyết hoặc rối loạn ≥ 2 cơ quan'; phiếu khám chưa thấy nội dung tương ứng",
+    cc:["PCT được thanh toán khi: nghi nhiễm trùng huyết HOẶC rối loạn chức năng ≥ 2 cơ quan …"],
+    cl:[{nhanh:"a",id:"V1",mo_ta:"Nghi nhiễm trùng huyết",ket_qua:"chua_thay",nguon:"a1",bc:"phiếu khám chưa thấy"},
+        {nhanh:"a",id:"V2",mo_ta:"Rối loạn chức năng ≥ 2 cơ quan",ket_qua:"chua_du",nguon:"a1",bc:"chưa đủ dữ liệu",m:"M-08"}]},
+  crp3:{ma:"23.0228.1483",ten:"Định lượng CRP",st:"no",ly:"Nhiệt độ ≥ 38°C: 37.2°C chưa đạt (cách hiểu tạm M-16, chưa được bác sĩ duyệt)",
+    cc:["CRP được thanh toán khi: sốt ≥ 38°C …"],
+    cl:[{nhanh:"a_tre_em",id:"V1",mo_ta:"Nhiệt độ ≥ 38°C",ket_qua:"khong_dat",nguon:"nhap",bc:"37.2 < 38",m:"M-16"}]},
+  sa:{ma:"18.0015.0001",ten:"Siêu âm ổ bụng",st:"ok",ly:"Không có điều kiện riêng; thẻ còn hạn",cl:[],cc:[]},
+  ntieu:{ma:"23.0206.1596",ten:"Tổng phân tích nước tiểu",st:"ok",ly:"Không có điều kiện riêng; thẻ còn hạn",cl:[],cc:[]},
+};
+const P1="Ho, sốt 3 ngày, thở nhanh. Phổi ran ẩm nhỏ hạt đáy phổi phải. Họng đỏ.";
+const CASES = {
+  "LK-DEMO-01":{ten:"Sốt ho 2 tuổi",tuoi:24,the:{han_den:"31/12/2026",muc_huong:100},lan:{
+    1:{icd:[],sh:{nhiet_do:38.9,mach:150,nhip_tho:46},pk:P1,cd:[L.ctm,L.crp1,L.xq,L.flu,L.rsv]},
+    2:{icd:["J18.9"],sh:{nhiet_do:38.9,mach:150,nhip_tho:46},pk:P1+" X-quang: đám mờ đáy phải. Trẻ tỉnh, ăn kém, SpO2 95%.",cd:[L.ctm,L.crp1,L.xq,L.flu,L.rsv,L.pct]}}},
+  "LK-DEMO-03":{ten:"Đau bụng 5 tuổi",tuoi:60,the:{han_den:"30/06/2027",muc_huong:80},lan:{
+    1:{icd:["R10.4"],sh:{nhiet_do:37.2,mach:100,nhip_tho:24},pk:"Đau bụng quanh rốn 1 ngày, nôn 1 lần. Ấn đau hố chậu phải, không phản ứng thành bụng.",cd:[L.ctm,L.crp3,L.sa,L.ntieu]}}},
+};
+const LYDO = {nguoi_nha_yeu_cau:"Người nhà yêu cầu → tự túc", loai_tru_theo_doi:"Loại trừ, theo dõi nghi ngờ", khac:"Khác"};
+const KQ = {dat:"đạt",chua_thay:"chưa thấy",chua_du:"chưa đủ dữ liệu",khong_dat:"chưa đạt"};
+
+// ---- State ----
+let ca="LK-DEMO-01", lan=1, sel=null, st=[]; // st[i] = {chon:bool, ly:{loai,ghi_chu}|null}
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const cur=()=>CASES[ca].lan[lan];
+const needReason=(r,s)=>(GOI_Y[r.st]==="tich"&&!s.chon)||(r.st==="no"&&s.chon); // F-12
+
+function load(){
+  st=cur().cd.map(r=>({chon:GOI_Y[r.st]==="tich",ly:null})); sel=null;
+  $("log").hidden=true; render();
+}
+function render(){
+  const c=CASES[ca], d=cur();
+  document.querySelectorAll("#lan button").forEach(b=>{b.classList.toggle("on",+b.dataset.l===lan);b.disabled=!c.lan[b.dataset.l]});
+  // Left
+  const quote = sel!=null && d.cd[sel].a1;
+  let pk=esc(d.pk); if(quote) pk=pk.replace(esc(quote),"<mark>"+esc(quote)+"</mark>");
+  $("left").innerHTML=`
+   <div class="card"><h2>Bệnh nhân · ${ca}</h2><dl class="kv">
+     <dt>Tuổi</dt><dd>${c.tuoi} tháng (${(c.tuoi/12).toFixed(c.tuoi%12?1:0)} tuổi)</dd>
+     <dt>Thẻ BHYT</dt><dd>hạn đến ${c.the.han_den}</dd>
+     <dt>Mức hưởng</dt><dd>${c.the.muc_huong}%</dd></dl></div>
+   <div class="card"><h2>Sinh hiệu</h2><dl class="kv">
+     <dt>Nhiệt độ</dt><dd>${d.sh.nhiet_do} °C</dd><dt>Mạch</dt><dd>${d.sh.mach} l/p</dd><dt>Nhịp thở</dt><dd>${d.sh.nhip_tho} l/p</dd></dl></div>
+   <div class="card"><h2>ICD</h2>${d.icd.length?d.icd.map(esc).join(", "):'<span class="muted">(chưa nhập)</span>'}</div>
+   <div class="card"><h2>Phiếu khám</h2><div class="phieu">${pk}</div></div>`;
+  // Rows
+  $("rows").innerHTML=d.cd.map((r,i)=>{
+    const s=st[i], tags=[...new Set([r.m,...r.cl.map(v=>v.m)].filter(Boolean))];
+    const pick = needReason(r,s) ? `<div class="picker"><span class="hint">Lý do (không bắt buộc):</span>${
+      Object.entries(LYDO).map(([k,v])=>`<button data-i="${i}" data-k="${k}" class="${s.ly&&s.ly.loai===k?"on":""}">${v}</button>`).join("")}${
+      s.ly&&s.ly.loai==="khac"?`<input type="text" data-note="${i}" placeholder="ghi chú" value="${esc(s.ly.ghi_chu||"")}">`:""}</div>`:"";
+    return `<tr class="row ${r.st==="cc"?"tint":""} ${sel===i?"sel":""}" data-row="${i}">
+      <td class="cb"><input type="checkbox" data-cb="${i}" ${s.chon?"checked":""} aria-label="BHYT ${esc(r.ten)}"></td>
+      <td>${esc(r.ten)}<div class="ma">${r.ma||"— chưa có mã"}</div></td>
+      <td><span class="badge s-${r.st}">${S[r.st]}</span></td>
+      <td class="lydo">${esc(r.ly)}${tags.map(t=>`<span class="tag">cách hiểu tạm ${t}</span>`).join("")}${pick}</td>
+      <td><button data-why="${i}">Vì sao?</button></td></tr>`}).join("");
+  $("sum").textContent=`${st.filter(s=>s.chon).length}/${st.length} dòng tích BHYT · Lần tích ${lan}`;
+  // Why
+  const w=$("why");
+  if(sel==null){w.hidden=true;return}
+  const r=d.cd[sel]; w.hidden=false;
+  w.innerHTML=`<h2>Vì sao? · ${esc(r.ten)}</h2>
+    <div><span class="badge s-${r.st}">${S[r.st]}</span> ${esc(r.ly)}</div>
+    ${r.cc.length?`<div class="muted" style="margin-top:6px">Căn cứ (${CTH}):</div>`+r.cc.map(x=>`<div class="canc">${esc(x)}</div>`).join(""):'<div class="muted" style="margin-top:6px">Không có điều kiện riêng cho dịch vụ này.</div>'}
+    ${r.cl.length?`<table class="cl"><thead><tr><th>Nhánh</th><th>Vế</th><th>Kết quả</th><th>Nguồn</th><th>Bằng chứng</th></tr></thead><tbody>${
+      r.cl.map(v=>`<tr><td>${v.nhanh}</td><td>${v.id} · ${esc(v.mo_ta)}${v.m?`<span class="tag">cách hiểu tạm ${v.m}</span>`:""}</td>
+       <td class="r-${v.ket_qua}">${KQ[v.ket_qua]}</td><td><span class="src">${v.nguon}</span></td>
+       <td>${esc(v.bc)}${v.trich?`<div class="canc">“${esc(v.trich)}”</div>`:""}</td></tr>`).join("")}</tbody></table>`:""}`;
+}
+function confirmAll(){
+  const c=CASES[ca], d=cur(), t=new Date().toISOString();
+  const lines=d.cd.map((r,i)=>{const s=st[i];return JSON.stringify({
+    thoi_gian:t,luot_kham:ca,lan_tich:lan,thu_tu:i+1,ma:r.ma,ten:r.ten,trang_thai:S[r.st],
+    o_bhyt_goi_y:GOI_Y[r.st],bac_si_chon:s.chon?"tich":"khong_tich",
+    ly_do_bac_si:needReason(r,s)?(s.ly||{loai:null,ghi_chu:null}):null,
+    checklist:r.cl.map(v=>({nhanh:v.nhanh,id:v.id,mo_ta:v.mo_ta,ket_qua:v.ket_qua==="chua_du"?"chua_du_du_lieu":v.ket_qua,nguon_ket_qua:v.nguon,bang_chung:v.bc,trich_dan:v.trich||null,diem_mo_ho:v.m?[v.m]:[]})),
+    can_cu:r.cc,phien_ban_rule:RULE_V,
+    dau_vao:{tuoi:c.tuoi,the:c.the,icd:d.icd,sinh_hieu:d.sh,lich_su_da_dung:[]}})});
+  $("logtxt").textContent=lines.join("\n"); $("log").hidden=false; $("log").scrollIntoView({behavior:"smooth"});
+}
+
+// ---- Events ----
+$("ca").innerHTML=Object.entries(CASES).map(([k,v])=>`<option value="${k}">${k} · ${v.ten}</option>`).join("");
+$("ca").onchange=e=>{ca=e.target.value;lan=1;load()};
+$("lan").onclick=e=>{const l=+e.target.dataset.l;if(l&&CASES[ca].lan[l]){lan=l;load()}};
+$("ok").onclick=confirmAll;
+$("rows").addEventListener("click",e=>{
+  const t=e.target;
+  if(t.dataset.cb!=null){const i=+t.dataset.cb;st[i].chon=t.checked;if(!needReason(cur().cd[i],st[i]))st[i].ly=null;render();return}
+  if(t.dataset.k){const i=+t.dataset.i;st[i].ly={loai:t.dataset.k,ghi_chu:t.dataset.k==="khac"?"":null};render();return}
+  if(t.dataset.note!=null)return;
+  const tr=t.closest("tr.row"); if(tr){sel=+tr.dataset.row;render()}
+});
+$("rows").addEventListener("input",e=>{const i=e.target.dataset.note;if(i!=null)st[+i].ly.ghi_chu=e.target.value});
+load();
+</script>
+</body>
+</html>

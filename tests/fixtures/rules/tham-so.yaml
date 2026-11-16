@@ -1,0 +1,12 @@
+# Fixture cho unit test engine (theo spec 09 mục 3). Không phải dữ liệu thật — xem data/rules/.
+tre_em_den_thang: { gia_tri: 192, nguon: tu_dung, diem_mo_ho: M-01 }
+nhip_tho_nhanh:
+  nguon: tu_dung
+  diem_mo_ho: M-02
+  bang:
+    - { tu: 0, den: 2, nguong: 60 }
+    - { tu: 2, den: 12, nguong: 50 }
+    - { tu: 12, den: 60, nguong: 40 }
+nhip_tim_nhanh: { nguon: tu_dung, diem_mo_ho: M-02, bang: [] }
+pct_tham_chieu: { gia_tri: 0.5, don_vi: ng/mL, nguon: tu_dung, diem_mo_ho: M-10 }
+khoang_hop_le: { nhiet_do: [34, 43], mach: [40, 250], nhip_tho: [10, 120] }

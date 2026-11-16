@@ -1,0 +1,1522 @@
+# Danh mục 50 mục dịch vụ Nhi ngoại trú (R1), 55 dòng (STT 4, 32, 35, 41 tách nhiều dòng). SINH TỰ ĐỘNG từ text PL01 TT 23/2024 và QĐ 3500; nguồn và trích dẫn: NGUON.md.
+# bhyt: co | dieu_kien (xem dieu-kien.yaml) | khong_thay | xac_minh. `ten` = tên đúng trong PL01 (dòng ma: null: tên trong danh sách đề xuất).
+# can_cu[].trang = số trang PDF. stt_de_xuat = số dòng trong data/danh-muc/nhi-ngoai-tru-de-xuat.md.
+phien_ban: '2026-11-13'
+pham_vi_da_tra:
+  PL01: 'TT 23/2024/TT-BYT Phụ lục 01 (danh mục kỹ thuật): tra đúng mã kỹ thuật cột 2 và tên; `ten` chép từ đây.'
+  QD3500: 'QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW): tra đúng mã đầy đủ XX.YYYY.ZZZZ; chỉ để đối chiếu mã, không phải giá Vinmec.'
+  DM1: 'Danh mục 1 TT 35/2016 (VBHN 17/VBHN-BYT, 15 mục) và phần sửa đổi tại phụ lục TT 39/2024: đọc tuần tự toàn bộ, không chỉ tìm từ khóa.'
+  DM2: 'Danh mục 2 TT 35/2016 (VBHN 17/VBHN-BYT, 109 mục) và phần sửa đổi tại phụ lục TT 39/2024: đọc tuần tự toàn bộ.'
+  DM3: 'Danh mục 3 TT 35/2016 (VBHN 17/VBHN-BYT trang 52, 16 mục, đọc trên ảnh trang): không dịch vụ nào trong danh sách thuộc Danh mục 3.'
+  bi_danh: Bí danh là tên gọi tắt do nhóm tự đặt để khớp tên chỉ định, không phải tên trong văn bản.
+  chi_tiet: Xem NGUON.md.
+dich_vu:
+- stt_de_xuat: 1
+  ma: 22.0121.1369
+  ma_ky_thuat: '22.121'
+  ten: Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)
+  bi_danh:
+  - Tổng phân tích tế bào máu ngoại vi
+  - Tổng phân tích tế bào máu ngoại vi (máy đếm laser)
+  - Công thức máu
+  - CTM
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 16556
+    ma_ky_thuat: '22.121'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 508
+    trich: Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 22.0121.1369
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 418
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+  nguon: tu_dung   # chọn biến thể máy là giả định về máy của viện
+  diem_mo_ho: M-13
+  ghi_chu: 'DM1 mục 8 (STT theo TT 35) là dịch vụ khác: ''Tổng phân tích tế bào máu ngoại vi bằng hệ thống tự động hoàn toàn (có nhuộm tiêu bản tự động)'' (mã kỹ thuật 22.122), không phải 22.121.'
+- stt_de_xuat: 2
+  ma: 22.0143.1303
+  ma_ky_thuat: '22.143'
+  ten: Máu lắng (bằng máy tự động)
+  bi_danh:
+  - Máu lắng
+  - Máu lắng (máy tự động)
+  - Tốc độ máu lắng
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 16578
+    ma_ky_thuat: '22.143'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 509
+    trich: Máu lắng (bằng máy tự động)
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 22.0143.1303
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 413
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+  nguon: tu_dung   # chọn biến thể máy là giả định về máy của viện
+  diem_mo_ho: M-13
+- stt_de_xuat: 3
+  ma: 22.0135.1313
+  ma_ky_thuat: '22.135'
+  ten: Xét nghiệm hồng cầu lưới (bằng máy đếm laser)
+  bi_danh:
+  - Xét nghiệm hồng cầu lưới
+  - Xét nghiệm hồng cầu lưới (máy đếm laser)
+  - Hồng cầu lưới
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 16570
+    ma_ky_thuat: '22.135'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 508
+    trich: Xét nghiệm hồng cầu lưới (bằng máy đếm laser)
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 22.0135.1313
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 414
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 4
+  ma: 22.0002.1352
+  ma_ky_thuat: '22.2'
+  ten: 'Thời gian prothrombin (PT: Prothrombin Time), (Các tên khác: TQ; Tỷ lệ Prothrombin) bằng máy bán tự động'
+  bi_danh:
+  - Thời gian prothrombin (PT)
+  - Thời gian prothrombin
+  - PT
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 16437
+    ma_ky_thuat: '22.2'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 502
+    trich: 'Thời gian prothrombin (PT: Prothrombin Time), (Các tên khác: TQ; Tỷ lệ Prothrombin) bằng máy bán tự động'
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 22.0002.1352
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 417
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+  nguon: tu_dung   # chọn biến thể máy là giả định về máy của viện
+  diem_mo_ho: M-13
+  ghi_chu: Mã này là biến thể 'bằng máy bán tự động'. Biến thể 22.0001.1352 có cùng mã giá. Chưa biết Vinmec dùng mã nào.
+- stt_de_xuat: 4
+  ma: 22.0006.1354
+  ma_ky_thuat: '22.6'
+  ten: 'Thời gian thromboplastin một phần hoạt hóa (APTT: Activated Partial Thromboplastin Time) (tên khác: TCK) bằng máy bán tự động'
+  bi_danh:
+  - Thời gian thromboplastin một phần hoạt hóa (APTT)
+  - Thời gian thromboplastin một phần hoạt hóa
+  - APTT
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 16441
+    ma_ky_thuat: '22.6'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 502
+    trich: 'Thời gian thromboplastin một phần hoạt hóa (APTT: Activated Partial Thromboplastin Time) (tên khác: TCK) bằng máy bán tự động'
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 22.0006.1354
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 418
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+  nguon: tu_dung   # chọn biến thể máy là giả định về máy của viện
+  diem_mo_ho: M-13
+  ghi_chu: Mã này là biến thể 'bằng máy bán tự động'. Chưa biết Vinmec dùng mã nào.
+- stt_de_xuat: 5
+  ma: 23.0228.1483
+  ma_ky_thuat: '23.228'
+  ten: Định lượng CRP (C-Reactive Protein)
+  bi_danh:
+  - Định lượng CRP
+  - CRP
+  bhyt: dieu_kien
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17434
+    ma_ky_thuat: '23.228'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 543
+    trich: Định lượng CRP (C-Reactive Protein)
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0228.1483
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 430
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+  ghi_chu: 'Tên trong Danh mục 1: ''Định lượng CRP/CRP hs [Máu]''. CRP hs (23.50) là mã khác, ngoài danh sách 50.'
+- stt_de_xuat: 6
+  ma: 23.0130.1549
+  ma_ky_thuat: '23.130'
+  ten: Định lượng Pro-calcitonin [Máu]
+  bi_danh:
+  - Định lượng Procalcitonin
+  - Định lượng Pro-calcitonin
+  - Procalcitonin
+  - PCT
+  bhyt: dieu_kien
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17336
+    ma_ky_thuat: '23.130'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 541
+    trich: Định lượng Pro-calcitonin [Máu]
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0130.1549
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 435
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 7
+  ma: 23.0075.1494
+  ma_ky_thuat: '23.75'
+  ten: Định lượng Glucose [Máu]
+  bi_danh:
+  - Định lượng Glucose
+  - Glucose máu
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17281
+    ma_ky_thuat: '23.75'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 540
+    trich: Định lượng Glucose [Máu]
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0075.1494
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 431
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 8
+  ma: 23.0166.1494
+  ma_ky_thuat: '23.166'
+  ten: Định lượng Urê máu [Máu]
+  bi_danh:
+  - Định lượng Urê máu
+  - Định lượng Urê
+  - Urê máu
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17372
+    ma_ky_thuat: '23.166'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 542
+    trich: Định lượng Urê máu [Máu]
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0166.1494
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 431
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 9
+  ma: 23.0051.1494
+  ma_ky_thuat: '23.51'
+  ten: Định lượng Creatinin (máu)
+  bi_danh:
+  - Định lượng Creatinin
+  - Creatinin máu
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17257
+    ma_ky_thuat: '23.51'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 539
+    trich: Định lượng Creatinin (máu)
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0051.1494
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 431
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 10
+  ma: 23.0020.1493
+  ma_ky_thuat: '23.20'
+  ten: Đo hoạt độ AST (GOT) [Máu]
+  bi_danh:
+  - Đo hoạt độ AST (GOT)
+  - AST (GOT)
+  - AST
+  - GOT
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17226
+    ma_ky_thuat: '23.20'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 538
+    trich: Đo hoạt độ AST (GOT) [Máu]
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0020.1493
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 431
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 11
+  ma: 23.0019.1493
+  ma_ky_thuat: '23.19'
+  ten: Đo hoạt độ ALT (GPT) [Máu]
+  bi_danh:
+  - Đo hoạt độ ALT (GPT)
+  - ALT (GPT)
+  - ALT
+  - GPT
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17225
+    ma_ky_thuat: '23.19'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 538
+    trich: Đo hoạt độ ALT (GPT) [Máu]
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0019.1493
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 431
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 12
+  ma: 23.0058.1487
+  ma_ky_thuat: '23.58'
+  ten: Điện giải đồ (Na, K, Cl) [Máu]
+  bi_danh:
+  - Điện giải đồ (Na, K, Cl)
+  - Điện giải đồ
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17264
+    ma_ky_thuat: '23.58'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 539
+    trich: Điện giải đồ (Na, K, Cl) [Máu]
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0058.1487
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 430
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 13
+  ma: 23.0029.1473
+  ma_ky_thuat: '23.29'
+  ten: Định lượng Canxi toàn phần [Máu]
+  bi_danh:
+  - Định lượng Canxi toàn phần
+  - Canxi toàn phần
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17235
+    ma_ky_thuat: '23.29'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 538
+    trich: Định lượng Canxi toàn phần [Máu]
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0029.1473
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 429
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 14
+  ma: 23.0030.1472
+  ma_ky_thuat: '23.30'
+  ten: Định lượng Canxi ion hóa [Máu]
+  bi_danh:
+  - Định lượng Canxi ion hóa
+  - Canxi ion hóa
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17236
+    ma_ky_thuat: '23.30'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 538
+    trich: Định lượng Canxi ion hóa [Máu]
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0030.1472
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 429
+    trich: Chỉ thanh toán khi định lượng trực tiếp.
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+  nguon: tu_dung
+  diem_mo_ho: M-12
+  ghi_chu: 'Bảng giá QĐ 3500 ghi chú ''Chỉ thanh toán khi định lượng trực tiếp.'' Tạm coi máy Vinmec đo trực tiếp (M-12) nên để ''co''. Căn cứ chung: khoản 4 Điều 4 TT 35/2016 (xem NGUON.md).'
+- stt_de_xuat: 15
+  ma: 23.0143.1503
+  ma_ky_thuat: '23.143'
+  ten: Định lượng Sắt [Máu]
+  bi_danh:
+  - Định lượng Sắt
+  - Sắt huyết thanh
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17349
+    ma_ky_thuat: '23.143'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 541
+    trich: Định lượng Sắt [Máu]
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0143.1503
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 432
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 16
+  ma: 23.0063.1514
+  ma_ky_thuat: '23.63'
+  ten: Định lượng Ferritin [Máu]
+  bi_danh:
+  - Định lượng Ferritin
+  - Ferritin
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17269
+    ma_ky_thuat: '23.63'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 539
+    trich: Định lượng Ferritin [Máu]
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0063.1514
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 433
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 17
+  ma: 23.0027.1493
+  ma_ky_thuat: '23.27'
+  ten: Định lượng Bilirubin toàn phần [Máu]
+  bi_danh:
+  - Định lượng Bilirubin toàn phần
+  - Bilirubin toàn phần
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17233
+    ma_ky_thuat: '23.27'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 538
+    trich: Định lượng Bilirubin toàn phần [Máu]
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0027.1493
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 430
+    trich: Không thanh toán đối với các xét nghiệm Bilirubin gián tiếp; Tỷ lệ A/G là những xét nghiệm có thể ngoại suy được.
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 18
+  ma: 23.0025.1493
+  ma_ky_thuat: '23.25'
+  ten: Định lượng Bilirubin trực tiếp [Máu]
+  bi_danh:
+  - Định lượng Bilirubin trực tiếp
+  - Bilirubin trực tiếp
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17231
+    ma_ky_thuat: '23.25'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 538
+    trich: Định lượng Bilirubin trực tiếp [Máu]
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0025.1493
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 430
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 19
+  ma: 23.0007.1494
+  ma_ky_thuat: '23.7'
+  ten: Định lượng Albumin [Máu]
+  bi_danh:
+  - Định lượng Albumin
+  - Albumin máu
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17213
+    ma_ky_thuat: '23.7'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 538
+    trich: Định lượng Albumin [Máu]
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0007.1494
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 431
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 20
+  ma: 23.0055.1489
+  ma_ky_thuat: '23.55'
+  ten: Định lượng 25OH Vitamin D (D3) [Máu]
+  bi_danh:
+  - Định lượng 25OH Vitamin D (D3)
+  - Định lượng 25OH Vitamin D
+  - Vitamin D
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17261
+    ma_ky_thuat: '23.55'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 539
+    trich: Định lượng 25OH Vitamin D (D3) [Máu]
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0055.1489
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 430
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 21
+  ma: null
+  ten: Định lượng Kẽm
+  bi_danh:
+  - Kẽm
+  - Kẽm huyết thanh
+  bhyt: xac_minh
+  nguon: tu_dung
+  diem_mo_ho: M-13
+  ung_vien_pl01:
+  - BS_23.318
+  - '23.249'
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17524
+    ma_ky_thuat: BS_23.318
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 545
+    trich: Định lượng kẽm
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17455
+    ma_ky_thuat: '23.249'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 544
+    trich: Xác định các yếu tố vi lượng (đồng, kẽm)
+  da_tra:
+  - PL01
+  - QD3500
+  ghi_chu: 'PL01 có ''Định lượng kẽm'' mã BS_23.318 (danh sách sơ bộ ghi BS_23.317 là sai: BS_23.317 là ''Định lượng đồng''). Mã BS_ không được dùng làm mã kỹ thuật theo Điều 3 TT 25/2026. QĐ 3500 không có giá cho kẽm (tìm ''kẽm'': 0 kết quả).'
+- stt_de_xuat: 22
+  ma: 23.0093.1527
+  ma_ky_thuat: '23.93'
+  ten: Định lượng IgE (Immunoglobuline E) [Máu]
+  bi_danh:
+  - Định lượng IgE toàn phần
+  - Định lượng IgE
+  - IgE toàn phần
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17299
+    ma_ky_thuat: '23.93'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 540
+    trich: Định lượng IgE (Immunoglobuline E) [Máu]
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0093.1527
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 434
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 23
+  ma: 23.0162.1570
+  ma_ky_thuat: '23.162'
+  ten: Định lượng TSH (Thyroid Stimulating hormone) [Máu]
+  bi_danh:
+  - Định lượng TSH
+  - TSH
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17368
+    ma_ky_thuat: '23.162'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 542
+    trich: Định lượng TSH (Thyroid Stimulating hormone) [Máu]
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0162.1570
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 437
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 24
+  ma: 23.0069.1561
+  ma_ky_thuat: '23.69'
+  ten: Định lượng FT4 (Free Thyroxine) [Máu]
+  bi_danh:
+  - Định lượng FT4
+  - FT4
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17275
+    ma_ky_thuat: '23.69'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 539
+    trich: Định lượng FT4 (Free Thyroxine) [Máu]
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0069.1561
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 436
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 25
+  ma: 24.0243.1671
+  ma_ky_thuat: '24.243'
+  ten: Influenza virus A, B test nhanh
+  bi_danh:
+  - Test nhanh cúm A/B
+  - Test nhanh cúm A, B
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17824
+    ma_ky_thuat: '24.243'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 557
+    trich: Influenza virus A, B test nhanh
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 24.0243.1671
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 443
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 26
+  ma: null
+  ma_chung: 24.0108.1720   # giả định GD-01: thu theo mã chung; nhiều dòng dùng chung nên không đặt vào ma
+  ma_ky_thuat: '24.108'
+  ten: Test nhanh RSV
+  bi_danh:
+  - RSV test nhanh
+  bhyt: co
+  nguon: tu_dung
+  diem_mo_ho: M-13
+  ung_vien_pl01:
+  - '24.108'
+  - '24.252'
+  - '24.253'
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17689
+    ma_ky_thuat: '24.108'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 551
+    trich: Virus test nhanh
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17833
+    ma_ky_thuat: '24.252'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 558
+    trich: RSV Ab miễn dịch bán tự động
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17834
+    ma_ky_thuat: '24.253'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 558
+    trich: RSV Real-time PCR
+  da_tra:
+  - PL01
+  - QD3500
+  ghi_chu: 'Danh sách sơ bộ ghi ''Không thấy''. Đổi thành ''xac_minh''. Không có tên riêng trong PL01. PL01 có tên chung ''Virus test nhanh'' (mã kỹ thuật 24.108; QĐ 3500: 24.0108.1720). Chưa xác định dịch vụ này có được xếp vào tên chung đó không. Tên có ''RSV'' trong PL01 chỉ gồm 24.252 (Ab miễn dịch bán tự động) và 24.253 (Real-time PCR). Giả định GD-01 (docs/10-gia-dinh.md): Vinmec đã đăng ký và thu theo tên chung ''Virus test nhanh'' (24.0108.1720), nên ''co''. Bỏ giả định thì về ''xac_minh''.'
+- stt_de_xuat: 27
+  ma: null
+  ten: Test nhanh SARS-CoV-2 (Ag)
+  bi_danh:
+  - Xét nghiệm SARS-CoV-2 Ag test nhanh
+  - Test nhanh SARS-CoV-2
+  - Test nhanh COVID-19
+  bhyt: xac_minh
+  nguon: tu_dung
+  diem_mo_ho: M-13
+  ung_vien_pl01:
+  - BS_24.374
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17955
+    ma_ky_thuat: BS_24.374
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 563
+    trich: Xét nghiệm SARS-CoV-2 Ag test nhanh
+  da_tra:
+  - PL01
+  - QD3500
+  ghi_chu: 'PL01 có mã BS_24.374 (danh sách sơ bộ ghi ''cột 2 không có mã'' là chưa chính xác). Mã BS_ không được dùng làm mã kỹ thuật theo Điều 3 TT 25/2026. QĐ 3500 không có giá (tìm ''SARS'', ''Covid'': 0 kết quả).'
+- stt_de_xuat: 28
+  ma: null
+  ma_chung: 24.0108.1720   # giả định GD-01: thu theo mã chung; nhiều dòng dùng chung nên không đặt vào ma
+  ma_ky_thuat: '24.108'
+  ten: Test nhanh Adenovirus
+  bi_danh:
+  - Adenovirus test nhanh
+  bhyt: co
+  nguon: tu_dung
+  diem_mo_ho: M-13
+  ung_vien_pl01:
+  - '24.108'
+  - '24.232'
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17689
+    ma_ky_thuat: '24.108'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 551
+    trich: Virus test nhanh
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17813
+    ma_ky_thuat: '24.232'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 557
+    trich: Adenovirus Real-time PCR
+  da_tra:
+  - PL01
+  - QD3500
+  ghi_chu: 'Danh sách sơ bộ ghi ''Không thấy''. Đổi thành ''xac_minh''. Không có tên riêng trong PL01. PL01 có tên chung ''Virus test nhanh'' (mã kỹ thuật 24.108; QĐ 3500: 24.0108.1720). Chưa xác định dịch vụ này có được xếp vào tên chung đó không. Tên có ''Adenovirus'' trong PL01 chỉ gồm 24.232 (Real-time PCR). Giả định GD-01 (docs/10-gia-dinh.md): Vinmec đã đăng ký và thu theo tên chung ''Virus test nhanh'' (24.0108.1720), nên ''co''. Bỏ giả định thì về ''xac_minh''.'
+- stt_de_xuat: 29
+  ma: null
+  ma_chung: 24.0002.1720   # giả định GD-01: thu theo mã chung; nhiều dòng dùng chung nên không đặt vào ma
+  ma_ky_thuat: '24.2'
+  ten: Test nhanh liên cầu nhóm A
+  bi_danh:
+  - Test nhanh liên cầu A
+  - Streptococcus nhóm A test nhanh
+  bhyt: co
+  nguon: tu_dung
+  diem_mo_ho: M-13
+  ung_vien_pl01:
+  - '24.2'
+  - '24.94'
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17583
+    ma_ky_thuat: '24.2'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 547
+    trich: Vi khuẩn test nhanh
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17675
+    ma_ky_thuat: '24.94'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 551
+    trich: Streptococcus pyogenes ASO
+  da_tra:
+  - PL01
+  - QD3500
+  ghi_chu: 'Danh sách sơ bộ ghi ''Không thấy''. Đổi thành ''xac_minh''. Không có tên riêng trong PL01. PL01 có tên chung ''Vi khuẩn test nhanh'' (mã kỹ thuật 24.2; QĐ 3500: 24.0002.1720). Chưa xác định dịch vụ này có được xếp vào tên chung đó không. Tên có ''Streptococcus'' trong PL01 chỉ gồm 24.94 ''Streptococcus pyogenes ASO'' (danh sách sơ bộ ghi 24.0095 là sai). Giả định GD-01 (docs/10-gia-dinh.md): Vinmec đã đăng ký và thu theo tên chung ''Vi khuẩn test nhanh'' (24.0002.1720), nên ''co''. Bỏ giả định thì về ''xac_minh''.'
+- stt_de_xuat: 30
+  ma: 24.0183.1637
+  ma_ky_thuat: '24.183'
+  ten: Dengue virus NS1Ag test nhanh
+  bi_danh:
+  - Dengue NS1Ag test nhanh
+  - Test nhanh Dengue NS1
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17764
+    ma_ky_thuat: '24.183'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 555
+    trich: Dengue virus NS1Ag test nhanh
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 24.0183.1637
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 441
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 31
+  ma: 24.0187.1637
+  ma_ky_thuat: '24.187'
+  ten: Dengue virus IgM/IgG test nhanh
+  bi_danh:
+  - Test nhanh Dengue IgM/IgG
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17768
+    ma_ky_thuat: '24.187'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 555
+    trich: Dengue virus IgM/IgG test nhanh
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 24.0187.1637
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 441
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 32
+  ma: 24.0082.1689
+  ma_ky_thuat: '24.82'
+  ten: Mycoplasma pneumoniae Ab miễn dịch bán tự động
+  bi_danh:
+  - Mycoplasma pneumoniae Ab (miễn dịch bán tự động)
+  - Mycoplasma pneumoniae Ab
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17663
+    ma_ky_thuat: '24.82'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 550
+    trich: Mycoplasma pneumoniae Ab miễn dịch bán tự động
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 24.0082.1689
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 445
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+  nguon: tu_dung   # chọn biến thể máy là giả định về máy của viện
+  diem_mo_ho: M-13
+  ghi_chu: 'Cùng mã kỹ thuật 24.82 có 2 mã giá trong QĐ 3500: 1689 (273.000) và 1690 (182.700), cùng tên. Chưa rõ khác nhau ở đâu; hỏi lab Vinmec.'
+- stt_de_xuat: 32
+  ma: 24.0082.1690
+  ma_ky_thuat: '24.82'
+  ten: Mycoplasma pneumoniae Ab miễn dịch bán tự động
+  bi_danh:
+  - Mycoplasma pneumoniae Ab (miễn dịch bán tự động)
+  - Mycoplasma pneumoniae Ab
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17663
+    ma_ky_thuat: '24.82'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 550
+    trich: Mycoplasma pneumoniae Ab miễn dịch bán tự động
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 24.0082.1690
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 446
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+  nguon: tu_dung   # chọn biến thể máy là giả định về máy của viện
+  diem_mo_ho: M-13
+  ghi_chu: Xem 24.0082.1689.
+- stt_de_xuat: 33
+  ma: 24.0249.1697
+  ma_ky_thuat: '24.249'
+  ten: Rotavirus test nhanh
+  bi_danh:
+  - Test nhanh Rotavirus
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17830
+    ma_ky_thuat: '24.249'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 558
+    trich: Rotavirus test nhanh
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 24.0249.1697
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 446
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 34
+  ma: null
+  ten: PCR đa tác nhân hô hấp
+  bi_danh:
+  - Vi sinh vật định danh PCR đa tác nhân
+  - Vi sinh vật nhiễm khuẩn hô hấp Real - time PCR đa mồi
+  bhyt: xac_minh
+  nguon: tu_dung
+  diem_mo_ho: M-13
+  ung_vien_pl01:
+  - BS_24.377
+  - BS_24.370
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17958
+    ma_ky_thuat: BS_24.377
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 563
+    trich: Vi sinh vật định danh PCR đa tác nhân (cho trên 3 tác nhân tuỳ thuộc vào số lượng tác nhân cần xác định cho từng loại bệnh phẩm)
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17951
+    ma_ky_thuat: BS_24.370
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 563
+    trich: Vi sinh vật nhiễm khuẩn hô hấp Real - time PCR đa mồi
+  da_tra:
+  - PL01
+  - QD3500
+  ghi_chu: 'PL01 có 2 tên gần: BS_24.377 và BS_24.370 (danh sách sơ bộ ghi ''cột 2 không có mã'' là chưa chính xác). Mã BS_ không được dùng làm mã kỹ thuật theo Điều 3 TT 25/2026. QĐ 3500 không có giá (tìm ''đa tác nhân'', ''đa mồi'': 0 kết quả).'
+- stt_de_xuat: 35
+  ma: 24.0263.1665
+  ma_ky_thuat: '24.263'
+  ten: Hồng cầu, bạch cầu trong phân soi tươi
+  bi_danh:
+  - 'Soi phân: hồng cầu, bạch cầu'
+  - Soi phân tìm hồng cầu, bạch cầu
+  - Soi phân HC, BC
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17844
+    ma_ky_thuat: '24.263'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 558
+    trich: Hồng cầu, bạch cầu trong phân soi tươi
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 24.0263.1665
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 443
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 35
+  ma: 24.0267.1674
+  ma_ky_thuat: '24.267'
+  ten: Trứng giun, sán soi tươi
+  bi_danh:
+  - 'Soi phân: trứng giun sán'
+  - Soi phân tìm trứng giun sán
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17848
+    ma_ky_thuat: '24.267'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 558
+    trich: Trứng giun, sán soi tươi
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 24.0267.1674
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 444
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 35
+  ma: 24.0265.1674
+  ma_ky_thuat: '24.265'
+  ten: Đơn bào đường ruột soi tươi
+  bi_danh:
+  - 'Soi phân: đơn bào'
+  - Soi phân tìm đơn bào đường ruột
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17846
+    ma_ky_thuat: '24.265'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 558
+    trich: Đơn bào đường ruột soi tươi
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 24.0265.1674
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 443
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 36
+  ma: 24.0005.1716
+  ma_ky_thuat: '24.5'
+  ten: Vi khuẩn nuôi cấy, định danh và kháng thuốc hệ thống tự động
+  bi_danh:
+  - Vi khuẩn nuôi cấy, định danh, kháng thuốc (tự động) – nước tiểu
+  - Cấy nước tiểu (định danh, kháng thuốc hệ thống tự động)
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17586
+    ma_ky_thuat: '24.5'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 547
+    trich: Vi khuẩn nuôi cấy, định danh và kháng thuốc hệ thống tự động
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 24.0005.1716
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 448
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+  ghi_chu: DM2 mục 89 và 95 (STT theo TT 35) là dịch vụ vi sinh khác, không phải mã 24.5.
+- stt_de_xuat: 37
+  ma: 23.0206.1596
+  ma_ky_thuat: '23.206'
+  ten: Tổng phân tích nước tiểu (Bằng máy tự động)
+  bi_danh:
+  - Tổng phân tích nước tiểu
+  - Tổng phân tích nước tiểu (máy tự động)
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 17412
+    ma_ky_thuat: '23.206'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 543
+    trich: Tổng phân tích nước tiểu (Bằng máy tự động)
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 23.0206.1596
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 438
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 38
+  ma: 18.0119.0028
+  ma_ky_thuat: '18.119'
+  ten: Chụp X-quang ngực thẳng
+  bi_danh:
+  - Chụp X-quang ngực thẳng (số hóa 1 phim)
+  - Chụp X-quang ngực thẳng [số hóa 1 phim]
+  - X-quang ngực thẳng
+  - XQ ngực thẳng
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 15103
+    ma_ky_thuat: '18.119'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 456
+    trich: Chụp X-quang ngực thẳng
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 18.0119.0028
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 9
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 39
+  ma: 18.0125.0028
+  ma_ky_thuat: '18.125'
+  ten: Chụp X-quang bụng không chuẩn bị thẳng hoặc nghiêng
+  bi_danh:
+  - Chụp X-quang bụng không chuẩn bị
+  - Chụp X-quang bụng không chuẩn bị (số hóa 1 phim)
+  - X-quang bụng không chuẩn bị
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 15109
+    ma_ky_thuat: '18.125'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 456
+    trich: Chụp X-quang bụng không chuẩn bị thẳng hoặc nghiêng
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 18.0125.0028
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 7
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 40
+  ma: 18.0107.0028
+  ma_ky_thuat: '18.107'
+  ten: Chụp X-quang xương cổ tay thẳng, nghiêng hoặc chếch
+  bi_danh:
+  - Chụp X-quang xương cổ tay (tuổi xương)
+  - Chụp X-quang xương cổ tay
+  - X-quang tuổi xương
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 15091
+    ma_ky_thuat: '18.107'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 456
+    trich: Chụp X-quang xương cổ tay thẳng, nghiêng hoặc chếch
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 18.0107.0028
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 10
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 41
+  ma: 18.0106.0028
+  ma_ky_thuat: '18.106'
+  ten: Chụp X-quang xương cẳng tay thẳng nghiêng
+  bi_danh:
+  - Chụp X-quang xương cẳng tay
+  - X-quang cẳng tay
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 15090
+    ma_ky_thuat: '18.106'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 456
+    trich: Chụp X-quang xương cẳng tay thẳng nghiêng
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 18.0106.0028
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 10
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 41
+  ma: 18.0114.0028
+  ma_ky_thuat: '18.114'
+  ten: Chụp X-quang xương cẳng chân thẳng nghiêng
+  bi_danh:
+  - Chụp X-quang xương cẳng chân
+  - X-quang cẳng chân
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 15098
+    ma_ky_thuat: '18.114'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 456
+    trich: Chụp X-quang xương cẳng chân thẳng nghiêng
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 18.0114.0028
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 10
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 42
+  ma: 18.0015.0001
+  ma_ky_thuat: '18.15'
+  ten: Siêu âm ổ bụng (gan mật, tụy, lách, thận, bàng quang)
+  bi_danh:
+  - Siêu âm ổ bụng
+  - Siêu âm bụng
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 14999
+    ma_ky_thuat: '18.15'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 454
+    trich: Siêu âm ổ bụng (gan mật, tụy, lách, thận, bàng quang)
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 18.0015.0001
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 3
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 43
+  ma: 18.0001.0001
+  ma_ky_thuat: '18.1'
+  ten: Siêu âm tuyến giáp
+  bi_danh: []
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 14985
+    ma_ky_thuat: '18.1'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 454
+    trich: Siêu âm tuyến giáp
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 18.0001.0001
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 4
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 44
+  ma: 18.0004.0001
+  ma_ky_thuat: '18.4'
+  ten: Siêu âm hạch vùng cổ
+  bi_danh:
+  - Siêu âm hạch cổ
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 14988
+    ma_ky_thuat: '18.4'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 454
+    trich: Siêu âm hạch vùng cổ
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 18.0004.0001
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 3
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 45
+  ma: 18.0057.0001
+  ma_ky_thuat: '18.57'
+  ten: Siêu âm tinh hoàn hai bên
+  bi_danh:
+  - Siêu âm tinh hoàn
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 15041
+    ma_ky_thuat: '18.57'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 455
+    trich: Siêu âm tinh hoàn hai bên
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 18.0057.0001
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 4
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 46
+  ma: 18.0043.0001
+  ma_ky_thuat: '18.43'
+  ten: Siêu âm khớp (gối, háng, khuỷu, cổ tay….)
+  bi_danh:
+  - Siêu âm khớp
+  - Siêu âm khớp (gối, háng, khuỷu, cổ tay…)
+  - Siêu âm khớp háng
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 15027
+    ma_ky_thuat: '18.43'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 455
+    trich: Siêu âm khớp (gối, háng, khuỷu, cổ tay….)
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 18.0043.0001
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 3
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+  ghi_chu: DM2 mục 13 (STT theo TT 35) là thủ thuật tiêm khớp dưới hướng dẫn siêu âm, không phải dịch vụ này.
+- stt_de_xuat: 47
+  ma: 18.0007.0001
+  ma_ky_thuat: '18.7'
+  ten: Siêu âm qua thóp
+  bi_danh:
+  - Siêu âm thóp
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 14991
+    ma_ky_thuat: '18.7'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 454
+    trich: Siêu âm qua thóp
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 18.0007.0001
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 4
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 48
+  ma: 18.0052.0004
+  ma_ky_thuat: '18.52'
+  ten: Siêu âm doppler tim, van tim
+  bi_danh:
+  - Siêu âm Doppler tim
+  - Doppler tim
+  bhyt: dieu_kien
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 15036
+    ma_ky_thuat: '18.52'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 455
+    trich: Siêu âm doppler tim, van tim
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 18.0052.0004
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 5
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+- stt_de_xuat: 49
+  ma: 02.0085.1778
+  ma_ky_thuat: '2.85'
+  ten: Điện tim thường
+  bi_danh:
+  - Điện tim
+  - Điện tâm đồ
+  - ECG
+  bhyt: dieu_kien
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 487
+    ma_ky_thuat: '2.85'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 21
+    trich: Điện tim thường
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 02.0085.1778
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 459
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+  nguon: tu_dung
+  diem_mo_ho: M-19
+  ghi_chu: 'Danh sách sơ bộ ghi ''Có''. Đổi thành ''dieu_kien'' vì DM2 mục 47 (STT theo TT 35: 104) không thanh toán thêm ''Điện tâm đồ'' cùng thời điểm lập trình máy tạo nhịp tim. Coi ''Điện tâm đồ'' = ''Điện tim thường'' là cách hiểu tự dựng.'
+- stt_de_xuat: 50
+  ma: 02.0024.1791
+  ma_ky_thuat: '2.24'
+  ten: Đo chức năng hô hấp
+  bi_danh:
+  - Hô hấp ký
+  - Đo hô hấp ký
+  bhyt: co
+  can_cu:
+  - van_ban: TT 23/2024/TT-BYT
+    phu_luc: Phụ lục 01
+    stt: 426
+    ma_ky_thuat: '2.24'
+    file: data/van-ban/01-dvkt-va-co-so-phap-ly/2024_TT-23-2024-TT-BYT_phu-luc-01_danh-muc-ky-thuat.pdf
+    trang: 19
+    trich: Đo chức năng hô hấp
+  - van_ban: QĐ 3500/QĐ-BYT (bảng giá BV Nhi TW; chỉ dùng đối chiếu mã, không phải giá Vinmec)
+    ma: 02.0024.1791
+    file: data/van-ban/04-mau-gia-bv-nhi-tw/2024_QD-3500-QD-BYT_dieu-chinh-gia-PL1-PL3-QD3467.pdf
+    trang: 460
+  da_tra:
+  - PL01
+  - QD3500
+  - DM1
+  - DM2
+  - DM3
+  ghi_chu: DM2 mục 11 (STT theo TT 35) là 'Đo biến đổi thể tích toàn thân - Body Plethysmography', DM2 mục 9 là đo đa ký hô hấp; không phải dịch vụ này.

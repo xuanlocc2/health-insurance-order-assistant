@@ -10,18 +10,26 @@
 
 Schema này **thay thế** schema trong [data/rules/README.md](../data/rules/README.md).
 
+**Quyết định 13/11/2026 (bản 3):**
+- AI gọi **OpenAI API** (Structured Outputs, `response_format: json_schema, strict: true`). Model đặt trong `.env` (`OPENAI_MODEL`), không ghi cứng.
+- Chạy trên laptop, một tiến trình, không đăng nhập, không database, không Docker.
+- Bác sĩ chọn **xong mọi chỉ định** rồi mới gọi `POST /check` một lần. A1 được gọi **một lần cho cả lượt khám** (gom mọi vế `ai_doc` và trường số còn trống của mọi dòng). Toàn bộ `/check` phải xong trong < 10 giây: A1 hết giờ sau `A1_TIMEOUT_S` (mặc định 8) → mọi vế AI `chua_thay`.
+- Log chỉ dùng JSONL. Số liệu khảo sát lấy bằng script đọc JSONL khi cần.
+- Sau này có thể nạp dữ liệu mẫu đã ẩn danh của viện: đầu vào giữ đúng mục 4, thêm adapter riêng, engine không đổi. Trước khi gửi dữ liệu viện lên OpenAI phải hỏi IT/pháp chế (chính sách lưu dữ liệu của API).
+
 ## 1. Bố cục
 
 ```
 data/rules/
-  danh-muc.yaml        # R1: 50 dịch vụ {ma, ten, bi_danh[], bhyt: co|dieu_kien|khong_thay|xac_minh}, chuyển một lần từ file .md
+  danh-muc.yaml        # R1: 50 dịch vụ {ma, ma_chung?, ten, bi_danh[], bhyt: co|dieu_kien|khong_thay|xac_minh}, chuyển một lần từ file .md; ma_chung = mã chung nhiều dòng cùng dùng (docs/10 GD-01), không dùng để tra
   dieu-kien.yaml       # R3: điều kiện của CRP, PCT, Doppler (mục 2)
   tham-so.yaml         # ngưỡng, tuổi, tham chiếu (mục 3)
 src/
   engine.py            # một lượt khám → trạng thái từng dòng (mục 4–6); quy tắc R2 viết thẳng ở đây
   a1.py                # gọi LLM + kiểm tra trích dẫn (mục 7); có stub cho test
   log.py               # JSONL (mục 9)
-  app.py               # Streamlit (mục 10)
+  app.py               # FastAPI: POST /check, POST /confirm, phục vụ web/ (mục 10)
+web/                   # HTML/JS thuần, không build (mục 10)
 tests/                 # mục 11
 ```
 
@@ -62,7 +70,7 @@ Nhánh (HOẶC) → vế (VÀ) → loại trừ. Khoảng luôn **nửa mở** `
       ve: [{ id: C1, mo_ta: "Bệnh mạch vành, nhồi máu cơ tim", kiem: { loai: icd_trong, ds: ["I20", "I21", "I22", "I23", "I24", "I25"], nguon: tu_dung } }]
     - id: d_tu_mien
       ve: [{ id: D1, mo_ta: "Viêm da nhiễm độc, các bệnh tự miễn",
-             kiem: { loai: icd_trong, ds: ["M30.3", "M08", "M32", "D69.0", "L51"], nguon: tu_dung, diem_mo_ho: M-07 } }]
+             kiem: { loai: icd_trong, ds: ["L27", "L51", "M08", "M30", "M32", "D69.0", …], nguon: tu_dung, diem_mo_ho: M-07 } }]   # danh sách đầy đủ: data/rules, docs/10 GD-02
   diem_mo_ho: [M-01, M-02, M-04, M-06, M-07]
 ```
 
@@ -136,8 +144,10 @@ Không được chi trả > Cần xem lại > Cần xem lại · đủ căn cứ
 5. **R3 điều kiện:**
    a. Đánh giá mọi vế rule của các nhánh áp dụng.
    b. **Không có nhánh nào áp dụng → Cần xem lại.** Mọi nhánh đã có vế `khong_dat` từ dữ liệu nhập (không phải số A1) → Không được chi trả, không gọi A1.
-   c. Còn lại: gọi A1 **một lần** cho các vế `ai_doc` chưa có kết quả và các trường số còn trống của nhánh còn sống. Danh sách rỗng → không gọi.
+   c. Còn lại: thu các vế `ai_doc` chưa có kết quả và các trường số còn trống của nhánh còn sống.
    d. Gộp theo mục 6.
+
+**Hai pha cho cả lượt (bản 3):** pha 1 chạy bước 1–5c cho **mọi dòng**, gom câu hỏi AI của mọi dòng (khóa câu hỏi `"{thu_tu}:{id_ve}"`; trường số gom chung, không trùng). Gọi A1 **một lần** (rỗng → không gọi). Pha 2 điền kết quả A1 vào từng dòng rồi gộp. Một dòng `khong_dat` từ dữ liệu nhập ở mọi nhánh thì không gửi câu hỏi nào.
 
 ## 6. Gộp trạng thái (chốt 12/11/2026)
 
@@ -165,7 +175,7 @@ Không được chi trả > Cần xem lại > Cần xem lại · đủ căn cứ
 
 **Đầu vào:** phiếu khám nguyên văn; câu hỏi `{id, mo_ta, cau_hoi}`; trường số cần trích `{truong, don_vi}`.
 
-**Đầu ra:** JSON qua `output_config.format` (structured output; không dùng ép `tool_choice`).
+**Đầu ra:** JSON qua OpenAI Structured Outputs (`response_format` kiểu `json_schema`, `strict: true`).
 
 ```json
 { "ve": [ { "id": "V3", "ket_qua": "dat | chua_thay",
@@ -179,10 +189,12 @@ Không được chi trả > Cần xem lại > Cần xem lại · đủ căn cứ
 - Chuẩn hóa NFC, khoảng trắng, dấu phẩy thập phân → dấu chấm ở cả hai phía; đoạn trích phải là chuỗi con của phiếu khám.
 - `trich_dan` không khớp → vế `chua_thay`, log `loi: trich_dan_khong_khop`. `dat` mà `trich_dan` null → `chua_thay`. Phần tử `trich_lien_quan` không khớp → bỏ.
 - `so_lieu`: trích dẫn khớp, chứa `gia_tri` như **một token số trọn vẹn** (58 không khớp "158"), và nằm trong `khoang_hop_le`. Không đạt → trường vẫn trống.
-- Lỗi mạng, hết giờ, `stop_reason` là `refusal` hoặc `max_tokens` → mọi vế AI `chua_thay`. Không chặn bác sĩ.
+- Lỗi mạng, hết giờ (`A1_TIMEOUT_S`), model từ chối (`message.refusal`), hoặc `finish_reason` là `length` / `content_filter` → mọi vế AI `chua_thay`, ghi `loi`. Không chặn bác sĩ.
+- Đoạn trích phải trọn chữ/trọn số (không cắt giữa hai chữ cái, hai chữ số hay phần thập phân). Trích `dat` mà mệnh đề chứa nó có từ phủ định nằm ngoài đoạn trích (không, chưa, hết, âm tính, (-)…) → `chua_thay`, `loi: trich_dan_cat_phu_dinh`.
+- Mã `loi`: `a1_tat`, `a1_tu_choi`, `a1_bi_cat_do_dai`, `a1_bi_chan_noi_dung`, `a1_json_loi`, `a1_loi_<Exception>`, `trich_dan_khong_khop`, `trich_dan_cat_phu_dinh`.
 - Hiển thị: mở rộng đoạn trích ra trọn câu chứa nó, để bác sĩ thấy ngữ cảnh ("Mẹ đang viêm họng").
 
-**Model:** `.env`, mặc định `claude-opus-5-5`. Chỉ dữ liệu giả. Không chỉnh được `temperature`, nên kết quả chỉ cố định ở chế độ stub.
+**Model:** `.env` (`OPENAI_API_KEY`, `OPENAI_MODEL`, `A1_TIMEOUT_S`). Chỉ dữ liệu giả hoặc đã ẩn danh. Kết quả chỉ cố định ở chế độ stub.
 
 **Chế độ:** `A1_MODE=stub` (mặc định khi test) sinh kết quả A1 từ `ky_vong` của ca (vế AI + khối `a1_gia_lap.so_lieu` nếu ca cần trích số) → test engine chạy được từ tuần 3, không phụ thuộc LLM. `A1_MODE=live` chỉ dùng để đo chỉ số PRD mục 8.
 
@@ -207,10 +219,10 @@ Không được chi trả > Cần xem lại > Cần xem lại · đủ căn cứ
 | `the_het_han` | "Thẻ BHYT hết hạn {han_den}" |
 | `the_thieu` | "Chưa có thông tin thẻ BHYT" |
 | `khong_thay` | "Không tìm thấy trong danh mục kỹ thuật đã tra" |
-| `xac_minh` / `chua_tra` | "Chưa xác minh trong danh mục" / "Ngoài danh sách đã tra" |
+| `xac_minh` / `chua_tra` | "Có trong danh mục kỹ thuật nhưng chưa tìm thấy giá BHYT tương ứng, cần kiểm tra với bảng giá của viện" / "Ngoài danh sách đã tra" |
 | `trung_dong` | "Trùng dịch vụ trong cùng lượt khám" |
 | `tan_suat` | "Đã làm cách {gio} giờ; giới hạn {nen_gio} giờ" |
-| `ve_khong_dat` | "{mo_ta}: {bang_chung} chưa đạt" |
+| `ve_khong_dat` | Mỗi nhánh trượt nêu vế trượt đầu tiên: "{mo_ta}: {bang_chung} chưa đạt", nối bằng "; ". Các nhánh ICD gộp thành "ICD {mã} không thuộc nhóm '{mo_ta}', …" |
 | `ve_chua_thay` | "Điều kiện có vế '{mo_ta}'; phiếu khám chưa thấy nội dung tương ứng" |
 | `ve_chua_du` | "Chưa đủ dữ liệu cho vế '{mo_ta}'" |
 | `khong_nhanh` | "Không có nhánh điều kiện áp dụng cho tuổi này" |
@@ -236,13 +248,48 @@ Một dòng JSONL mỗi lần xác nhận một dòng chỉ định, chỉ ghi t
 
 ## 10. Màn hình mô phỏng (F-14)
 
-Streamlit, một trang: chọn ca → thẻ, sinh hiệu, ICD, phiếu khám bên trái; bảng chỉ định với ô BHYT gợi ý và trạng thái bên phải; bấm dòng → checklist, trích dẫn tô màu trong phiếu khám, nhãn "cách hiểu tạm" nếu có; nút Xác nhận ghi log. Engine nhận/trả JSON, nên khi gắn Eform/VIS chỉ thay lớp này.
+HTML/JS thuần (`web/`) gọi FastAPI (`src/app.py`); bố cục chốt sau khi duyệt mẫu ở `prototypes/`. Một trang: chọn ca → thẻ, sinh hiệu, ICD, phiếu khám bên trái; bảng chỉ định với ô BHYT gợi ý và trạng thái bên phải; bấm dòng → checklist, trích dẫn tô màu trong phiếu khám, nhãn "cách hiểu tạm" nếu có; nút Xác nhận ghi log. Engine nhận/trả JSON, nên khi gắn Eform/VIS chỉ thay lớp này.
 
 ## 11. Test
 
 - Chạy mọi `data/test-cases/*.yaml` ở `A1_MODE=stub`: so `trang_thai` từng dòng (khóa `thu_tu`), và `ket_qua` của vế có `id`.
 - Unit test bắt buộc: bảng gộp mục 6 (mọi tổ hợp nhánh, gồm không có nhánh áp dụng); số A1 `khong_dat` bị hạ; `ai_doc` với `toi_da`; trích dẫn sửa một chữ → `chua_thay` (AC-11); 58 không khớp "158"; số ngoài khoảng hợp lệ bị bỏ; R4 với hai dòng `ma: null` khác tên.
 - `he_chi_rule` sinh bằng máy theo mục 6 rồi so với giá trị trong ca.
+
+## 11b. Hợp đồng giữa các module (bản 3, để làm song song)
+
+```python
+# src/rules.py   (engine-owner viết)
+load_rules(dir="data/rules") -> Rules          # đọc 3 YAML, giải "@tham_so", tính phien_ban_rule = sha1 cả thư mục
+
+# src/engine.py
+check(luot: dict, rules: Rules, a1: A1Fn | None, mode="full" | "chi_rule") -> dict
+#   trả { "phien_ban_rule": str, "a1": {"goi": bool, "loi": str|None, "ms": int}, "dong": [<đầu ra mục 8>, ...] }
+#   a1=None ở mode="full" → coi như A1 lỗi (mọi vế AI chua_thay, loi="a1_tat")
+
+A1Fn = Callable[[A1Request], A1Result]
+A1Request = { "phieu_kham": str,
+              "cau_hoi": [ {"khoa": "2:V3", "mo_ta": str, "cau_hoi": str} ],
+              "so_lieu":  [ {"truong": "nhip_tho", "don_vi": "l/p"} ] }
+A1Result  = { "ve": [ {"khoa": "2:V3", "ket_qua": "dat"|"chua_thay", "trich_dan": str|None, "trich_lien_quan": [str]} ],
+              "so_lieu": [ {"truong": str, "gia_tri": float, "trich_dan": str} ],
+              "loi": str|None }              # ĐÃ qua kiểm tra trích dẫn mục 7; engine tin kết quả này
+
+# src/a1.py
+make_live(model, timeout_s) -> A1Fn            # OpenAI; luôn trả A1Result, không raise
+verify(phieu_kham, raw, khoang_hop_le) -> A1Result   # hàm thuần, kiểm tra mục 7
+# tests/stub_a1.py (engine-owner): make_stub(ca_test) -> A1Fn, sinh từ ky_vong + a1_gia_lap
+
+# src/log.py
+append(rows: list[dict], path="logs/xac-nhan.jsonl") -> None
+
+# src/app.py (FastAPI)
+POST /check   body = lượt khám (mục 4)            → kết quả check()
+POST /confirm body = {luot_kham, lan_tich, dau_vao, dong: [ {..đầu ra mục 8.., bac_si_chon, ly_do_bac_si} ]} → ghi log, trả {"ghi": n}
+GET  /cases   → danh sách ca demo (data/test-cases/demo.yaml, bỏ ky_vong)
+GET  /health  → {phien_ban_rule, a1_mode, model}
+GET  /        → web/index.html
+```
 
 ## 12. Truy vết PRD
 

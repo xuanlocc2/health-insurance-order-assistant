@@ -1,0 +1,11 @@
+# Fixture cho unit test engine (theo spec 09 mục 1). Không phải dữ liệu thật — xem data/rules/.
+- { ma: "22.0121.1369", ten: "Tổng phân tích tế bào máu ngoại vi", bi_danh: ["CTM"], bhyt: co }
+- { ma: "18.0119.0028", ten: "Chụp X-quang ngực thẳng", bhyt: co, can_cu: [{ van_ban: "TT 23/2024", phu_luc: "PL01" }] }
+- { ma: "23.0228.1483", ten: "Định lượng CRP", bhyt: dieu_kien }
+- { ma: "23.0130.1549", ten: "Định lượng Procalcitonin", bhyt: dieu_kien }
+- { ma: "18.0052.0004", ten: "Siêu âm doppler tim, van tim", bhyt: dieu_kien }
+- { ma: "23.0030.1472", ten: "Định lượng Canxi ion hóa", bhyt: co, nguon: tu_dung, diem_mo_ho: M-12 }
+- { ma: "23.0055.1489", ten: "Định lượng 25OH Vitamin D (D3)", bhyt: co }
+- { ma: null, ten: "Test nhanh RSV", bhyt: khong_thay, nguon: tu_dung, diem_mo_ho: M-13 }
+- { ma: null, ten: "Định lượng Kẽm", bi_danh: ["Kẽm"], bhyt: xac_minh, diem_mo_ho: M-13 }
+- { ma: "99.0000.0001", ten: "Dịch vụ điều kiện chưa có quy tắc", bhyt: dieu_kien }

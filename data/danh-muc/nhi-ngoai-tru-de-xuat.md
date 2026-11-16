@@ -59,10 +59,10 @@
 | # | Dịch vụ | Tình huống hay gặp | Mã tương đương | Giá (Nhi TW) | BHYT (sơ bộ) | Giữ? | Ghi chú |
 |---|---|---|---|---|---|---|---|
 | 25 | Influenza virus A, B test nhanh | Sốt, ho mùa cúm | 24.0243.1671 | 185.700 | Có | | |
-| 26 | Test nhanh RSV | Viêm tiểu phế quản trẻ nhỏ | — | — | **Không thấy** | | PL01 chỉ có RSV Ab (24.0252) và RSV Real-time PCR (24.0253) |
+| 26 | Test nhanh RSV | Viêm tiểu phế quản trẻ nhỏ | — | — | **Dòng chung** | | Không có dòng riêng. Tạm thu theo "Virus test nhanh" 24.0108.1720 (docs/10 GD-01) |
 | 27 | Test nhanh SARS-CoV-2 (Ag) | Sốt, ho | Có tên trong PL01 nhưng cột 2 không có mã | — | **Xác minh** | | |
-| 28 | Test nhanh Adenovirus | Sốt cao, viêm kết mạc, viêm họng | — | — | **Không thấy** | | PL01 chỉ có Adenovirus Real-time PCR (24.0232) |
-| 29 | Test nhanh liên cầu nhóm A | Viêm họng | — | — | **Không thấy** | | PL01 chỉ có ASO (24.0095) |
+| 28 | Test nhanh Adenovirus | Sốt cao, viêm kết mạc, viêm họng | — | — | **Dòng chung** | | Không có dòng riêng. Tạm thu theo "Virus test nhanh" 24.0108.1720 (docs/10 GD-01) |
+| 29 | Test nhanh liên cầu nhóm A | Viêm họng | — | — | **Dòng chung** | | Không có dòng riêng. Tạm thu theo "Vi khuẩn test nhanh" 24.0002.1720 (docs/10 GD-01) |
 | 30 | Dengue virus NS1Ag test nhanh | Sốt cấp ≤ 5 ngày | 24.0183.1637 | 142.500 | Có | | |
 | 31 | Dengue virus IgM/IgG test nhanh | Sốt > 5 ngày | 24.0187.1637 | 142.500 | Có | | |
 | 32 | Mycoplasma pneumoniae Ab (miễn dịch bán tự động) | Ho kéo dài, viêm phổi không điển hình | 24.0082 (mã giá 1689 hoặc 1690) | 273.000 / 182.700 | Có | | Có 2 mức giá, chưa rõ mức nào là IgM. Hỏi lab Vinmec |
@@ -95,7 +95,7 @@
 ## Tóm tắt cho bộ test
 
 - **Có điều kiện (rule R3 phải xử lý):** CRP, Procalcitonin, Doppler tim. CRP là ca quan trọng nhất vì Nhi chỉ định rất nhiều, và điều kiện cho trẻ em cần sinh hiệu (nhiệt độ, mạch, nhịp thở). Sinh hiệu có sẵn trong phiếu khám.
-- **Không thấy trong danh mục (rule R1 phải bắt):** test nhanh RSV, Adenovirus, liên cầu nhóm A.
+- **Không có dòng riêng, tạm thu theo dòng chung "Virus/Vi khuẩn test nhanh" (14/11, docs/10 GD-01):** test nhanh RSV, Adenovirus, liên cầu nhóm A. Hiện không còn dịch vụ nào "Không thấy".
 - **Cần xác minh:** Kẽm, test nhanh SARS-CoV-2, PCR đa tác nhân, mã giá Mycoplasma.
 - **Đoán sai:** Vitamin D và IgE toàn phần được nhóm đoán là ca thử, nhưng tra ra không có điều kiện riêng.
 

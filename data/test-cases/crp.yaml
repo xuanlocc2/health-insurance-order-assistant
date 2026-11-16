@@ -1,7 +1,8 @@
 # CRP — Định lượng CRP (23.0228.1483), TT 35/2016 sđ TT 39/2024, DM1 mục 7.
 # Nhánh trẻ em (a): V1 nhiệt độ ≤ 36 hoặc ≥ 38,3 (rule) · V2 nhịp tim HOẶC nhịp thở quá giới hạn theo tuổi (rule) · V3 nghi ổ nhiễm trùng (ai).
 # Nhánh b: nhiễm trùng sơ sinh (≤ 28 ngày, M-06). Nhánh c, d: chưa áp dụng (M-07).
-# Ngưỡng nhịp thở tạm (M-02): < 2 tháng ≥ 60; 2–11 tháng ≥ 50; 1–5 tuổi ≥ 40; > 5 tuổi: chưa có. Nhịp tim: chưa có.
+# Ngưỡng nhịp thở tạm (M-02): < 2 tháng ≥ 60; 2–11 tháng ≥ 50; 1–5 tuổi ≥ 40; > 5 tuổi: chưa có.
+# Nhịp tim (thang Úc, RACGP; docs/10 GD-08): 0–1 tuổi ≥ 161; 1–2 tuổi ≥ 151; 2–5 tuổi ≥ 141; 5–6 tuổi ≥ 121; ≥ 6 tuổi: chưa có.
 # Quy ước: xem README.md.
 
 - id: CRP-01
@@ -57,8 +58,8 @@
   diem_mo_ho: [M-02]
 
 - id: CRP-04
-  ten: "Nhịp thở chưa vượt, mạch nhanh — chưa có ngưỡng nhịp tim"
-  muc_dich: "V2 là HOẶC: nhịp thở không đạt, nhịp tim không có ngưỡng → chưa đủ dữ liệu, không được kết luận Không được chi trả."
+  ten: "Nhịp thở chưa vượt, mạch nhanh — đạt nhờ nhịp tim"
+  muc_dich: "V2 là HOẶC: nhịp thở 46 < 50 nhưng mạch 175 ≥ 161 (bảng RACGP 0–1 tuổi, docs/10 GD-08) → V2 đạt."
   benh_nhan: { tuoi_thang: 7 }
   icd: [N39.0]
   sinh_hieu: { nhiet_do: 39.0, mach: 175, nhip_tho: 46 }
@@ -66,12 +67,12 @@
   chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
   ky_vong:
     - ma: "23.0228.1483"
-      trang_thai: "Cần xem lại"
+      trang_thai: "Cần xem lại · đủ căn cứ"
       ve:
         - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, ket_qua: dat, bang_chung: "39,0" }
-        - { id: V2, mo_ta: "nhịp tim/thở", kiem_bang: rule, ket_qua: chua_du_du_lieu, bang_chung: "nhịp thở 46 < 50; mạch 175 nhưng chưa có ngưỡng nhịp tim" }
+        - { id: V2, mo_ta: "nhịp tim/thở", kiem_bang: rule, ket_qua: dat, bang_chung: "nhịp thở 46 < 50; mạch 175 ≥ 161" }
         - { id: V3, mo_ta: "ổ nhiễm trùng", kiem_bang: ai, ket_qua: dat, trich_dan: "Nước tiểu đục, mùi hôi" }
-  he_chi_rule: "Cần xem lại"
+  he_chi_rule: "Phù hợp quy tắc BHYT"
   diem_mo_ho: [M-02]
 
 - id: CRP-05

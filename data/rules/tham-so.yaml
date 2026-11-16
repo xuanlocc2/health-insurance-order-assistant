@@ -1,0 +1,38 @@
+# Ngưỡng và bảng dùng trong dieu-kien.yaml (docs/09-spec.md mục 3). Khoảng nửa mở [tu, den).
+# KHÔNG giá trị nào ở đây có trong văn bản BHYT: tất cả là tự dựng, chờ bác sĩ duyệt (docs/06). Nguồn: NGUON.md.
+
+# "Trẻ em" = [0, 192) tháng, tức dưới 16 tuổi. TT 35/2016 và TT 39/2024 không định nghĩa. Bác sĩ chốt 14/11/2026 (M-01).
+tre_em_den_thang: { gia_tri: 192, don_vi: thang, nguon: bac_si_duyet, diem_mo_ho: M-01 }
+
+# "Giới hạn sinh lý theo tuổi" của nhịp thở: ngưỡng thở nhanh của WHO. Văn bản không dẫn bảng nào.
+nhip_tho_nhanh:
+  nguon: tu_dung
+  diem_mo_ho: M-02
+  don_vi: "lần/phút"
+  bang:                     # tuổi tháng [tu, den) → nhịp thở ≥ ngưỡng
+    - { tu: 0, den: 2, nguong: 60 }
+    - { tu: 2, den: 12, nguong: 50 }
+    - { tu: 12, den: 60, nguong: 40 }
+  # Từ 60 tháng trở lên: chưa có ngưỡng → vế "chưa đủ dữ liệu".
+
+# Nhịp tim: bác sĩ chọn "thang Úc" (14/11/2026). Bảng cụ thể do nhóm chọn, chờ xác nhận (docs/10 GD-08):
+# RACGP, "Sick child assessment — Normal ranges for respiratory and heart rates" (Royal Australian College of GPs),
+# https://gplearning.racgp.org.au/Content/gplearning/ALM/SickChild/Sick_child_assessment.pdf, trang 1.
+# Khoảng bình thường: 0–1 tuổi 110–160; 1–2 tuổi 100–150; 2–5 tuổi 95–140; 5–6 tuổi 80–120 lần/phút.
+# Nhịp nhanh = vượt cận trên → ngưỡng ≥ cận trên + 1 (cùng mốc với định nghĩa nhịp nhanh của APLS ở trang 2: > 160 / > 150 / > 140).
+# Từ 72 tháng (6 tuổi) trở lên: bảng RACGP không có → "chưa đủ dữ liệu". Cần bảng RCH Melbourne (có đến ≥ 14 tuổi) khi tải được.
+nhip_tim_nhanh:
+  nguon: tu_dung
+  diem_mo_ho: M-02
+  don_vi: "lần/phút"
+  bang:                     # tuổi tháng [tu, den) → mạch ≥ ngưỡng
+    - { tu: 0, den: 12, nguong: 161 }
+    - { tu: 12, den: 24, nguong: 151 }
+    - { tu: 24, den: 60, nguong: 141 }
+    - { tu: 60, den: 72, nguong: 121 }
+
+# "Giá trị tham chiếu" Procalcitonin: tạm 0,5 ng/mL; phải thay bằng giá trị của lab Vinmec.
+pct_tham_chieu: { gia_tri: 0.5, don_vi: ng/mL, nguon: tu_dung, diem_mo_ho: M-10 }
+
+# Chốt kỹ thuật, không phải quy tắc BHYT: khoảng số hợp lệ để chặn số A1 trích nhầm từ phiếu khám.
+khoang_hop_le: { nhiet_do: [34, 43], mach: [40, 250], nhip_tho: [10, 120] }

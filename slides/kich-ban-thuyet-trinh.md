@@ -18,15 +18,17 @@ Thử nghiệm trước với xét nghiệm, chẩn đoán hình ảnh và dịc
 
 ## 3. Ví dụ (~45 giây)
 
-Ví dụ bé A, 5 tuổi, khám ngoại trú vì đau bụng, mã bệnh R10.4. Bác sĩ chỉ định ba thứ.
+Bốn tình huống, dữ liệu giả. Hình dung trợ lý như người kiểm hàng ở cổng: món có trong danh sách và không đòi giấy tờ riêng thì cho qua.
 
-Công thức máu: có trong danh mục, hợp lý do khám — trợ lý tích sẵn.
+Siêu âm ổ bụng, mã bệnh đau bụng R10.4: dịch vụ không có điều kiện riêng, nên báo phù hợp quy tắc BHYT, tích sẵn.
 
-Siêu âm ổ bụng: mã bệnh chỉ là triệu chứng chung, quy tắc không kết luận được. Trợ lý đọc phiếu khám, thấy dòng "đau hố chậu phải, ấn đau", đưa ra để bác sĩ tự chọn.
+CRP của bé 3 tuổi sốt 39,2 độ, amidan có mủ: sinh hiệu đạt, phiếu khám có dòng "amidan hai bên sưng to, có mủ trắng". Trợ lý trích nguyên văn, báo cần xem lại nhưng đủ căn cứ, tích sẵn và tô màu để bác sĩ đọc lướt.
 
-CRP: trùng với lần đã làm ngày 08/11 — báo không được chi trả, để trống.
+CRP của bé 4 tháng sốt sau tiêm: sinh hiệu đạt, nhưng phiếu khám chưa thấy ổ nhiễm trùng. Báo cần xem lại, để trống cho bác sĩ quyết. Nếu chỉ dùng quy tắc thì dòng này đã báo phù hợp.
 
-Bác sĩ xem, sửa nếu cần, rồi bấm xác nhận. Ví dụ này dùng dữ liệu giả.
+CRP chỉ định hai lần trong cùng lượt khám: cần xem lại, bác sĩ quyết.
+
+Trợ lý chỉ nói về căn cứ BHYT, không nhận xét chỉ định. Bác sĩ xem, sửa nếu cần, rồi bấm xác nhận.
 
 ## 4. Lợi ích (~30 giây)
 

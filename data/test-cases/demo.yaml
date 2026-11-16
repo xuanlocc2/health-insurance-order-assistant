@@ -20,7 +20,7 @@
     - { ma: "23.0228.1483", trang_thai: "Cần xem lại · đủ căn cứ", trich_dan: "Phổi ran ẩm nhỏ hạt đáy phổi phải" }
     - { ma: "18.0119.0028", trang_thai: "Phù hợp quy tắc BHYT" }
     - { ma: "24.0243.1671", trang_thai: "Phù hợp quy tắc BHYT" }
-    - { ten: "Test nhanh RSV", trang_thai: "Không được chi trả" }
+    - { ten: "Test nhanh RSV", trang_thai: "Phù hợp quy tắc BHYT" }   # giả định GD-01 (docs/10)
   diem_mo_ho: [M-02, M-13]
 
 - id: DEMO-02
@@ -44,7 +44,7 @@
     - { ma: "23.0228.1483", trang_thai: "Cần xem lại · đủ căn cứ" }
     - { ma: "18.0119.0028", trang_thai: "Phù hợp quy tắc BHYT" }
     - { ma: "24.0243.1671", trang_thai: "Phù hợp quy tắc BHYT" }
-    - { ten: "Test nhanh RSV", trang_thai: "Không được chi trả" }
+    - { ten: "Test nhanh RSV", trang_thai: "Phù hợp quy tắc BHYT" }   # giả định GD-01 (docs/10)
     - { ma: "23.0130.1549", trang_thai: "Cần xem lại", ly_do: "Chưa thấy nhiễm trùng huyết hoặc rối loạn ≥ 2 cơ quan trong phiếu khám" }
   diem_mo_ho: [M-02, M-08, M-13]
 
@@ -62,7 +62,7 @@
     - { ma: "23.0206.1596", ten: "Tổng phân tích nước tiểu" }
   ky_vong:
     - { ma: "22.0121.1369", trang_thai: "Phù hợp quy tắc BHYT" }
-    - { ma: "23.0228.1483", trang_thai: "Không được chi trả", ly_do: "Nhiệt độ 37,2°C chưa đạt ngưỡng" }
+    - { ma: "23.0228.1483", trang_thai: "Không được chi trả", ly_do: "Nhiệt độ 37,2 chưa đạt; ICD R10.4 không thuộc nhóm mạch vành, bệnh tự miễn (M-07)" }
     - { ma: "18.0015.0001", trang_thai: "Phù hợp quy tắc BHYT" }
     - { ma: "23.0206.1596", trang_thai: "Phù hợp quy tắc BHYT" }
   diem_mo_ho: [M-16]

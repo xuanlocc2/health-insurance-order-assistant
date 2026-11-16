@@ -52,3 +52,39 @@ bhyt-order-assistant/
 `slides/deck/` là bản sao file của artifact Slides (bản 10/11/2026). Mỗi slide là một `<section>` 1920×1080, style inline, ghi chú người nói nằm trong `<aside>`; thứ tự slide nằm ở `deck.json → order`. Để sửa và đăng lại: nhờ Claude publish thư mục này lên cùng URL artifact (root = `slides/deck/..`, đường dẫn phục vụ `project/deck.json`, `project/slides/*.html`), hoặc copy từng `<section>` sang deck khác.
 
 Bảng màu: nền tối `#16324F`, nền sáng `#F7F8F5` / `#EEF3F1`, nhấn `#0F7B6C`, thẻ `#FDFDFB`, chữ `#3E5468`. Font Be Vietnam Pro. Cỡ chữ: eyebrow 34, h2 68, số lớn 80, h3 40, body 34, chú thích 24.
+
+## Chạy demo
+
+### Lần đầu: cài đặt môi trường
+```powershell
+# Windows
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+copy .env.example .env
+# Sửa .env: điền OPENAI_API_KEY, OPENAI_MODEL. Không có khóa thì để A1_MODE=off
+```
+
+```bash
+# Linux/macOS
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+# Sửa .env: điền OPENAI_API_KEY, OPENAI_MODEL
+```
+
+### Lần sau: kích hoạt môi trường rồi chạy
+```powershell
+# Windows
+.\venv\Scripts\Activate.ps1
+python -m uvicorn src.app:app --host 127.0.0.1 --port 8000
+```
+
+```bash
+# Linux/macOS
+source venv/bin/activate
+uvicorn src.app:app --host 127.0.0.1 --port 8000
+```
+
+Mở http://127.0.0.1:8000. Chọn ca và lần tích, tích các chỉ định, bấm "Kiểm tra BHYT" (một lần gọi `/check`), rồi "Xác nhận" để ghi `logs/xac-nhan.jsonl`. Chỉ dùng dữ liệu giả hoặc đã ẩn danh. Test: `pytest tests/test_app.py`.

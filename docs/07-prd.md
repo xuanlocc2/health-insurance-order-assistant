@@ -73,7 +73,7 @@ Ca lấy từ [a1-seed.yaml](../data/test-cases/a1-seed.yaml); các ca còn lạ
 | AC-03 | A1-03: ô nhịp thở trống, "thở nhanh 58 l/p" trong phiếu | A1 trích 58, rule kết luận đạt (≥ 50) |
 | AC-04 | A1-04: PCT ngoại trú, trẻ tỉnh | Cần xem lại, cả hai nhánh = chưa thấy |
 | AC-05 | A1-05: PCT tái khám, hết sốt | Cần xem lại (không phải Không được chi trả), có đánh dấu điều khoản loại trừ |
-| AC-06 | Test nhanh RSV | Không được chi trả (R1) |
+| AC-06 | Test nhanh RSV | Phù hợp quy tắc BHYT, hậu tố "cách hiểu tạm M-13" (giả định GD-01: thu theo mã chung "Virus test nhanh", [10](10-gia-dinh.md)) |
 | AC-07 | Siêu âm ổ bụng + ICD R10.4 | Phù hợp quy tắc BHYT, A1 không chạy |
 | AC-08 | CRP chỉ định 2 lần cùng lượt | Dòng thứ hai: Cần xem lại, lý do "trùng dòng" (R4) |
 | AC-09 | Thẻ hết hạn | Mọi dòng: Không được chi trả (R2) |

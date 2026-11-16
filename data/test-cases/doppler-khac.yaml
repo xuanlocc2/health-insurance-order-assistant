@@ -1,5 +1,5 @@
-# Siêu âm doppler tim, van tim (18.0052.0004), DM2 mục 48: không thanh toán khi làm cùng thời điểm với siêu âm tim cản âm.
-# "Cùng thời điểm" tạm = cùng lượt khám (M-11). Mã siêu âm tim cản âm chưa tra → ma: null.
+# Siêu âm doppler tim, van tim (18.0052.0004), DM2 STT 48 (STT theo TT 35: mục 109): không thanh toán khi làm cùng thời điểm với siêu âm tim cản âm.
+# "Cùng thời điểm" tạm = cùng lượt khám (M-11). Ca thử để ma: null cho siêu âm tim cản âm (mã đã tra: 02.0115.0005, 02.0444.0005, 18.0051.0005; xem NGUON.md mục 2.4c).
 
 - id: DOP-01
   ten: "Doppler tim đơn thuần, tiếng thổi"

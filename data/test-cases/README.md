@@ -38,4 +38,4 @@ Còn chỗ cho 10–20 ca dựng lại từ lời kể xuất toán của bác s
 
 - Phiếu khám do LLM viết có thể dễ đọc với LLM hơn phiếu thật. Bù lại bằng: bác sĩ gán nhãn ~30 ca (tuần 4), và nhờ bác sĩ viết lại 3–5 phiếu theo đúng văn phong thường ngày.
 - R2 dùng quy tắc tạm (`nguon: tu_dung`) cho đến khi tra xong Luật BHYT sửa đổi 51/2024, TT 01/2025.
-- Mã siêu âm tim cản âm chưa tra (`ma: null`).
+- Ca thử để `ma: null` cho siêu âm tim cản âm; mã đã tra là `02.0115.0005`, `02.0444.0005`, `18.0051.0005` (`data/rules/NGUON.md` mục 2.4c).

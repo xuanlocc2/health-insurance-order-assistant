@@ -86,7 +86,7 @@ Lấy từ [a1-seed.yaml](../data/test-cases/a1-seed.yaml) (chi tiết từng v�
 |---|---|---|---|---|
 | A1-02 · 3 tuổi, sốt 39,2°C, amidan có mủ | CRP | Cần xem lại · đủ căn cứ | Sinh hiệu đạt (rule); "nghi ổ nhiễm trùng" có trích dẫn "Amidan 2 bên sưng to, có mủ trắng" (A1) | Tích sẵn, tô màu |
 | A1-01 · 4 tháng, sốt sau tiêm | CRP | Cần xem lại | Sinh hiệu đạt, nhưng phiếu khám chưa thấy ổ nhiễm trùng ("sau tiêm vắc xin 6 trong 1", "không ho", "phổi không ran"). Hệ chỉ rule sẽ báo Phù hợp | Để trống |
-| (minh họa R4) | CRP chỉ định 2 lần trong cùng lượt khám | Không được chi trả | Trùng trong cùng lượt khám (M-15) | Để trống |
+| (minh họa R4) | CRP chỉ định 2 lần trong cùng lượt khám | Cần xem lại | Trùng trong cùng lượt khám; văn bản không có điều khoản nên không kết luận Không được chi trả (M-15) | Để trống |
 | (minh họa) | Siêu âm ổ bụng, ICD R10.4 | Phù hợp quy tắc BHYT | Có trong danh mục, không có điều kiện riêng (M-16) | Tích sẵn |
 
 ## Phạm vi Rule-based và AI
@@ -112,7 +112,23 @@ BHYT là bài toán chữ ở cả hai đầu: quy định là văn xuôi, hồ 
 | Mã | Việc | Khi nào chạy | Đầu ra | Vì sao rule không làm được |
 |---|---|---|---|---|
 | A1 | **Đọc hồ sơ như giám định viên:** đối chiếu từng vế văn xuôi của điều kiện chi trả thành văn (vd CRP: "nghi ổ nhiễm trùng") với phiếu khám. Dịch vụ không có điều kiện riêng thì A1 không chạy, kể cả khi ICD chỉ là triệu chứng (M-16) | Mỗi lần tích, khi điều kiện có vế văn xuôi | Checklist từng vế: ✅ kèm trích dẫn nguyên văn / ⚠️ "chưa thấy trong phiếu khám". Mọi vế ✅ → "Cần xem lại · đủ căn cứ"; còn ⚠️ → "Cần xem lại". Không đánh giá lý do đủ hay không | ~83% tiền bị cắt (2018–2022) đến từ người đọc hồ sơ; từ khóa không xử lý được phủ định ("không sốt") và viết tắt |
+| A3 | *Đã cân nhắc và loại (16/11/2026), xem bên dưới.* Lưu ý hồ sơ do AI tự đánh giá | — | — | — |
 | A2 | *Đã bỏ (11/11/2026).* Hỏi đáp tự do (chatbot) rủi ro cao, khó kiểm soát và đánh giá | — | — | — |
+
+**Dịch vụ lạc đề với hồ sơ (vd PT, APTT cho trẻ ho sốt) — cách xử lý (chốt 16/11/2026)**
+
+Đã thử A3: AI tự xem hồ sơ có nêu lý do cho từng chỉ định không, gắn nhãn "Hồ sơ chưa nêu lý do chỉ định". **Loại**, vì:
+1. Phá nguyên tắc "chỉ cảnh báo khi có căn cứ thành văn"; với Hội đồng chuyên môn đó là hệ thống hỗ trợ quyết định lâm sàng, không còn là công cụ BHYT.
+2. Log "hệ thống đã cảnh báo, bác sĩ vẫn chỉ định" thành bằng chứng bất lợi cho chính bác sĩ khi bị xuất toán.
+3. Thiệt hại lệch: AI bỏ sót thì không mất gì; AI báo nhầm thì trẻ có thể mất một xét nghiệm cần.
+4. Khuyến khích ghi một câu mẫu cho tắt nhãn: dẫn dắt, trái nguyên tắc CDI.
+5. Không đo được nếu không có bác sĩ gán nhãn từng cặp (ca, dịch vụ), tức là quay lại dựng chuẩn chuyên môn (M-14).
+
+Thay bằng hai thay đổi không cần AI phán xét:
+- **Câu chữ:** dòng chỉ khớp danh mục (không có điều kiện riêng) hiển thị "Có trong danh mục BHYT", không ghi "Phù hợp". Trạng thái lưu trong log giữ nguyên. Chữ "Phù hợp quy tắc BHYT" chỉ còn ở dòng đã qua kiểm tra điều kiện.
+- **Nhắc thiếu chẩn đoán chính** ở mức lượt khám, không đổi trạng thái dòng, vì lần tích 1 chỉ định trước khi có chẩn đoán là bình thường. Căn cứ: QĐ 4750/QĐ-BYT, phụ lục bảng chỉ tiêu XML, Bảng 1 trường 26 `MA_BENH_CHINH` (tr. 12) và Bảng 3 trường 35 `MA_BENH` (tr. 41): "Trường hợp không có thông tin ở trường này thì được hiểu là DVKT được chỉ định để điều trị bệnh chính (MA_BENH_CHINH)."
+
+Code A3 giữ lại sau công tắc `LQ_MODE=live` (mặc định tắt) để đo khi có dữ liệu thật; không bật cho người dùng.
 
 **Nút "Vì sao?" trên mỗi dòng:** không dùng LLM — mẫu câu + nguyên văn căn cứ lấy từ YAML của rule. Chắc chắn đúng, không bịa được.
 
@@ -120,9 +136,22 @@ BHYT là bài toán chữ ở cả hai đầu: quy định là văn xuôi, hồ 
 
 Checklist từng vế cho các dịch vụ có điều kiện trong MVP (CRP, Procalcitonin, Doppler tim) do nhóm dựng tay từ văn bản, bác sĩ duyệt.
 
+**Nhập nhằng: chốt phần văn bản, AI đọc phần hồ sơ, học dần từ thực tế (chốt 14/11/2026)**
+
+| Loại nhập nhằng | Số lượng | Cách xử lý |
+|---|---|---|
+| Nghĩa câu chữ trong văn bản (vd "trẻ em" là bao nhiêu tuổi, ngưỡng nhịp nhanh, PCT làm lại < 24h) | Hữu hạn, khoảng 20 điểm ([06](06-diem-mo-ho-bac-si-duyet.md) M-01…M-20) | Bác sĩ chốt một lần → thành rule, áp cho mọi ca |
+| Cách bác sĩ ghi phiếu (vd "TD viêm tai", "chưa loại trừ NKH", "ở nhà sốt 39 độ") | Vô hạn, không liệt kê hết | A1 đọc và đoán, kèm trích nguyên văn → bác sĩ xem lại |
+
+- Không cố viết rule cho từng cách ghi phiếu. 45 ca khó ([a1-kho.yaml](../data/eval/a1-kho.yaml)) là bộ đề để **đo** A1 sai bao nhiêu và sai kiểu gì, không phải danh sách để phủ hết.
+- AI đoán sai không được làm dòng thành "Phù hợp": cao nhất là "Cần xem lại · đủ căn cứ"; không chắc → "chưa thấy". Chỉ số chặn: số dòng báo thuận lợi hơn kỳ vọng = 0.
+- Rủi ro chính là bác sĩ đồng ý theo quán tính (automation bias) → luôn hiện câu trích để nhìn là kiểm được.
+- **Học dần từ thực tế:** log ghi lần bác sĩ không đồng ý với A1 và lý do. Cách ghi nào lặp lại nhiều thì mới đưa thành nguyên tắc (hỏi bác sĩ chốt) hoặc thêm vào bộ ca thử. Về sau ghép với danh sách xuất toán (vòng học bên dưới).
+
 **Hướng mở rộng (đề xuất riêng, ngoài MVP): vòng học của từng viện**
 - **Biên dịch luật thành rule:** AI đọc điều kiện văn xuôi (~56 dịch vụ trong TT 35/39, file Excel của viện) → đề xuất checklist từng vế + YAML kèm căn cứ, người duyệt.
 - **Học từ xuất toán:** AI đọc lý do xuất toán của BHXH, ghép với log → đề xuất rule cho lớp overrides.
+- **Cảnh báo dịch vụ lạc đề có căn cứ:** chỉ cảnh báo cặp (dịch vụ, nhóm chẩn đoán) mà BHXH đã từng xuất toán tại chính viện với lý do "chỉ định không phù hợp chẩn đoán", trích đúng biên bản đó. Khác A3 (đã loại): có căn cứ thành văn, không do AI phán xét. Cần dữ liệu xuất toán của viện.
 - **Gói giải trình:** gom log + checklist + trích dẫn thành bản nháp giải trình khi bị xuất toán.
 - **Mapping tên dịch vụ nội bộ → mã chuẩn** khi tích hợp thật.
 

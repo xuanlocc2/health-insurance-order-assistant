@@ -1,0 +1,67 @@
+# Fixture cho unit test engine (theo spec 09 mục 2). Không phải dữ liệu thật — xem data/rules/.
+"23.0228.1483":
+  ten: "Định lượng CRP"
+  nguyen_van: "Chẩn đoán, theo dõi một trong các trường hợp sau đây: ..."
+  can_cu: [{ van_ban: "TT 35/2016 sđ TT 39/2024", phu_luc: "DM1", stt: 7 }]
+  nhanh:
+    - id: a_tre_em
+      ap_dung: { tuoi_thang: [0, "@tre_em_den_thang"] }
+      ve:
+        - id: V1
+          mo_ta: "Nhiệt độ ≤ 36°C hoặc ≥ 38,3°C"
+          hoac:
+            - { loai: so_sanh, truong: nhiet_do, toan_tu: "<=", gia_tri: 36, don_vi: "°C" }
+            - { loai: so_sanh, truong: nhiet_do, toan_tu: ">=", gia_tri: 38.3, don_vi: "°C" }
+        - id: V2
+          mo_ta: "Nhịp tim hoặc nhịp thở quá giới hạn sinh lý theo tuổi"
+          hoac:
+            - { loai: nguong_theo_tuoi, truong: nhip_tho, bang: "@nhip_tho_nhanh", don_vi: "l/p" }
+            - { loai: nguong_theo_tuoi, truong: mach, bang: "@nhip_tim_nhanh", don_vi: "l/p" }
+        - id: V3
+          mo_ta: "Nghi ngờ có ổ nhiễm trùng"
+          kiem: { loai: ai_doc, cau_hoi: "Phiếu khám có ghi một ổ hoặc dấu hiệu nhiễm trùng cụ thể của chính bệnh nhân không?" }
+    - id: a_nguoi_lon
+      ap_dung: { tuoi_thang: ["@tre_em_den_thang", null] }
+      ve: [{ id: A1, mo_ta: "Ít nhất 02 trong 04 tiêu chuẩn (người lớn) — chưa mã hóa" }]
+    - id: b_so_sinh
+      ap_dung: { tuoi_ngay: [0, 29], nguon: tu_dung, diem_mo_ho: M-06 }
+      ve:
+        - id: B1
+          mo_ta: "Nhiễm trùng sơ sinh"
+          kiem: { loai: icd_trong, ds: ["P36"], nguon: tu_dung, neu_khong_khop: ai_doc,
+                  cau_hoi: "Phiếu khám có ghi nghi ngờ hoặc dấu hiệu nhiễm trùng sơ sinh không?" }
+    - id: c_mach_vanh
+      ve: [{ id: C1, mo_ta: "Bệnh mạch vành, nhồi máu cơ tim", kiem: { loai: icd_trong, ds: ["I20", "I21", "I22", "I23", "I24", "I25"], nguon: tu_dung } }]
+    - id: d_tu_mien
+      ve: [{ id: D1, mo_ta: "Viêm da nhiễm độc, các bệnh tự miễn",
+             kiem: { loai: icd_trong, ds: ["M30.3", "M08", "M32", "D69.0", "L51"], nguon: tu_dung, diem_mo_ho: M-07 } }]
+  diem_mo_ho: [M-01, M-02, M-04, M-06, M-07]
+
+"23.0130.1549":
+  ten: "Định lượng Procalcitonin"
+  nguyen_van: "b) Đối với trẻ em: Chẩn đoán và theo dõi các trường hợp nhiễm trùng huyết; ..."
+  can_cu: [{ van_ban: "TT 35/2016 sđ TT 39/2024", phu_luc: "DM1", stt: 8 }]
+  nhanh:
+    - id: n1_nhiem_trung_huyet
+      ap_dung: { tuoi_thang: [0, "@tre_em_den_thang"] }
+      ve: [{ id: N1, mo_ta: "Nhiễm trùng huyết", kiem: { loai: ai_doc, cau_hoi: "Phiếu khám có ghi nghi ngờ nhiễm trùng huyết không?" } }]
+    - id: n2_suy_da_co_quan
+      ap_dung: { tuoi_thang: [0, "@tre_em_den_thang"] }
+      ve: [{ id: N2, mo_ta: "Rối loạn chức năng từ 2 cơ quan trở lên",
+             kiem: { loai: ai_doc, cau_hoi: "Phiếu khám ghi dấu hiệu rối loạn chức năng cơ quan nào?", toi_da: chua_thay, diem_mo_ho: M-09 } }]
+  tan_suat: { toi_thieu_gio: 24, nen_gio: 48, nguon: tu_dung, diem_mo_ho: M-10 }
+  loai_tru:
+    mo_ta: "Hết dấu hiệu chỉ định và Procalcitonin ≤ 02 lần giá trị tham chiếu"
+    ve:
+      - { id: X1, mo_ta: "Hết dấu hiệu chỉ định", kiem: { loai: ai_doc, cau_hoi: "Phiếu khám có ghi bệnh nhân đã hết các dấu hiệu nhiễm trùng không?" } }
+      - { id: X2, mo_ta: "PCT lần trước ≤ 2 × tham chiếu",
+          kiem: { loai: lich_su_so_sanh, ma: "23.0130.1549", toan_tu: "<=", he_so: 2, tham_chieu: "@pct_tham_chieu" } }
+
+"18.0052.0004":
+  ten: "Siêu âm doppler tim, van tim"
+  nguyen_van: "Không thanh toán khi thực hiện ... Siêu âm tim có cản âm khi chỉ định thực hiện cùng một thời điểm"
+  can_cu: [{ van_ban: "TT 35/2016 sđ TT 39/2024", phu_luc: "DM2", stt: 48 }]
+  nhanh:
+    - id: khong_cung_can_am
+      ve: [{ id: D1, mo_ta: "Không làm cùng lượt với siêu âm tim cản âm",
+             kiem: { loai: khong_cung_luot, ma_hoac_bi_danh: ["Siêu âm tim cản âm", "Siêu âm tim có cản âm"], diem_mo_ho: M-11 } }]

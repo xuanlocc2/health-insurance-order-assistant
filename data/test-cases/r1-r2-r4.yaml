@@ -4,7 +4,7 @@
 
 # ---------- R1 ----------
 - id: R1-01
-  ten: "Bộ test nhanh hô hấp: cúm có, RSV và Adeno không thấy"
+  ten: "Bộ test nhanh hô hấp: cúm, RSV, Adeno (RSV/Adeno theo mã chung, giả định GD-01)"
   benh_nhan: { tuoi_thang: 20 }
   icd: [J06.9]
   sinh_hieu: { nhiet_do: 38.4, mach: 140, nhip_tho: 38 }
@@ -15,8 +15,8 @@
     - { ma: null, ten: "Test nhanh Adenovirus" }
   ky_vong:
     - { ma: "24.0243.1671", trang_thai: "Phù hợp quy tắc BHYT" }
-    - { ten: "Test nhanh RSV", trang_thai: "Không được chi trả", ly_do: "Không có trong danh mục kỹ thuật BHYT" }
-    - { ten: "Test nhanh Adenovirus", trang_thai: "Không được chi trả", ly_do: "Không có trong danh mục kỹ thuật BHYT" }
+    - { ten: "Test nhanh RSV", trang_thai: "Phù hợp quy tắc BHYT", ly_do: "Có trong danh mục đã tra (mã chung, giả định GD-01)" }
+    - { ten: "Test nhanh Adenovirus", trang_thai: "Phù hợp quy tắc BHYT", ly_do: "Có trong danh mục đã tra (mã chung, giả định GD-01)" }
   diem_mo_ho: [M-13]
 
 - id: R1-02
@@ -27,7 +27,7 @@
   phieu_kham: "Đau họng, sốt. Amidan sưng đỏ, có chấm xuất huyết vòm họng, hạch cổ đau."
   chi_dinh: [{ ma: null, ten: "Test nhanh liên cầu nhóm A" }]
   ky_vong:
-    - { ten: "Test nhanh liên cầu nhóm A", trang_thai: "Không được chi trả", ly_do: "Không có trong danh mục kỹ thuật BHYT" }
+    - { ten: "Test nhanh liên cầu nhóm A", trang_thai: "Phù hợp quy tắc BHYT", ly_do: "Có trong danh mục đã tra (mã chung, giả định GD-01)" }
   diem_mo_ho: [M-13]
 
 - id: R1-03
@@ -40,8 +40,8 @@
     - { ma: null, ten: "Test nhanh SARS-CoV-2 (Ag)" }
     - { ma: null, ten: "PCR đa tác nhân hô hấp" }
   ky_vong:
-    - { ten: "Test nhanh SARS-CoV-2 (Ag)", trang_thai: "Cần xem lại", ly_do: "Chưa xác minh trong danh mục" }
-    - { ten: "PCR đa tác nhân hô hấp", trang_thai: "Cần xem lại", ly_do: "Chưa xác minh trong danh mục" }
+    - { ten: "Test nhanh SARS-CoV-2 (Ag)", trang_thai: "Cần xem lại", ly_do: "Có trong danh mục kỹ thuật nhưng chưa tìm thấy giá BHYT tương ứng, cần kiểm tra với bảng giá của viện" }
+    - { ten: "PCR đa tác nhân hô hấp", trang_thai: "Cần xem lại", ly_do: "Có trong danh mục kỹ thuật nhưng chưa tìm thấy giá BHYT tương ứng, cần kiểm tra với bảng giá của viện" }
   diem_mo_ho: [M-13]
 
 - id: R1-04
