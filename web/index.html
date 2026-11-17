@@ -48,8 +48,8 @@ button.primary{background:var(--accent);border-color:var(--accent);color:#fff;fo
 button.primary:hover{filter:brightness(1.07)}
 button.link{border:0;background:none;color:var(--accent);font-weight:600;padding:2px 4px;font-size:var(--fs-sm)}
 button.link:hover{text-decoration:underline;background:none}
-select,input[type=text]{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);padding:6px 10px;outline:none}
-select:focus,input[type=text]:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+select,input[type=text],input[type=number]{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);padding:6px 10px;outline:none}
+select:focus,input[type=text]:focus,input[type=number]:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 input[type=checkbox],input[type=radio]{accent-color:var(--accent);width:16px;height:16px;margin:0;vertical-align:middle}
 /* Thanh trên */
 .appbar{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:10px 20px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
@@ -80,6 +80,15 @@ h2{margin:0;font-size:var(--fs-xs);font-weight:600;letter-spacing:.06em;text-tra
 .vitals{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .vitals div{background:var(--head);border-radius:var(--radius-sm);padding:8px 10px}
 .vitals small{display:block;color:var(--muted);font-size:var(--fs-xs)}
+.vin{display:flex;align-items:center;gap:6px}
+.vin input{flex:1;min-width:0;width:100%;font-weight:600;padding:4px 8px}
+.vitals .vin input{font-size:18px}
+input[type=number]{-moz-appearance:textfield} input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+dialog#moi{border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--card);color:inherit;padding:20px;width:min(440px,calc(100vw - 32px))}
+dialog#moi::backdrop{background:rgba(0,0,0,.35)}
+dialog#moi h2{margin:0 0 12px} dialog#moi label{display:block;font-weight:600;margin-bottom:4px}
+dialog#moi input{width:100%;box-sizing:border-box;margin-bottom:8px}
+.dlg-btn{display:flex;justify-content:flex-end;gap:12px;margin-top:16px}
 .vitals b{font-size:18px} .vitals span{color:var(--muted);font-size:var(--fs-xs);margin-left:2px}
 .chip{display:inline-block;font-family:var(--font-mono);font-size:var(--fs-sm);background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px;margin:0 4px 4px 0}
 .pk{width:100%;box-sizing:border-box;resize:vertical;font:inherit;color:var(--text);border:1px solid var(--line);background:var(--head);border-radius:var(--radius-sm);padding:10px 12px;min-height:60px;white-space:pre-wrap;line-height:1.7}
@@ -154,6 +163,13 @@ details summary{cursor:pointer;color:var(--accent);font-weight:600;font-size:var
 <div class="scrim" id="scrim"></div>
 <aside class="drawer" id="drawer"></aside>
 <div class="sugg" id="sugg" role="listbox" hidden></div>
+<dialog id="moi" aria-label="Tạo ca mới"><form method="dialog">
+  <h2>Tạo ca mới</h2>
+  <label for="moiten">Tên ca</label>
+  <input type="text" id="moiten" required pattern=".*\S.*" maxlength="200" autocomplete="off" placeholder="vd Viêm phổi 3 tuổi, có CRP">
+  <div class="muted">Ca được lưu vào dữ liệu mẫu (data/ca-tu-tao.yaml) và tự lưu mỗi lần sửa.</div>
+  <div class="dlg-btn"><button class="link" value="huy" formnovalidate>Hủy</button><button class="primary" value="ok">Tạo ca</button></div>
+</form></dialog>
 <div class="gdp" id="gdp" role="dialog" aria-label="Giả định" hidden></div>
 <script>
 const S = {"Phù hợp quy tắc BHYT":"ok","Đủ căn cứ · bác sĩ xác nhận":"cc","Cần xem lại":"rv","Không được chi trả":"no"};
@@ -217,30 +233,45 @@ function highlight(text,qs){
   const sents=[...new Set(cau.map(([a,b,at,n])=>esc(text.slice(a,at)).trimStart()+"<b>"+esc(text.slice(at,at+n))+"</b>"+esc(text.slice(at+n,b)).trimEnd()))];
   return {full,sents};
 }
-const post=async(url,body)=>{
-  const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+const post=async(url,body,method="POST")=>{
+  const r=await fetch(url,{method,headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
   const j=await r.json().catch(()=>({}));
   if(!r.ok) throw new Error(typeof j.detail==="string"?j.detail:"Lỗi "+r.status);
   return j;
 };
 function setErr(t){ let e=$("err"); if(!e){e=document.createElement("div");e.id="err";e.className="err";$("tip").parentNode.after(e)} e.textContent=t }
 
-function load(){ const c=cur(); pk=c.phieu_kham||""; nhap=null; icd=tu?[]:[...(c.icd||[])]; cds=tu?[]:c.chi_dinh.map(x=>({ma:x.ma,ten:x.ten}));
+// ca bác sĩ tự tạo: lưu lên server (data/ca-tu-tao.yaml), tự lưu sau mỗi lần sửa
+let hen=null;
+function luu(){ const c=cur(); if(!c||!c.tu_tao) return;
+  c.icd=[...icd]; c.chi_dinh=cds.map(d=>({ma:d.ma,ten:d.ten})); c.phieu_kham=pk;
+  clearTimeout(hen); hen=setTimeout(()=>post("/cases/"+c.id,{ten:c.ten,benh_nhan:c.benh_nhan,sinh_hieu:c.sinh_hieu,
+    icd:c.icd,chi_dinh:c.chi_dinh,phieu_kham:c.phieu_kham},"PUT").catch(e=>setErr("Không lưu được ca: "+e.message)),400); }
+const theOf=t=>({han_den:"2026-12-31",muc_huong:t!=null&&t>=72?80:100}); // cùng mặc định với _demo_cases ở server
+function caMoi(ten){ if(!ten) return; const id="TU-"+Date.now().toString(36).toUpperCase();
+  cases.push({id,ten,tu_tao:true,luot_kham:"LK-"+id,ngay_kham:"2026-11-12",
+    benh_nhan:{tuoi_thang:null,the:theOf(null)},sinh_hieu:{},icd:[],chi_dinh:[],phieu_kham:"",lich_su:[]});
+  ca=id; dsCa(); load(); } // load → check → luu: ca được ghi ngay lúc tạo
+function dsCa(){ $("ca").innerHTML=cases.map(c=>`<option value="${esc(c.id)}">${c.tu_tao?"✎ ":""}${esc(c.id)} · ${esc(c.ten)}</option>`).join("")
+  +'<option value="__moi">+ Tạo ca mới…</option>'; $("ca").value=ca; }
+function load(){ const c=cur(), giu=!tu||c.tu_tao; pk=c.phieu_kham||""; nhap=null; icd=giu?[...(c.icd||[])]:[]; cds=giu?c.chi_dinh.map(x=>({ma:x.ma,ten:x.ten})):[];
   sel=null; closeDrawer(); check(false); }
 
 function leftCards(c,q){
   const bn=c.benh_nhan, the=bn.the, t=bn.tuoi_thang, sh=c.sinh_hieu||{};
   const tuoi = t!=null ? `${t} tháng (${(t/12).toFixed(t%12?1:0)} tuổi)` : (bn.tuoi_ngay!=null?bn.tuoi_ngay+" ngày":"—");
   const conHan = the && the.han_den >= (c.ngay_kham||""), sua = true;
+  const vit=(k,lab,u)=>`<div><small>${lab}</small>${c.tu_tao
+    ?`<label class="vin"><input type="number" step="any" min="0" data-sh="${k}" value="${esc(sh[k]??"")}" placeholder="—" aria-label="${lab}"><span>${u}</span></label>`
+    :`<b>${esc(sh[k]??"—")}</b><span>${u}</span>`}</div>`;
   return `
-   <div class="card"><div class="card-h"><h2>Bệnh nhân</h2><span class="ma">${esc(c.luot_kham)}</span></div><dl class="kv">
-     <dt>Tuổi</dt><dd>${esc(tuoi)}</dd>
+   <div class="card"><div class="card-h"><h2>Bệnh nhân</h2><span><span class="ma">${esc(c.luot_kham)}</span>${c.tu_tao?' <button class="link" data-xca>Xóa ca</button>':""}</span></div><dl class="kv">${c.tu_tao?`
+     <dt>Tên ca</dt><dd><input type="text" data-sh="ten" value="${esc(c.ten)}" maxlength="200" aria-label="Tên ca" style="width:100%"></dd>`:""}
+     <dt>Tuổi</dt><dd>${c.tu_tao?`<label class="vin" style="max-width:150px"><input type="number" min="0" step="1" data-sh="tuoi_thang" value="${esc(t??"")}" placeholder="vd 24" aria-label="Tuổi (tháng)"><span>tháng</span></label>`:esc(tuoi)}</dd>
      <dt>Thẻ BHYT</dt><dd>${the?`<span class="badge ${conHan?"s-ok":"s-no"}">${conHan?"Còn hạn":"Hết hạn"} đến ${esc(the.han_den)}</span>`:'<span class="badge s-rv">Chưa có thông tin thẻ</span>'}</dd>
      <dt>Mức hưởng</dt><dd>${the&&the.muc_huong!=null?esc(the.muc_huong)+"%":"—"}</dd></dl></div>
    <div class="card"><div class="card-h"><h2>Sinh hiệu</h2></div><div class="vitals">
-     <div><small>Nhiệt độ</small><b>${esc(sh.nhiet_do??"—")}</b><span>°C</span></div>
-     <div><small>Mạch</small><b>${esc(sh.mach??"—")}</b><span>l/p</span></div>
-     <div><small>Nhịp thở</small><b>${esc(sh.nhip_tho??"—")}</b><span>l/p</span></div></div></div>
+     ${vit("nhiet_do","Nhiệt độ","°C")}${vit("mach","Mạch","l/p")}${vit("nhip_tho","Nhịp thở","l/p")}</div></div>
    <div class="card"><div class="card-h"><h2>Chẩn đoán ICD</h2></div>${icd.map((x,i)=>`<span class="chip">${esc(x)}${icdTen[x]?` <small>${esc(icdTen[x])}</small>`:""}${sua?` <button class="link" data-xicd="${i}" aria-label="Xóa ${esc(x)}">×</button>`:""}</span>`).join("")
      ||(sua?"":'<span class="muted">(chưa nhập)</span>')}${sua?'<input type="text" id="icdin" autocomplete="off" placeholder="Tìm chẩn đoán theo mã hoặc tên (vd J18.9, viêm phổi)" style="width:100%;margin-top:6px">':""}${
      ((res&&res.nhac)||[]).map(n=>`<div class="warn" role="status" style="margin:8px 0 0">${esc(n.noi_dung)} <details><summary>Căn cứ</summary>${(n.can_cu||[]).map(x=>{const y=canCu(x);return `<blockquote>“${esc(y.t)}”<cite>${esc(y.v)}</cite></blockquote>`}).join("")}</details></div>`).join("")}</div>
@@ -303,7 +334,7 @@ function closeDrawer(){document.body.classList.remove("open"); sel=null}
 
 // docAi=false: chỉ chạy lại quy tắc (tức thì, không gọi AI; câu AI đã đọc được server nhớ). docAi=true: nút "Kiểm tra BHYT".
 async function check(docAi){
-  const c=cur(), my=++seq, b=$("chk"); setErr(""); $("log").hidden=true;
+  const c=cur(), my=++seq, b=$("chk"); setErr(""); $("log").hidden=true; luu();
   if(!cds.length){res=null;dang=false;render();return}
   sent={luot_kham:c.luot_kham,ngay_kham:c.ngay_kham,benh_nhan:c.benh_nhan,icd:[...icd],sinh_hieu:c.sinh_hieu||{},
         phieu_kham:pk,lich_su:c.lich_su||[],chi_dinh:cds.map(d=>({ma:d.ma,ten:d.ten})),doc_ai:docAi};
@@ -330,7 +361,14 @@ async function confirmAll(){
   $("log").hidden=false; $("log").scrollIntoView({behavior:"smooth"});
 }
 
-$("ca").onchange=e=>{ca=e.target.value;load()};
+$("ca").onchange=e=>{ if(e.target.value==="__moi"){ $("ca").value=ca; $("moiten").value=""; $("moi").returnValue=""; $("moi").showModal(); return }
+  ca=e.target.value; load() };
+$("moi").addEventListener("close",()=>{ if($("moi").returnValue==="ok") caMoi($("moiten").value.trim()) });
+// tuổi, sinh hiệu của ca tự tạo: rời ô thì chạy lại quy tắc
+$("left").addEventListener("change",e=>{ const k=e.target.dataset.sh; if(!k) return; const c=cur(), raw=e.target.value.trim(), v=raw===""?null:Number(raw);
+  if(k==="ten"){ if(raw){ c.ten=raw; dsCa() } else e.target.value=c.ten } // không cho để trống tên
+  else if(k==="tuoi_thang"){ c.benh_nhan.tuoi_thang=v; c.benh_nhan.the=theOf(v) } else c.sinh_hieu[k]=v;
+  check(false) });
 $("chk").onclick=()=>check(true); $("ok").onclick=confirmAll;
 $("mode").onclick=e=>{const m=e.target.dataset.m;if(m!=null){tu=m==="1";load()}};
 // thêm chỉ định: chọn từ danh mục thì gửi kèm mã; gõ tự do thì ma=null, engine tự tra theo tên/bí danh
@@ -389,6 +427,9 @@ $("left").addEventListener("input",e=>{if(e.target.id==="pkin")nhap=e.target.val
 $("left").addEventListener("click",e=>{const k=e.target.dataset.pk;
   if(k){ if(k==="sua"){nhap=pk;render();$("pkin").focus();return}
     const doi=k==="ok"&&nhap!==pk; if(doi)pk=nhap; nhap=null; doi?check(false):render(); return }
+  if(e.target.dataset.xca!=null&&confirm("Xóa ca tự tạo này? Không khôi phục được.")){ const id=ca; clearTimeout(hen);
+    post("/cases/"+id,undefined,"DELETE").then(()=>{ cases=cases.filter(x=>x.id!==id); ca=cases[0].id; dsCa(); load() })
+      .catch(e=>setErr("Không xóa được ca: "+e.message)); return }
   const i=e.target.dataset.xicd;if(i!=null){icd.splice(+i,1);check(false)}});
 $("rows").addEventListener("change",e=>{
   const t=e.target;
@@ -421,8 +462,7 @@ fetch("/gia-dinh").then(r=>r.json()).then(j=>{GD=j}).catch(()=>{});
 fetch("/danh-muc").then(r=>r.json()).then(j=>{dm=j}).catch(()=>{}); // không có gợi ý vẫn gõ tự do được
 fetch("/icd").then(r=>r.json()).then(j=>{icdList=j; icdTen={}; j.forEach(e=>{const m=e.ma.replace(/[*+]$/,""); if(!icdTen[m]) icdTen[m]=e.ten}); if(cases.length) render()}).catch(()=>{});
 fetch("/cases").then(r=>r.json()).then(j=>{
-  cases=j; $("ca").innerHTML=cases.map(c=>`<option value="${esc(c.id)}">${esc(c.id)} · ${esc(c.ten)}</option>`).join("");
-  ca=cases[0].id; load();
+  cases=j; ca=cases[0].id; dsCa(); load();
 }).catch(e=>{$("left").innerHTML='<div class="card err">Không tải được danh sách ca: '+esc(e.message)+'</div>'});
 </script>
 </body>

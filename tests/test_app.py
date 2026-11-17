@@ -236,3 +236,20 @@ def test_a1_nho_chi_goi_khi_bam_va_khong_goi_lai(client):
     assert hong(req(1, "khác"))["loi"] == "a1_loi_Timeout" and len(app_mod._NHO) == n  # gọi hỏng thì không nhớ
     assert isinstance(client.post("/check", json=LUOT).json()["kiem_tra_id"], str)
     app_mod._NHO.clear()
+
+
+def test_ca_tu_tao_luu_sua_xoa(client, tmp_path, monkeypatch):
+    monkeypatch.setattr(app_mod, "TU_TAO_PATH", tmp_path / "ca-tu-tao.yaml")
+    ca = {"ten": "Viêm phổi 3 tuổi", "benh_nhan": {"tuoi_thang": 36}, "sinh_hieu": {"nhiet_do": 39}, "icd": [],
+          "chi_dinh": [], "phieu_kham": ""}
+    assert client.put("/cases/TU-A1", json=ca).status_code == 200  # tạo khi chưa có chỉ định
+    assert client.put("/cases/TU-A1", json={**ca, "chi_dinh": [{"ma": None, "ten": "CRP"}]}).status_code == 200
+    tu = [c for c in client.get("/cases").json() if c.get("tu_tao")]
+    assert len(tu) == 1 and tu[0]["chi_dinh"] == [{"ma": None, "ten": "CRP"}] and tu[0]["luot_kham"] == "LK-TU-A1"
+    assert tu[0]["benh_nhan"]["the"]["muc_huong"] == 100
+    assert client.put("/cases/DEMO-01", json=ca).status_code == 422  # ca mẫu không ghi đè được
+    assert client.put("/cases/TU-A2", json={**ca, "ten": "  "}).status_code == 422
+    assert client.put("/cases/TU-A2", json={**ca, "sinh_hieu": {"mach": "nhanh"}}).status_code == 422
+    assert client.delete("/cases/TU-A1").status_code == 200
+    assert not any(c.get("tu_tao") for c in client.get("/cases").json())
+    assert client.delete("/cases/TU-A1").status_code == 404

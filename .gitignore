@@ -4,3 +4,5 @@ __pycache__/
 *.pyc
 .DS_Store
 logs/
+data/ca-tu-tao.yaml
+data/ca-tu-tao.tmp

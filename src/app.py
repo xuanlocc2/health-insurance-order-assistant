@@ -3,6 +3,8 @@ import functools
 import importlib
 import json
 import os
+import re
+import threading
 import uuid
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import asynccontextmanager
@@ -21,6 +23,10 @@ ROOT = Path(__file__).resolve().parent.parent
 RULES_DIR = ROOT / "data" / "rules"
 LOG_PATH = ROOT / "logs" / "xac-nhan.jsonl"
 CASES_PATH = ROOT / "data" / "test-cases" / "demo.yaml"
+# ca bác sĩ tự tạo trên màn hình; để ngoài test-cases/ để eval không quét phải (ca này không có nhãn)
+TU_TAO_PATH = ROOT / "data" / "ca-tu-tao.yaml"
+TU_TAO_ID = re.compile(r"^TU-[A-Z0-9]{1,20}$")
+_khoa_tu_tao = threading.Lock()  # ponytail: khóa trong một tiến trình; chạy nhiều worker → chuyển sang SQLite
 # mặc định của app mô phỏng (engine không có mặc định; test-cases/README.md)
 NGAY_KHAM = "2026-11-12"
 MAX_CHI_DINH, MAX_PHIEU = 50, 20000  # chặn body bất thường trước khi gửi A1
@@ -86,8 +92,12 @@ def _plain(x):
     return json.loads(json.dumps(x, default=str, ensure_ascii=False))  # date của YAML → chuỗi
 
 
+def _tu_tao():
+    return yaml.safe_load(TU_TAO_PATH.read_text(encoding="utf-8")) or [] if TU_TAO_PATH.exists() else []
+
+
 def _demo_cases():
-    raw = yaml.safe_load(CASES_PATH.read_text(encoding="utf-8")) or []
+    raw = (yaml.safe_load(CASES_PATH.read_text(encoding="utf-8")) or []) + [{**c, "tu_tao": True} for c in _tu_tao()]
     out = []
     for c in raw:
         c = _plain(c)
@@ -120,12 +130,13 @@ def _ngay(x):
         return False
 
 
-def _validate_luot(b):
-    """Kiểu dữ liệu ở biên tin cậy, để engine không 500 vì body lạ. Thiếu khóa vẫn được (engine → Cần xem lại)."""
+def _validate_luot(b, cho_rong=False):
+    """Kiểu dữ liệu ở biên tin cậy, để engine không 500 vì body lạ. Thiếu khóa vẫn được (engine → Cần xem lại).
+    cho_rong: ca tự tạo được lưu khi chưa có chỉ định nào."""
     if not isinstance(b.get("luot_kham"), str) or not b["luot_kham"]:
         _fail("Thiếu 'luot_kham' (chuỗi).")
     cd = b.get("chi_dinh")
-    if not isinstance(cd, list) or not cd or len(cd) > MAX_CHI_DINH:
+    if not isinstance(cd, list) or (not cd and not cho_rong) or len(cd) > MAX_CHI_DINH:
         _fail(f"'chi_dinh' cần danh sách 1–{MAX_CHI_DINH} chỉ định.")
     for i, r in enumerate(cd, 1):
         if not isinstance(r, dict) or not isinstance(r.get("ten"), str) or not r["ten"].strip() \
@@ -306,6 +317,44 @@ def confirm(body: dict = Body(...)):
 @app.get("/cases")
 def cases():
     return [{k: v for k, v in c.items() if k not in ("ky_vong", "he_chi_rule", "a1_gia_lap")} for c in _demo_cases()]
+
+
+def _ghi_tu_tao(ds):
+    tmp = TU_TAO_PATH.with_suffix(".tmp")
+    tmp.write_text(yaml.safe_dump(ds, allow_unicode=True, sort_keys=False), encoding="utf-8")
+    tmp.replace(TU_TAO_PATH)  # ghi đè nguyên khối: hỏng giữa chừng không làm mất file cũ
+
+
+@app.put("/cases/{ca_id}")
+def luu_ca(ca_id: str, body: dict = Body(...)):
+    """Tạo mới hoặc cập nhật một ca tự tạo (ghi vào data/ca-tu-tao.yaml). Ca mẫu trong demo.yaml không sửa được."""
+    if not TU_TAO_ID.match(ca_id):
+        _fail("Chỉ lưu được ca tự tạo (mã dạng TU-…).")
+    ten = body.get("ten")
+    if not isinstance(ten, str) or not ten.strip() or len(ten) > 200:
+        _fail("Ca cần có tên (1–200 ký tự).")
+    ca = {"id": ca_id, "ten": ten.strip(), "benh_nhan": body.get("benh_nhan") or {},
+          "sinh_hieu": body.get("sinh_hieu") or {}, "icd": body.get("icd") or [],
+          "chi_dinh": [{"ma": r.get("ma"), "ten": r.get("ten")} for r in body.get("chi_dinh") or [] if isinstance(r, dict)],
+          "phieu_kham": body.get("phieu_kham") or ""}
+    _validate_luot({**ca, "luot_kham": "LK-" + ca_id}, cho_rong=True)
+    with _khoa_tu_tao:
+        ds = _tu_tao()
+        cu = next((c for c in ds if c.get("id") == ca_id), None)
+        now = datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds")
+        ca["tao_luc"], ca["sua_luc"] = (cu or {}).get("tao_luc") or now, now
+        _ghi_tu_tao(ds + [ca] if cu is None else [ca if c.get("id") == ca_id else c for c in ds])
+    return {"luu": ca_id}
+
+
+@app.delete("/cases/{ca_id}")
+def xoa_ca(ca_id: str):
+    with _khoa_tu_tao:
+        ds = _tu_tao()
+        if not any(c.get("id") == ca_id for c in ds):
+            raise HTTPException(404, "Không có ca tự tạo này.")
+        _ghi_tu_tao([c for c in ds if c.get("id") != ca_id])
+    return {"xoa": ca_id}
 
 
 @app.get("/danh-muc")
