@@ -14,7 +14,7 @@
   chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
   ky_vong:
     - ma: "23.0228.1483"
-      trang_thai: "Cần xem lại · đủ căn cứ"
+      trang_thai: "Đủ căn cứ · bác sĩ xác nhận"
       ve:
         - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, ket_qua: dat, bang_chung: "38,3 ≥ 38,3 (biên)" }
         - { id: V2, mo_ta: "nhịp tim/thở", kiem_bang: rule, ket_qua: dat, bang_chung: "nhịp thở 44 ≥ 40" }
@@ -49,7 +49,7 @@
   chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
   ky_vong:
     - ma: "23.0228.1483"
-      trang_thai: "Cần xem lại · đủ căn cứ"
+      trang_thai: "Đủ căn cứ · bác sĩ xác nhận"
       ve:
         - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, ket_qua: dat, bang_chung: "35,8 ≤ 36" }
         - { id: V2, mo_ta: "nhịp tim/thở", kiem_bang: rule, ket_qua: dat, bang_chung: "nhịp thở 48 ≥ 40" }
@@ -67,7 +67,7 @@
   chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
   ky_vong:
     - ma: "23.0228.1483"
-      trang_thai: "Cần xem lại · đủ căn cứ"
+      trang_thai: "Đủ căn cứ · bác sĩ xác nhận"
       ve:
         - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, ket_qua: dat, bang_chung: "39,0" }
         - { id: V2, mo_ta: "nhịp tim/thở", kiem_bang: rule, ket_qua: dat, bang_chung: "nhịp thở 46 < 50; mạch 175 ≥ 161" }
@@ -84,7 +84,7 @@
   chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
   ky_vong:
     - ma: "23.0228.1483"
-      trang_thai: "Cần xem lại · đủ căn cứ"
+      trang_thai: "Đủ căn cứ · bác sĩ xác nhận"
       ve:
         - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, ket_qua: dat, bang_chung: "39,0" }
         - { id: V2, mo_ta: "nhịp tim/thở", kiem_bang: rule, ket_qua: dat, bang_chung: "nhịp thở 52 ≥ 50" }
@@ -167,7 +167,6 @@
   muc_dich: "AC-10: chưa đủ dữ liệu → Cần xem lại, không đoán."
   benh_nhan: { tuoi_thang: 36 }
   icd: []
-  lan_tich: 1
   sinh_hieu: { nhiet_do: null, mach: null, nhip_tho: null }
   phieu_kham: "Sốt cao, ho nhiều, thở nhanh. Phổi ran ẩm 2 bên."
   chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
@@ -192,7 +191,7 @@
   chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
   ky_vong:
     - ma: "23.0228.1483"
-      trang_thai: "Cần xem lại · đủ căn cứ"
+      trang_thai: "Đủ căn cứ · bác sĩ xác nhận"
       ve:
         - { id: V1, mo_ta: "nhiệt độ", kiem_bang: rule, nguon_ket_qua: a1, ket_qua: dat, bang_chung: "A1 trích 'T° 38,8'" }
         - { id: V2, mo_ta: "nhịp tim/thở", kiem_bang: rule, nguon_ket_qua: a1, ket_qua: dat, bang_chung: "A1 trích 'NT 45 l/p' → 45 ≥ 40" }
@@ -222,13 +221,12 @@
   muc_dich: "Nhánh b, vế nhiễm trùng do A1 đọc. Nhánh a không đạt (37,8) nhưng nhánh b đủ → đủ căn cứ."
   benh_nhan: { tuoi_ngay: 20 }
   icd: []
-  lan_tich: 1
   sinh_hieu: { nhiet_do: 37.8, mach: 165, nhip_tho: 54 }
   phieu_kham: "Bú kém 1 ngày. Rốn chảy dịch đục mùi hôi, da quanh rốn đỏ lan rộng khoảng 1 cm."
   chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
   ky_vong:
     - ma: "23.0228.1483"
-      trang_thai: "Cần xem lại · đủ căn cứ"
+      trang_thai: "Đủ căn cứ · bác sĩ xác nhận"
       nhanh: b_so_sinh
       ve:
         - { id: B1, mo_ta: "Nhiễm trùng sơ sinh", kiem_bang: ai, ket_qua: dat, trich_dan: "Rốn chảy dịch đục mùi hôi, da quanh rốn đỏ lan rộng" }

@@ -3,6 +3,7 @@ import functools
 import importlib
 import json
 import os
+import uuid
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import asynccontextmanager
 from datetime import date, datetime, timezone
@@ -22,9 +23,8 @@ LOG_PATH = ROOT / "logs" / "xac-nhan.jsonl"
 CASES_PATH = ROOT / "data" / "test-cases" / "demo.yaml"
 # mặc định của app mô phỏng (engine không có mặc định; test-cases/README.md)
 NGAY_KHAM = "2026-11-12"
-DEFAULT_LAN = 2
 MAX_CHI_DINH, MAX_PHIEU = 50, 20000  # chặn body bất thường trước khi gửi A1
-LY_DO = ("nguoi_nha_yeu_cau", "loai_tru_theo_doi", "khac")
+LY_DO = ("nguoi_nha_yeu_cau", "loai_tru_theo_doi", "khong_dong_y", "khac")
 F13 = ("thu_tu", "ma", "ten", "trang_thai", "o_bhyt_goi_y", "bac_si_chon", "checklist", "can_cu", "phien_ban_rule")
 DAU_VAO = ("tuoi", "the", "icd", "sinh_hieu", "lich_su_da_dung")
 
@@ -96,7 +96,6 @@ def _demo_cases():
             thang = bn["tuoi_thang"] if bn.get("tuoi_thang") is not None else (bn.get("tuoi_ngay") or 0) / 30.44
             bn["the"] = {"han_den": "2026-12-31", "muc_huong": 100 if thang < 72 else 80}
         c.setdefault("luot_kham", "LK-" + c["id"])
-        c.setdefault("lan_tich", DEFAULT_LAN)
         c.setdefault("ngay_kham", NGAY_KHAM)
         c.setdefault("lich_su", [])
         out.append(c)
@@ -125,8 +124,6 @@ def _validate_luot(b):
     """Kiểu dữ liệu ở biên tin cậy, để engine không 500 vì body lạ. Thiếu khóa vẫn được (engine → Cần xem lại)."""
     if not isinstance(b.get("luot_kham"), str) or not b["luot_kham"]:
         _fail("Thiếu 'luot_kham' (chuỗi).")
-    if not isinstance(b.get("lan_tich"), int) or isinstance(b["lan_tich"], bool):
-        _fail("Thiếu 'lan_tich' (số nguyên).")
     cd = b.get("chi_dinh")
     if not isinstance(cd, list) or not cd or len(cd) > MAX_CHI_DINH:
         _fail(f"'chi_dinh' cần danh sách 1–{MAX_CHI_DINH} chỉ định.")
@@ -187,8 +184,7 @@ def _a1_for(luot):
         return state["a1"]
     # stub sinh từ ky_vong của ca demo; chỉ import tests/ ở chế độ stub
     for c in yaml.safe_load(CASES_PATH.read_text(encoding="utf-8")) or []:
-        if (c.get("luot_kham") or "LK-" + c["id"]) == luot["luot_kham"] \
-                and (c.get("lan_tich") or DEFAULT_LAN) == luot["lan_tich"]:
+        if (c.get("luot_kham") or "LK-" + c["id"]) == luot["luot_kham"]:
             try:
                 return _stub_for(c, luot)
             except ImportError:
@@ -196,18 +192,66 @@ def _a1_for(luot):
     return None
 
 
+# ponytail: dict trong bộ nhớ, xóa sạch khi đầy; đủ cho demo một máy. Nhiều người dùng → LRU/Redis theo lượt khám.
+_NHO = {}
+
+
+def _a1_nho(a1, doc_ai):
+    """Nhớ câu trả lời A1 theo (phiếu khám, nội dung câu hỏi): thêm/xóa chỉ định hay ICD không gọi lại A1.
+    doc_ai=False (rule tự chạy lại): chỉ dùng câu đã nhớ; câu chưa có → chua_thay + loi 'chua_doc'."""
+    if a1 is None:
+        return None
+
+    def f(req):
+        pk = " ".join((req.get("phieu_kham") or "").split())
+        cau, so = req.get("cau_hoi") or [], req.get("so_lieu") or []
+        kv = lambda q: (pk, "ve", q.get("mo_ta"), q.get("cau_hoi"))
+        ks = lambda s: (pk, "so", s["truong"])
+        loi = None
+        if any(kv(q) not in _NHO for q in cau) or any(ks(s) not in _NHO for s in so):
+            if not doc_ai:
+                loi = "chua_doc"
+            else:
+                res = a1(req) or {}
+                loi = res.get("loi")
+                if str(loi or "").startswith("a1_"):  # gọi hỏng: không nhớ, lần bấm sau gọi lại
+                    return res
+                if len(_NHO) > 5000:
+                    _NHO.clear()
+                tl = {v["khoa"]: v for v in res.get("ve") or []}
+                for q in cau:
+                    if q["khoa"] in tl:
+                        _NHO[kv(q)] = tl[q["khoa"]]
+                co = {s["truong"]: s for s in res.get("so_lieu") or []}
+                for s in so:
+                    _NHO[ks(s)] = co.get(s["truong"])
+        ve = [{**_NHO[kv(q)], "khoa": q["khoa"]} if kv(q) in _NHO else
+              {"khoa": q["khoa"], "ket_qua": "chua_thay", "trich_dan": None, "trich_them": [], "trich_lien_quan": [], "chua_doc": True}
+              for q in cau]
+        return {"ve": ve, "so_lieu": [_NHO[ks(s)] for s in so if _NHO.get(ks(s))], "loi": loi}
+    return f
+
+
 @app.post("/check")
 def check(body: dict = Body(...)):  # def → chạy trong threadpool, A1 chặn tới 8 s không treo server
     _validate_luot(body)
-    lq = state["lq"] if state["a1_mode"] == "live" else None
+    doc_ai = body.get("doc_ai") is not False  # false = rule tự chạy lại sau khi sửa chỉ định/ICD, không gọi A1
+    res = _check(body, doc_ai)
+    # mã lần kiểm tra: /confirm ghi lại để biết bác sĩ xác nhận trên kết quả nào
+    res["kiem_tra_id"] = uuid.uuid4().hex[:12]
+    return res
+
+
+def _check(body, doc_ai):
+    lq = state["lq"] if state["a1_mode"] == "live" and doc_ai else None
     if lq is None:
-        return state["check"](body, state["rules"], _a1_for(body))
+        return state["check"](body, state["rules"], _a1_nho(_a1_for(body), doc_ai))
     ten = {e["ma"]: e["ten"] for e in icd()}
     req = {"dich_vu": [c["ten"] for c in body["chi_dinh"]], "phieu_kham": body.get("phieu_kham") or "",
            "icd": [{"ma": m, "ten": ten.get(m)} for m in body.get("icd") or []]}
     with ThreadPoolExecutor(1) as ex:  # chạy song song với A1 trong check: không cộng dồn thời gian chờ
         fut = ex.submit(lq, req)
-        res = state["check"](body, state["rules"], _a1_for(body))
+        res = state["check"](body, state["rules"], _a1_nho(_a1_for(body), doc_ai))
         luu_y = fut.result()
     for d in res.get("dong") or []:
         # chỉ dòng "Phù hợp" thuần theo danh mục; không đổi trạng thái hay ô gợi ý (gợi ý AI, không phải quy tắc)
@@ -233,8 +277,8 @@ def _ly_do(d):
 def confirm(body: dict = Body(...)):
     if not isinstance(body.get("luot_kham"), str) or not body["luot_kham"]:
         _fail("Thiếu 'luot_kham' (chuỗi).")
-    if not isinstance(body.get("lan_tich"), int) or isinstance(body["lan_tich"], bool):
-        _fail("Thiếu 'lan_tich' (số nguyên).")
+    if not isinstance(body.get("kiem_tra_id"), (str, type(None))):
+        _fail("'kiem_tra_id' phải là chuỗi.")
     dv = body.get("dau_vao")
     if not isinstance(dv, dict) or not all(k in dv for k in DAU_VAO):
         _fail(f"'dau_vao' cần các khóa: {', '.join(DAU_VAO)}.")
@@ -254,7 +298,7 @@ def confirm(body: dict = Body(...)):
             _fail(f"Dòng {i}: 'ly_do_bac_si.loai' phải là {' | '.join(LY_DO)}.")
         # trường của server đặt sau cùng: dòng gửi lên không ghi đè được thời gian, khóa lượt khám, đầu vào
         rows.append({**d, "ly_do_bac_si": ly, "thoi_gian": now, "luot_kham": body["luot_kham"],
-                     "lan_tich": body["lan_tich"], "dau_vao": dv})
+                     "kiem_tra_id": body.get("kiem_tra_id"), "dau_vao": dv})
     log.append(rows, LOG_PATH)
     return {"ghi": len(rows)}
 
@@ -279,6 +323,17 @@ def icd():
     if not p.exists():
         return []
     return [dict(zip(("ma", "ten"), x.split("\t", 1))) for x in p.read_text(encoding="utf-8").splitlines()[1:] if "\t" in x]
+
+
+@app.get("/gia-dinh")
+def gia_dinh():
+    """Điểm mơ hồ M-xx cho bảng "Giả định" trên màn hình, đọc thẳng bảng trong docs/06 (nguồn duy nhất)."""
+    p = ROOT / "docs/06-diem-mo-ho-bac-si-duyet.md"
+    if not p.exists():
+        return []
+    rows = [[c.strip().replace("**", "") for c in x.split("|")[1:-1]]
+            for x in p.read_text(encoding="utf-8").splitlines() if x.startswith("| M-")]
+    return [{"ma": r[0], "cau_hoi": r[1], "cach_hieu": r[3], "tra_loi": r[4]} for r in rows if len(r) >= 5]
 
 
 @app.get("/health")

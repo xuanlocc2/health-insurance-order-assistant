@@ -26,12 +26,12 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 PHU_HOP = "Phù hợp quy tắc BHYT"
-DU_CAN_CU = "Cần xem lại · đủ căn cứ"
+DU_CAN_CU = "Đủ căn cứ · bác sĩ xác nhận"
 XEM_LAI = "Cần xem lại"
 KHONG_TRA = "Không được chi trả"
 THU_TU = [PHU_HOP, DU_CAN_CU, XEM_LAI, KHONG_TRA]  # thuận lợi nhất → kém nhất
 HANG = {s: i for i, s in enumerate(THU_TU)}
-INPUT_KEYS = ("luot_kham", "lan_tich", "ngay_kham", "benh_nhan", "icd", "sinh_hieu", "phieu_kham", "lich_su", "chi_dinh")
+INPUT_KEYS = ("luot_kham", "ngay_kham", "benh_nhan", "icd", "sinh_hieu", "phieu_kham", "lich_su", "chi_dinh")
 LOI_TRICH = "trich_dan_"  # tiền tố ghi chú của verify (khong_khop, cat_phu_dinh): không phải lỗi gọi A1
 
 
@@ -54,7 +54,6 @@ def mac_dinh(case):
     """Đầu vào engine (spec mục 4) + mặc định của bộ test (test-cases/README.md). Engine không có mặc định."""
     luot = {k: case[k] for k in INPUT_KEYS if k in case}
     luot.setdefault("ngay_kham", date(2026, 11, 12))
-    luot.setdefault("lan_tich", 2)
     luot.setdefault("luot_kham", "LK-" + str(case["id"]))
     bn = luot["benh_nhan"] = dict(luot.get("benh_nhan") or {})
     if "the" not in bn:
@@ -106,14 +105,16 @@ def ban_ghi(case, pairs, visit, lan):
             g = cl.get(v["id"]) or {}
             ai = v.get("kiem_bang") == "ai"
             got, trich, nguon = g.get("ket_qua"), g.get("trich_dan"), "engine"
+            them = g.get("trich_them") or []
             a1v = (visit.get("a1_ve") or {}).get(f"{tt}:{v['id']}")
             if ai and a1v and kv.get("trang_thai") is None:  # bộ chỉ đo A1 (a1-kho): chấm câu trả lời A1 sau verify
                 got, trich, nguon = a1v.get("ket_qua"), a1v.get("trich_dan"), "a1"
+                them = a1v.get("trich_them") or []
             chap = _ds(v.get("trich_dan")) + _ds(v.get("trich_dan_khac"))
             clauses.append({"ca": ca, "lan": lan, "thu_tu": tt, "id": v["id"], "nhanh": g.get("nhanh"),
                             "ai": ai, "ky_vong": v.get("ket_qua"), "got": got, "nguon_got": nguon, "trich": trich,
                             "sai_cho": bool(ai and got == "dat" and v.get("ket_qua") == "dat" and chap
-                                            and not any(giao(trich, c) for c in chap)),
+                                            and not any(giao(t, c) for t in [trich, *them] for c in chap)),
                             "bay": _ds(v.get("bay")) or bay_ca})
     so = []
     ky = so_ky_vong(case)

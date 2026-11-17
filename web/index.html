@@ -24,10 +24,10 @@
   --accent: #0e7c86;       /* màu nhận diện (teal) */
   --accent-soft: #e3f3f4;
   --sel: #f0f8f9;          /* dòng đang chọn */
-  --goiy: #5b5bd6;         /* nhãn "gợi ý" cạnh ô đã tích sẵn */
+  --goiy: #5b5bd6;         /* viền ô ghi lý do */
   /* 4 trạng thái: chữ / nền */
   --ok: #157f3c;  --ok-bg: #e5f6ea;   /* Phù hợp quy tắc BHYT */
-  --cc: #1d5fc4;  --cc-bg: #e6effc;   /* Cần xem lại · đủ căn cứ */
+  --cc: #1d5fc4;  --cc-bg: #e6effc;   /* Đủ căn cứ · bác sĩ xác nhận */
   --rv: #a15c00;  --rv-bg: #fdf1dc;   /* Cần xem lại */
   --no: #c2261b;  --no-bg: #fde8e6;   /* Không được chi trả */
   --tint-cc: #f5f9ff;      /* tô dòng đủ căn cứ */
@@ -61,7 +61,12 @@ input[type=checkbox],input[type=radio]{accent-color:var(--accent);width:16px;hei
 .seg{display:inline-flex;background:var(--head);border:1px solid var(--line);border-radius:var(--radius-sm);padding:2px}
 .seg button{border:0;background:none;border-radius:6px;padding:4px 12px;color:var(--muted)}
 .seg button.on{background:var(--card);color:var(--text);font-weight:600;box-shadow:0 1px 3px rgba(16,24,40,.12)}
-.hint{max-width:1440px;margin:12px auto 0;padding:0 20px;color:var(--muted);font-size:var(--fs-sm)}
+/* Giả định: dấu * trong lý do + bảng tổng hợp */
+.gd{color:var(--tag);font-weight:700;padding:0 2px;margin-left:2px}
+.gdp{position:fixed;z-index:30;width:min(460px,calc(100vw - 16px));max-height:70vh;overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);box-shadow:0 8px 24px rgba(16,24,40,.18);padding:12px 14px;font-size:var(--fs-sm)}
+.gdp .gdh{display:flex;align-items:center;gap:10px;justify-content:space-between;margin-bottom:6px}
+.gdi{padding:8px 0;border-top:1px solid var(--line)} .gdi.hl{background:var(--tag-bg);margin:0 -14px;padding:8px 14px}
+.gdi b{color:var(--tag)}
 main{max-width:1440px;margin:0 auto;display:grid;grid-template-columns:minmax(280px,1fr) 2.2fr;gap:var(--gap);padding:12px 20px 24px;align-items:start}
 @media (max-width:900px){main{grid-template-columns:1fr;padding:12px 16px}.appbar{padding:10px 16px}}
 main>section{display:flex;flex-direction:column;gap:var(--gap);min-width:0}
@@ -77,7 +82,7 @@ h2{margin:0;font-size:var(--fs-xs);font-weight:600;letter-spacing:.06em;text-tra
 .vitals small{display:block;color:var(--muted);font-size:var(--fs-xs)}
 .vitals b{font-size:18px} .vitals span{color:var(--muted);font-size:var(--fs-xs);margin-left:2px}
 .chip{display:inline-block;font-family:var(--font-mono);font-size:var(--fs-sm);background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px;margin:0 4px 4px 0}
-.pk{background:var(--head);border-radius:var(--radius-sm);padding:10px 12px;min-height:60px;white-space:pre-wrap;line-height:1.7}
+.pk{width:100%;box-sizing:border-box;resize:vertical;font:inherit;color:var(--text);border:1px solid var(--line);background:var(--head);border-radius:var(--radius-sm);padding:10px 12px;min-height:60px;white-space:pre-wrap;line-height:1.7}
 mark{background:var(--hl);color:inherit;padding:1px 2px;border-radius:3px}
 /* Bảng */
 .tbl{border:1px solid var(--line);border-radius:var(--radius-sm);overflow:auto}
@@ -92,15 +97,11 @@ tr.sel td{background:var(--sel)} tr.sel td:first-child{box-shadow:inset 3px 0 va
 td.cb{width:84px;white-space:nowrap}
 .ten{font-weight:600}
 .ma{font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--muted)}
-.goiy{font-size:10px;color:var(--goiy);background:#f0f0ff;border:1px dashed var(--goiy);border-radius:4px;padding:0 4px;margin-left:6px;vertical-align:middle}
 .badge{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-size:var(--fs-sm);font-weight:600;padding:3px 10px;border-radius:999px}
 .badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 .s-ok{color:var(--ok);background:var(--ok-bg)} .s-cc{color:var(--cc);background:var(--cc-bg)}
 .s-rv{color:var(--rv);background:var(--rv-bg)} .s-no{color:var(--no);background:var(--no-bg)}
 .lydo{color:var(--muted);font-size:var(--fs-sm)}
-.hs{display:block;width:fit-content;margin-top:4px;font-size:11px;font-weight:600;padding:1px 6px;color:var(--rv);background:var(--rv-bg);border-radius:4px}
-.hs i{font-style:normal;font-weight:400}
-.tag{display:inline-block;font-size:10.5px;font-weight:600;padding:1px 6px;color:var(--tag);background:var(--tag-bg);border-radius:4px;margin-left:6px}
 .picker{margin-top:8px;padding:8px 10px;background:#fafaff;border:1px dashed var(--goiy);border-radius:var(--radius-sm);font-size:var(--fs-sm);display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;cursor:default;color:var(--text)}
 .picker label{display:inline-flex;gap:6px;align-items:center;cursor:pointer}
 /* Gợi ý tìm kiếm ICD / dịch vụ */
@@ -136,58 +137,85 @@ details summary{cursor:pointer;color:var(--accent);font-weight:600;font-size:var
 <header class="appbar">
   <div class="brand"><span class="logo">B</span><div><b>Phiếu chỉ định cận lâm sàng</b><small>Khám Nhi · Trợ lý BHYT</small></div></div>
   <div class="ctl"><span class="seg" id="mode"><button data-m="1">Bác sĩ tự nhập</button><button data-m="0">Ca có sẵn</button></span>
-    <label>Ca <select id="ca"></select></label>
-    <span class="seg" id="lan"><button data-l="1">Lần tích 1</button><button data-l="2">Lần 2</button></span></div>
+    <label>Ca mẫu <select id="ca"></select></label></div>
 </header>
-<div class="hint">Ô BHYT chỉ là gợi ý (nhãn <span class="goiy">gợi ý</span>) — bác sĩ quyết định.</div>
 <main>
   <section id="left"></section>
   <section>
     <div class="card">
-      <div class="card-h"><h2>Danh sách chỉ định · BHYT</h2><span class="muted" id="sum"></span></div>
+      <div class="card-h"><h2>Danh sách chỉ định · BHYT</h2><span><span class="muted" id="sum"></span> <button class="link" id="gdbtn" data-gd="">Giả định</button></span></div>
       <div class="warn" id="a1warn" role="status" hidden></div>
-      <div class="warn" id="nhac" role="status" hidden></div>
-      <div class="tbl"><table><thead><tr><th>BHYT</th><th>Dịch vụ</th><th>Trạng thái</th><th>Lý do</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
-      <div class="foot"><span class="muted" id="tip"></span><span><button id="edit" hidden>Sửa chỉ định</button> <button class="primary" id="chk">Kiểm tra BHYT</button> <button class="primary" id="ok" hidden>Xác nhận</button></span></div>
+      <div class="tbl"><table><thead><tr><th>Tính BHYT</th><th>Dịch vụ</th><th>Trạng thái</th><th>Lý do</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+      <div class="foot"><span class="muted" id="tip"></span><span><button class="primary" id="chk">Kiểm tra BHYT</button> <button class="primary" id="ok" hidden>Xác nhận</button></span></div>
     </div>
-    <div class="card" id="log" hidden><div class="card-h"><h2>Sẽ ghi thêm vào logs/xac-nhan.jsonl</h2></div><div class="warn" id="miss"></div><pre id="logtxt"></pre></div>
+    <div class="card" id="log" hidden><div class="card-h"><h2>Đã xác nhận</h2></div><div id="logtxt"></div></div>
   </section>
 </main>
 <div class="scrim" id="scrim"></div>
 <aside class="drawer" id="drawer"></aside>
 <div class="sugg" id="sugg" role="listbox" hidden></div>
+<div class="gdp" id="gdp" role="dialog" aria-label="Giả định" hidden></div>
 <script>
-const S = {"Phù hợp quy tắc BHYT":"ok","Cần xem lại · đủ căn cứ":"cc","Cần xem lại":"rv","Không được chi trả":"no"};
+const S = {"Phù hợp quy tắc BHYT":"ok","Đủ căn cứ · bác sĩ xác nhận":"cc","Cần xem lại":"rv","Không được chi trả":"no"};
 const nhan = r => r.ma_ly_do==="danh_muc" ? "Có trong danh mục BHYT" : r.trang_thai;
 const stOf = r => S[r.trang_thai] || "rv"; // trạng thái lạ → Cần xem lại, không bao giờ "Phù hợp"
-const LYDO = {nguoi_nha_yeu_cau:"Người nhà yêu cầu → tự túc", loai_tru_theo_doi:"Loại trừ, theo dõi nghi ngờ", khac:"Khác"};
+const LYDO = {nguoi_nha_yeu_cau:"Người nhà yêu cầu → tự túc", loai_tru_theo_doi:"Loại trừ, theo dõi nghi ngờ", khong_dong_y:"Không đồng ý kết quả kiểm tra", khac:"Khác"};
 const KQ = {dat:"đạt",chua_thay:"chưa thấy",chua_du:"chưa đủ dữ liệu",chua_du_du_lieu:"chưa đủ dữ liệu",khong_dat:"chưa đạt"};
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
-let cases=[], ca=null, lan=1, sel=null, tick=[];   // tick[i]: chỉ định i được đưa vào kiểm tra
-let res=null, st=[], sent=null;                      // res = kết quả /check; st[i] = {chon, ly}; sent = lượt đã gửi
-let tu=true, icd=[], cds=[], dm=[];                 // tu = bác sĩ tự nhập; icd/cds = chẩn đoán, chỉ định đang soạn; dm = danh mục gợi ý
+let cases=[], ca=null, sel=null;
+let res=null, sent=null, seq=0, dang=false;          // res = kết quả /check khớp với cds hiện tại (null khi đang chạy lại)
+let tu=true, icd=[], cds=[], dm=[], pk="", nhap=null; // pk = phiếu khám đã xác nhận; nhap = bản đang chỉnh sửa (null = không sửa)                 // tu = bác sĩ tự nhập; cds[i] = {ma, ten, chon?, ly?, mo?}: chon = bác sĩ đã tự đổi ô BHYT
 let icdList=[], icdTen={};                           // danh mục ICD-10 (TT 06/2026) cho ô tìm chẩn đoán
-const lanCases = k => cases.filter(c=>c.luot_kham===k);
-const cur = () => lanCases(ca).find(c=>c.lan_tich===lan) || lanCases(ca)[0];
-// lưu ý hồ sơ: gợi ý AI tách khỏi quy tắc BHYT, không đổi trạng thái hay ô gợi ý
-const HS='Hồ sơ chưa nêu lý do chỉ định <i>· gợi ý AI, không phải quy tắc BHYT</i>';
-const hs = r => r.luu_y_ho_so && r.luu_y_ho_so.ket_qua==="chua_thay_ly_do" ? `<span class="hs">${HS}</span>` : "";
+const cur = () => cases.find(c=>c.id===ca);
 // ô BHYT gợi ý: ưu tiên o_bhyt_goi_y của engine (spec §8), dự phòng theo trạng thái
 const gy = r => r.o_bhyt_goi_y !== undefined ? r.o_bhyt_goi_y : ({ok:"tich",cc:"tich",rv:null,no:"trong"})[stOf(r)];
-const needReason=(r,s)=>(gy(r)==="tich"&&!s.chon)||(r.trang_thai==="Không được chi trả"&&s.chon); // F-12, khớp _ly_do của server
-const trichOf = r => ((r.checklist||[]).find(v=>v.trich_dan)||{}).trich_dan || null;
-
-function highlight(text,q){
-  const at=q?text.indexOf(q):-1; if(at<0) return {full:esc(text),sent:null};
-  // ranh giới câu: . ! ? (trừ dấu thập phân "38.5") hoặc xuống dòng (phiếu ghi theo dòng)
-  const re=/[.!?](?!\d)|\n/g; let a=0,b=text.length,m;
-  while((m=re.exec(text))){ if(m.index<at) a=m.index+1; else if(m.index>=at+q.length){ b=m.index+(m[0]==="\n"?0:1); break; } }
-  while(a<at&&/\s/.test(text[a])) a++;
-  const s=text.slice(a,b);
-  return {full:esc(text.slice(0,a))+"<mark>"+esc(s)+"</mark>"+esc(text.slice(b)),
-          sent:esc(s.trim()).replace(esc(q),()=>`<b>${esc(q)}</b>`)};
+const chonOf = i => cds[i].chon ?? gy(res.dong[i])==="tich";
+const lyOf = i => cds[i].ly ??= {loai:null,ghi_chu:null};
+const trichOf = r => (r.checklist||[]).flatMap(v=>[v.trich_dan,...(v.trich_them||[])]).filter(Boolean); // mọi đoạn AI dẫn làm căn cứ
+const NGUON = {nhap:"Dữ liệu nhập", a1:"AI đọc phiếu"};
+// cột Bằng chứng: vế AI đọc thì hiện nguyên văn câu AI trích, không chỉ "AI đọc phiếu khám"
+const bangChung = v => v.trich_dan ? [v.trich_dan,...(v.trich_them||[])].map(t=>`“${esc(t)}”`).join("<br>")
+  : (v.trich_lien_quan||[]).length ? `${ai(v.bang_chung)}<div class="muted">Có nhắc nhưng chưa đủ: ${v.trich_lien_quan.map(t=>`“${esc(t)}”`).join(", ")}</div>`
+  : ai(v.bang_chung);
+const ai = s => esc(s).replace(/A1/g,"AI");          // chữ nội bộ "A1" trong câu của engine → "AI" cho bác sĩ
+// Giả định: engine nối hậu tố "(cách hiểu tạm M-xx, chưa được bác sĩ duyệt)" vào lý do (log giữ nguyên).
+// Màn hình bỏ hậu tố, thay bằng dấu * bấm được → bảng "Giả định" (nguồn: docs/06 qua /gia-dinh).
+const GD_RE=/\s*\(cách hiểu tạm([^)]*), chưa được bác sĩ duyệt\)/g;
+function lyDo(s){ s=String(s||""); const m=[...s.matchAll(GD_RE)]; return {t:s.replace(GD_RE,""), ma:m.length?[...new Set(m.flatMap(x=>x[1].match(/M-\d+/g)||[]))]:null}; }
+const sao = ma => ma ? `<button class="link gd" data-gd="${esc(ma.join(","))}" title="Dựa trên cách hiểu tạm${ma.length?" "+esc(ma.join(", ")):""}, chưa được bác sĩ duyệt. Bấm để xem.">*</button>` : "";
+const lyDoHtml = s => { const l=lyDo(s); return ai(l.t)+sao(l.ma); };
+let GD=[], gdTab="dung";
+const gdDung = () => [...new Set((res&&res.dong||[]).flatMap(r=>[...(lyDo(r.ly_do).ma||[]),...(r.checklist||[]).flatMap(v=>v.diem_mo_ho||[])]))];
+function openGd(btn,hl){
+  const p=$("gdp"), dung=gdDung(), ds=gdTab==="dung"?GD.filter(g=>dung.includes(g.ma)):GD;
+  p.innerHTML=`<div class="gdh"><b>Giả định</b><span class="seg"><button data-gdt="dung" class="${gdTab==="dung"?"on":""}">Đang dùng (${dung.length})</button><button data-gdt="all" class="${gdTab==="all"?"on":""}">Tất cả (${GD.length})</button></span><button class="close" data-gdx aria-label="Đóng">×</button></div>
+    <div class="muted" style="margin-bottom:6px">Chỗ quy định chưa rõ, đang áp dụng cách hiểu tạm, chờ bác sĩ duyệt. Dấu <span class="gd">*</span> = kết luận dựa trên giả định.</div>
+    ${ds.map(g=>`<div class="gdi ${hl.includes(g.ma)?"hl":""}"><b>${esc(g.ma)}</b> ${esc(g.cau_hoi)}<div><span class="muted">Cách hiểu tạm:</span> ${esc(g.cach_hieu)}</div>${g.tra_loi?`<div><span class="muted">Ghi chú:</span> ${esc(g.tra_loi)}</div>`:""}</div>`).join("")||'<div class="muted">Lượt khám này chưa dùng giả định nào.</div>'}`;
+  p.hidden=false; p.dataset.hl=hl.join(",");
+  const r=btn.getBoundingClientRect(), w=p.offsetWidth;
+  Object.assign(p.style,{left:Math.max(8,Math.min(r.right-w,innerWidth-w-8))+"px",top:Math.min(r.bottom+6,innerHeight-p.offsetHeight-8)+"px"});
+  p._btn=btn; const h=p.querySelector(".hl"); if(h) h.scrollIntoView({block:"nearest"});
+}
+// qs: các đoạn AI trích. Trả full = cả phiếu, tô từng câu chứa đoạn trích; sents = các câu đó, đoạn trích in đậm.
+function highlight(text,qs){
+  const cau=[]; // [a,b,at,len]
+  for(const q of [].concat(qs||[]).filter(Boolean)){
+    const at=text.indexOf(q); if(at<0) continue;
+    // ranh giới câu: . ! ? (trừ dấu thập phân "38.5") hoặc xuống dòng; length-1: đoạn trích tự kết thúc bằng dấu chấm thì câu dừng ở đó
+    const re=/[.!?](?!\d)|\n/g; let a=0,b=text.length,m;
+    while((m=re.exec(text))){ if(m.index<at) a=m.index+1; else if(m.index>=at+q.length-1){ b=m.index+(m[0]==="\n"?0:1); break; } }
+    while(a<at&&/\s/.test(text[a])) a++;
+    cau.push([a,b,at,q.length]);
+  }
+  cau.sort((x,y)=>x[0]-y[0]);
+  let full="",k=0;
+  for(const [a,b] of cau){ if(a<k) { if(b>k){full+="<mark>"+esc(text.slice(k,b))+"</mark>";k=b} continue }
+    full+=esc(text.slice(k,a))+"<mark>"+esc(text.slice(a,b))+"</mark>"; k=b }
+  full+=esc(text.slice(k));
+  const sents=[...new Set(cau.map(([a,b,at,n])=>esc(text.slice(a,at)).trimStart()+"<b>"+esc(text.slice(at,at+n))+"</b>"+esc(text.slice(at+n,b)).trimEnd()))];
+  return {full,sents};
 }
 const post=async(url,body)=>{
   const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
@@ -197,14 +225,13 @@ const post=async(url,body)=>{
 };
 function setErr(t){ let e=$("err"); if(!e){e=document.createElement("div");e.id="err";e.className="err";$("tip").parentNode.after(e)} e.textContent=t }
 
-function load(){ const c=cur(); icd=tu?[]:[...(c.icd||[])]; cds=tu?[]:c.chi_dinh.map(x=>({...x}));
-  tick=cds.map(()=>true); res=null; st=[]; sel=null; closeDrawer();
-  $("log").hidden=true; setErr(""); render(); }
+function load(){ const c=cur(); pk=c.phieu_kham||""; nhap=null; icd=tu?[]:[...(c.icd||[])]; cds=tu?[]:c.chi_dinh.map(x=>({ma:x.ma,ten:x.ten}));
+  sel=null; closeDrawer(); check(false); }
 
-function leftCards(c,pk){
+function leftCards(c,q){
   const bn=c.benh_nhan, the=bn.the, t=bn.tuoi_thang, sh=c.sinh_hieu||{};
   const tuoi = t!=null ? `${t} tháng (${(t/12).toFixed(t%12?1:0)} tuổi)` : (bn.tuoi_ngay!=null?bn.tuoi_ngay+" ngày":"—");
-  const conHan = the && the.han_den >= (c.ngay_kham||""), sua = tu && !res;
+  const conHan = the && the.han_den >= (c.ngay_kham||""), sua = true;
   return `
    <div class="card"><div class="card-h"><h2>Bệnh nhân</h2><span class="ma">${esc(c.luot_kham)}</span></div><dl class="kv">
      <dt>Tuổi</dt><dd>${esc(tuoi)}</dd>
@@ -215,100 +242,103 @@ function leftCards(c,pk){
      <div><small>Mạch</small><b>${esc(sh.mach??"—")}</b><span>l/p</span></div>
      <div><small>Nhịp thở</small><b>${esc(sh.nhip_tho??"—")}</b><span>l/p</span></div></div></div>
    <div class="card"><div class="card-h"><h2>Chẩn đoán ICD</h2></div>${icd.map((x,i)=>`<span class="chip">${esc(x)}${icdTen[x]?` <small>${esc(icdTen[x])}</small>`:""}${sua?` <button class="link" data-xicd="${i}" aria-label="Xóa ${esc(x)}">×</button>`:""}</span>`).join("")
-     ||(sua?"":'<span class="muted">(chưa nhập)</span>')}${sua?'<input type="text" id="icdin" autocomplete="off" placeholder="Tìm chẩn đoán theo mã hoặc tên (vd J18.9, viêm phổi)" style="width:100%;margin-top:6px">':""}</div>
-   <div class="card"><div class="card-h"><h2>Phiếu khám</h2></div><div class="pk">${pk}</div></div>`;
+     ||(sua?"":'<span class="muted">(chưa nhập)</span>')}${sua?'<input type="text" id="icdin" autocomplete="off" placeholder="Tìm chẩn đoán theo mã hoặc tên (vd J18.9, viêm phổi)" style="width:100%;margin-top:6px">':""}${
+     ((res&&res.nhac)||[]).map(n=>`<div class="warn" role="status" style="margin:8px 0 0">${esc(n.noi_dung)} <details><summary>Căn cứ</summary>${(n.can_cu||[]).map(x=>{const y=canCu(x);return `<blockquote>“${esc(y.t)}”<cite>${esc(y.v)}</cite></blockquote>`}).join("")}</details></div>`).join("")}</div>
+   <div class="card"><div class="card-h"><h2>Phiếu khám</h2>${nhap==null?'<button class="link" data-pk="sua">Chỉnh sửa</button>':""}</div>${nhap==null
+     ?`<div class="pk">${highlight(pk,q).full||'<span class="muted">(trống)</span>'}</div>`
+     :`<textarea id="pkin" class="pk" rows="8" aria-label="Phiếu khám" placeholder="Bệnh sử, khám, lý do chỉ định, kết quả cận lâm sàng…">${esc(nhap)}</textarea>
+      <div style="margin-top:6px;display:flex;gap:8px"><button data-pk="ok">Xác nhận sửa</button><button class="link" data-pk="huy">Hủy</button></div>`}</div>`;
 }
 function render(){
-  const c=cur();
+  const c=cur(), a=document.activeElement, fid=a&&SUG[a.id]?a.id:null;
+  const giu={cdin:($("cdin")||{}).value, icdin:($("icdin")||{}).value}; // vẽ lại không làm mất chữ đang gõ
   document.querySelectorAll("#mode button").forEach(b=>b.classList.toggle("on",(b.dataset.m==="1")===tu));
-  $("edit").hidden=!res;
-  document.querySelectorAll("#lan button").forEach(b=>{b.classList.toggle("on",+b.dataset.l===lan);b.disabled=!lanCases(ca).some(x=>x.lan_tich===+b.dataset.l)});
-  const loi=res&&res.a1&&res.a1.loi; $("a1warn").hidden=!loi; // thông báo không chặn: vẫn xác nhận được
-  $("a1warn").textContent=loi?`AI chưa đọc được phiếu khám — các vế AI để chưa thấy (${loi}).`:"";
-  const nh=(res&&res.nhac)||[]; $("nhac").hidden=!nh.length;
-  $("nhac").innerHTML=nh.map(n=>`<div>${esc(n.noi_dung)} <details><summary>Căn cứ</summary>${(n.can_cu||[]).map(x=>{const y=canCu(x);return `<blockquote>“${esc(y.t)}”<cite>${esc(y.v)}</cite></blockquote>`}).join("")}</details></div>`).join("");
-  const q = res&&sel!=null ? trichOf(res.dong[sel]) : null;
-  $("left").innerHTML=leftCards(c, highlight(c.phieu_kham||"",q).full);
-  if(!res){ // bước 1: chọn chỉ định
-    $("rows").innerHTML=cds.map((r,i)=>`<tr class="row"><td class="cb"><input type="checkbox" data-t="${i}" ${tick[i]?"checked":""} aria-label="Kiểm tra ${esc(r.ten)}"></td>
-      <td><div class="ten">${esc(r.ten)}</div><div class="ma">${esc(r.ma||"— chưa có mã")}</div></td><td class="muted" colspan="2">Chưa kiểm tra</td>
-      <td>${tu?`<button class="link" data-xcd="${i}">Xóa</button>`:""}</td></tr>`).join("")
-      +(tu?`<tr><td></td><td colspan="4"><input type="text" id="cdin" autocomplete="off" placeholder="Tìm dịch vụ (tên, mã, tên tắt như CTM, CRP), Enter để thêm" style="width:100%"></td></tr>`:"");
-    $("sum").textContent=`${tick.filter(Boolean).length}/${tick.length} chỉ định · Lần tích ${lan}`;
-    $("tip").textContent=tu?"Đọc bệnh án, nhập chẩn đoán và chỉ định rồi bấm \"Kiểm tra BHYT\".":"Tích các chỉ định cần kiểm tra rồi bấm \"Kiểm tra BHYT\"."; $("ok").hidden=true; return;
-  }
-  $("tip").textContent="Bấm một dòng để xem đoạn phiếu khám liên quan."; $("ok").hidden=false;
-  $("rows").innerHTML=res.dong.map((r,i)=>{
-    const s=st[i], k=stOf(r), tags=[...new Set((r.checklist||[]).flatMap(v=>v.diem_mo_ho||[]))];
-    const pick = needReason(r,s) ? `<div class="picker" data-p="${i}"><span class="muted">Lý do (không bắt buộc):</span>${
-      Object.entries(LYDO).map(([v,l])=>`<label><input type="radio" name="ly${i}" value="${v}" ${s.ly&&s.ly.loai===v?"checked":""}>${l}</label>`).join("")}${
-      s.ly&&s.ly.loai==="khac"?`<input type="text" data-note="${i}" placeholder="ghi chú…" value="${esc(s.ly.ghi_chu||"")}">`:""}</div>`:"";
+  const loi=String((res&&res.a1&&res.a1.loi)||"").startsWith("a1_")?res.a1.loi:null; $("a1warn").hidden=!loi; // chỉ báo lỗi gọi AI; "chưa đọc" thì nút Kiểm tra BHYT đã đủ
+  $("a1warn").textContent=loi?`AI chưa đọc được phiếu khám, nên các điều kiện cần đọc phiếu để “chưa thấy”. Bấm “Kiểm tra BHYT” để thử lại. (mã lỗi: ${loi})`:"";
+  const ng=gdDung().length; $("gdbtn").textContent=ng?`Giả định (${ng})`:"Giả định";
+  const q = res&&sel!=null&&res.dong[sel] ? trichOf(res.dong[sel]) : [];
+  const pa=a&&a.id==="pkin"?[a.selectionStart,a.selectionEnd,a.scrollTop]:null; // vẽ lại không làm mất chỗ đang gõ
+  $("left").innerHTML=leftCards(c, q);
+  if(pa&&$("pkin")){const t=$("pkin");t.focus();t.setSelectionRange(pa[0],pa[1]);t.scrollTop=pa[2]}
+  $("rows").innerHTML=cds.map((d,i)=>{
+    const r=res&&res.dong[i], ten=`<td><div class="ten">${esc(d.ten)}</div><div class="ma">${esc((r&&r.ma)||d.ma||"— chưa có mã")}</div></td>`;
+    const xoa=`<button class="link" data-xcd="${i}">Xóa</button>`;
+    if(!r) return `<tr><td class="cb"></td>${ten}<td class="muted" colspan="2">${dang?"Đang kiểm tra…":"Chưa kiểm tra"}</td><td>${xoa}</td></tr>`;
+    const chon=chonOf(i), k=stOf(r);
+    // lý do + ghi chú nằm ngay trong dòng, không bắt buộc, sửa được đến lúc xác nhận; tự mở khi bác sĩ chọn khác ô tích sẵn
+    const pick = !(d.mo||d.ly||(gy(r)!=null&&chon!==(gy(r)==="tich"))) ? `<div><button class="link" data-mo="${i}">+ ghi chú</button></div>`
+      : `<div class="picker"><select data-ly="${i}" aria-label="Lý do"><option value="">Lý do (không bắt buộc)</option>${
+      Object.entries(LYDO).map(([v,l])=>`<option value="${v}" ${d.ly&&d.ly.loai===v?"selected":""}>${l}</option>`).join("")}</select>
+      <input type="text" data-note="${i}" aria-label="Ghi chú" placeholder="Ghi chú, vd vì sao không đồng ý kết quả kiểm tra" value="${esc((d.ly&&d.ly.ghi_chu)||"")}" style="flex:1;min-width:180px"></div>`;
     return `<tr class="row ${k==="cc"?"tint":""} ${sel===i?"sel":""}" data-row="${i}">
-      <td class="cb"><input type="checkbox" data-cb="${i}" ${s.chon?"checked":""} aria-label="BHYT ${esc(r.ten)}">${gy(r)==="tich"?'<span class="goiy" title="Trợ lý gợi ý">gợi ý</span>':""}</td>
-      <td><div class="ten">${esc(r.ten)}</div><div class="ma">${esc(r.ma||"— chưa có mã")}</div></td>
+      <td class="cb"><input type="checkbox" data-cb="${i}" ${chon?"checked":""} aria-label="Tính BHYT ${esc(r.ten)}"></td>${ten}
       <td><span class="badge s-${k}">${esc(nhan(r))}</span></td>
-      <td class="lydo">${esc(r.ly_do)}${tags.map(t=>`<span class="tag">cách hiểu tạm ${esc(t)}</span>`).join("")}${hs(r)}${pick}</td>
-      <td><button class="link" data-why="${i}">Vì sao?</button></td></tr>`}).join("");
-  $("sum").textContent=`${st.filter(s=>s.chon).length}/${st.length} dòng tích BHYT · Lần tích ${lan}`;
+      <td class="lydo">${lyDoHtml(r.ly_do)}${pick}</td>
+      <td style="white-space:nowrap"><button class="link" data-why="${i}">Vì sao?</button> ${xoa}</td></tr>`}).join("")
+    +`<tr><td></td><td colspan="4"><input type="text" id="cdin" autocomplete="off" placeholder="Thêm chỉ định: tìm theo tên, mã, tên tắt (CTM, CRP), Enter để thêm" style="width:100%"></td></tr>`;
+  $("sum").textContent=res?`${cds.filter((_,i)=>chonOf(i)).length}/${cds.length} dòng tính BHYT`:"";
+  $("tip").textContent=cds.length?"Thêm, xóa chỉ định hay chẩn đoán lúc nào cũng được, quy tắc tự kiểm tra lại. Bấm “Kiểm tra BHYT” để AI đọc phiếu khám.":"Đọc bệnh án, nhập chẩn đoán và chỉ định.";
+  $("ok").disabled=!res||nhap!=null; $("chk").disabled=nhap!=null||!!$("chk").querySelector(".spin"); // đang sửa phiếu: chưa kiểm tra/xác nhận $("chk").hidden=!cds.length;
+  for(const k in giu){ const el=$(k); if(el&&giu[k]) el.value=giu[k] }
+  if(fid&&$(fid)) $(fid).focus();
 }
 // căn cứ: định dạng can_cu của engine chưa chốt trong spec §8, hiển thị phòng thủ
 function canCu(x){ if(typeof x==="string") return {t:x,v:""};
   return {t:x.nguyen_van||x.trich||(x.ma?"Có mã giá dịch vụ "+x.ma:""),
     v:[x.van_ban,x.phu_luc,x.stt!=null?"STT "+x.stt:"",x.ma_ky_thuat?"mã kỹ thuật "+x.ma_ky_thuat:"",x.trang!=null?"tr. "+x.trang:""].filter(Boolean).join(", ")}; }
 function openDrawer(i){
-  sel=i; const r=res.dong[i], k=stOf(r), c=cur(), h=highlight(c.phieu_kham||"",trichOf(r)), cl=r.checklist||[];
+  sel=i; const r=res.dong[i], k=stOf(r), c=cur(), h=highlight(sent.phieu_kham,trichOf(r)), cl=r.checklist||[];
   $("drawer").innerHTML=`<div class="dh"><div><small>Vì sao?</small><b>${esc(r.ten)}</b></div><button class="close" aria-label="Đóng">×</button></div><div class="body">
     <span class="badge s-${k}">${esc(nhan(r))}</span> <span class="ma">${esc(r.ma||"— chưa có mã")}</span>
-    <h3>Lý do</h3><div>${esc(r.ly_do)}</div>${hs(r)?`${hs(r)}<div class="muted">AI không thấy phiếu khám hay chẩn đoán nhắc tới lý do cho dịch vụ này. Đây không phải đánh giá chuyên môn: nếu chỉ định cần, hãy ghi lý do vào phiếu khám; kết quả BHYT ở trên không đổi.</div>`:""}
-    <h3>Căn cứ (nguyên văn)</h3>${(r.can_cu||[]).length?r.can_cu.map(x=>{const y=canCu(x);return `<blockquote>${y.t?"“"+esc(y.t)+"”":""}<cite>${esc(y.v)}</cite></blockquote>`}).join(""):'<div class="muted">Không có điều kiện riêng cho dịch vụ này.</div>'}
-    ${cl.length?`<h3>Kiểm tra từng vế</h3><div class="tbl"><table><thead><tr><th>Vế</th><th>Kết quả</th><th>Nguồn</th><th>Bằng chứng</th></tr></thead><tbody>${
-      cl.map(v=>`<tr><td>${esc(v.id)} · ${esc(v.mo_ta)}${(v.diem_mo_ho||[]).map(m=>`<span class="tag">cách hiểu tạm ${esc(m)}</span>`).join("")}</td>
-       <td class="r-${esc(v.ket_qua==="chua_du_du_lieu"?"chua_du":v.ket_qua)}">${KQ[v.ket_qua]||esc(v.ket_qua)}</td><td><span class="src">${esc(v.nguon_ket_qua)}</span></td><td>${esc(v.bang_chung)}</td></tr>`).join("")}</tbody></table></div>`:""}
-    <h3>Phiếu khám</h3>${h.sent?`<blockquote>${h.sent}<cite>Trích A1 (đã khớp nguyên văn), mở rộng trọn câu</cite></blockquote>`:'<div class="muted">Không có đoạn trích A1 cho dòng này.</div>'}
-    <details><summary>Xem toàn văn phiếu khám</summary><blockquote>${h.full}</blockquote></details></div>`;
+    <h3>Lý do</h3><div>${lyDoHtml(r.ly_do)}</div>
+    <h3>Căn cứ (nguyên văn quy định)</h3>${(r.can_cu||[]).length?r.can_cu.map(x=>{const y=canCu(x);return `<blockquote>${y.t?"“"+esc(y.t)+"”":""}<cite>${esc(y.v)}</cite></blockquote>`}).join(""):'<div class="muted">Không có điều kiện riêng cho dịch vụ này.</div>'}
+    ${cl.length?`<h3>Kiểm tra từng điều kiện</h3><div class="tbl"><table><thead><tr><th>Điều kiện</th><th>Kết quả</th><th>Ai kiểm tra</th><th>Bằng chứng</th></tr></thead><tbody>${
+      cl.map(v=>`<tr><td>${esc(v.mo_ta)}${sao((v.diem_mo_ho||[]).length?v.diem_mo_ho:null)}</td>
+       <td class="r-${esc(v.ket_qua==="chua_du_du_lieu"?"chua_du":v.ket_qua)}">${KQ[v.ket_qua]||esc(v.ket_qua)}</td><td>${NGUON[v.nguon_ket_qua]?`<span class="src">${NGUON[v.nguon_ket_qua]}</span>`:"—"}</td><td>${bangChung(v)}</td></tr>`).join("")}</tbody></table></div>`:""}
+    ${h.sents.length?`<h3>Đoạn phiếu khám liên quan điều kiện BHYT</h3><blockquote>${h.sents.join("<br>")}<cite>AI trích nguyên văn từ phiếu khám; chữ đậm là phần AI dẫn làm bằng chứng.</cite></blockquote>
+    <details><summary>Xem cả phiếu khám</summary><blockquote>${h.full}</blockquote></details>`:""}</div>`;
   document.body.classList.add("open"); render();
 }
 function closeDrawer(){document.body.classList.remove("open"); sel=null}
 
-async function runCheck(){
-  const c=cur(), cd=cds.filter((_,i)=>tick[i]);
-  setErr("");
-  if(!cd.length){setErr(tu?"Hãy thêm ít nhất một chỉ định.":"Hãy tích ít nhất một chỉ định.");return}
-  sent={luot_kham:c.luot_kham,lan_tich:c.lan_tich,ngay_kham:c.ngay_kham,benh_nhan:c.benh_nhan,icd:[...icd],
-        sinh_hieu:c.sinh_hieu||{},phieu_kham:c.phieu_kham||"",lich_su:c.lich_su||[],chi_dinh:cd};
-  const b=$("chk"); b.disabled=true; b.innerHTML='<span class="spin"></span>Đang kiểm tra…';
-  try{
-    res=await post("/check",sent); closeDrawer(); $("log").hidden=true;
-    st=res.dong.map(r=>({chon:gy(r)==="tich",ly:null}));
-  }catch(e){setErr("Không kiểm tra được: "+e.message); res=null}
-  b.disabled=false; b.textContent="Kiểm tra BHYT"; render();
+// docAi=false: chỉ chạy lại quy tắc (tức thì, không gọi AI; câu AI đã đọc được server nhớ). docAi=true: nút "Kiểm tra BHYT".
+async function check(docAi){
+  const c=cur(), my=++seq, b=$("chk"); setErr(""); $("log").hidden=true;
+  if(!cds.length){res=null;dang=false;render();return}
+  sent={luot_kham:c.luot_kham,ngay_kham:c.ngay_kham,benh_nhan:c.benh_nhan,icd:[...icd],sinh_hieu:c.sinh_hieu||{},
+        phieu_kham:pk,lich_su:c.lich_su||[],chi_dinh:cds.map(d=>({ma:d.ma,ten:d.ten})),doc_ai:docAi};
+  if(docAi){b.disabled=true;b.innerHTML='<span class="spin"></span>AI đang đọc phiếu khám…'}
+  res=null; dang=true; render();
+  let j=null, err=null;
+  try{ j=await post("/check",sent) }catch(e){ err=e }
+  if(docAi){b.disabled=false;b.textContent="Kiểm tra BHYT"}
+  if(my!==seq){ if(docAi) check(false); return } // bác sĩ sửa trong lúc AI đọc: chạy lại quy tắc, lấy câu AI vừa đọc từ bộ nhớ
+  dang=false; res=j; if(err) setErr("Không kiểm tra được: "+err.message); render();
 }
 async function confirmAll(){
+  if(!res) return;
+  if(res.a1&&res.a1.loi==="chua_doc"&&!confirm("Còn chỉ định cần AI đọc phiếu khám mà AI chưa đọc. Vẫn xác nhận với kết quả hiện tại?")) return;
   const bn=sent.benh_nhan;
   const dau_vao={tuoi:bn.tuoi_thang??bn.tuoi_ngay,the:bn.the,icd:sent.icd,sinh_hieu:sent.sinh_hieu,lich_su_da_dung:sent.lich_su};
   const dong=res.dong.map((r,i)=>({...r,phien_ban_rule:r.phien_ban_rule||res.phien_ban_rule,
-    bac_si_chon:st[i].chon?"tich":"khong_tich",
-    ly_do_bac_si:needReason(r,st[i])?(st[i].ly||{loai:null,ghi_chu:null}):null}));
-  const miss=res.dong.filter((r,i)=>needReason(r,st[i])&&!st[i].ly).length;
+    bac_si_chon:chonOf(i)?"tich":"khong_tich",
+    ly_do_bac_si:cds[i].ly&&(cds[i].ly.loai||cds[i].ly.ghi_chu)?cds[i].ly:null}));
   try{
-    const j=await post("/confirm",{luot_kham:sent.luot_kham,lan_tich:sent.lan_tich,dau_vao,dong});
-    $("miss").textContent=miss?`${miss} dòng chưa chọn lý do — vẫn ghi, ly_do_bac_si.loai = null.`:"";
-    $("logtxt").textContent=`Đã ghi thêm ${j.ghi} dòng vào logs/xac-nhan.jsonl.`;
-  }catch(e){$("miss").textContent="";$("logtxt").textContent="Không ghi được: "+e.message}
+    const j=await post("/confirm",{luot_kham:sent.luot_kham,kiem_tra_id:res.kiem_tra_id,dau_vao,dong});
+    $("logtxt").textContent=`Đã lưu lựa chọn của bác sĩ cho ${j.ghi} dòng (tệp logs/xac-nhan.jsonl).`;
+  }catch(e){$("logtxt").textContent="Không lưu được: "+e.message}
   $("log").hidden=false; $("log").scrollIntoView({behavior:"smooth"});
 }
 
-$("ca").onchange=e=>{ca=e.target.value;lan=lanCases(ca)[0].lan_tich;load()};
-$("lan").onclick=e=>{const l=+e.target.dataset.l;if(l&&lanCases(ca).some(x=>x.lan_tich===l)){lan=l;load()}};
-$("chk").onclick=runCheck; $("ok").onclick=confirmAll;
+$("ca").onchange=e=>{ca=e.target.value;load()};
+$("chk").onclick=()=>check(true); $("ok").onclick=confirmAll;
 $("mode").onclick=e=>{const m=e.target.dataset.m;if(m!=null){tu=m==="1";load()}};
-$("edit").onclick=()=>{res=null;st=[];closeDrawer();$("log").hidden=true;setErr("");render()};
 // thêm chỉ định: chọn từ danh mục thì gửi kèm mã; gõ tự do thì ma=null, engine tự tra theo tên/bí danh
 function addCd(v,e){ v=v.trim(); if(!v&&!e) return;
-  cds.push(e?{ma:e.ma,ten:e.ten}:{ma:null,ten:v}); tick.push(true); render(); $("cdin").focus(); }
+  cds.push(e?{ma:e.ma,ten:e.ten}:{ma:null,ten:v}); $("cdin").value=""; check(false); $("cdin").focus(); }
 function addIcd(v){ v=v.trim().toUpperCase().replace(/\s+/g,"").replace(/[*+]$/,""); // mã ghi * hoặc + trong danh mục: hồ sơ/XML chỉ dùng phần mã
   if(!/^[A-Z]\d{2}(\.\d{1,2})?$/.test(v)) return; // không phải mã, không có gợi ý → giữ nguyên chữ đang gõ
-  if(!icd.includes(v)) icd.push(v); render(); $("icdin").focus(); }
+  $("icdin").value=""; if(!icd.includes(v)){icd.push(v); check(false)} $("icdin").focus(); }
 
 // xếp hạng gợi ý: trùng hẳn > bắt đầu bằng > mọi từ khớp đầu từ > chứa chuỗi > chứa đủ các từ; hòa thì tên ngắn trước
 const norm=s=>String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/đ/g,"d").replace(/Đ/g,"d").toLowerCase().trim();
@@ -346,37 +376,53 @@ document.addEventListener("keydown",e=>{ const inp=e.target; if(!SUG[inp.id]) re
     [...$("sugg").children].forEach((d,i)=>d.classList.toggle("on",i===sg.k)); $("sugg").children[sg.k].scrollIntoView({block:"nearest"}); }
   else if(e.key==="Enter"){ e.preventDefault(); pick(inp,open&&sg.k>=0?sg.items[sg.k]:null); }
   else if(e.key==="Escape") hideSugg(); });
+// rê chuột: dòng dưới con trỏ sáng lên (dùng chung chỉ số với phím mũi tên), bấm là chọn
+$("sugg").addEventListener("mousemove",e=>{ const d=e.target.closest("[data-k]"); if(!d||+d.dataset.k===sg.k) return;
+  sg.k=+d.dataset.k; [...$("sugg").children].forEach((x,i)=>x.classList.toggle("on",i===sg.k)); });
 $("sugg").addEventListener("mousedown",e=>{ const d=e.target.closest("[data-k]"); if(!d) return; e.preventDefault();
   const inp=$(sg.id); if(inp) pick(inp,sg.items[+d.dataset.k]); });
 document.addEventListener("focusout",e=>{ if(SUG[e.target.id]) hideSugg() });
 document.addEventListener("focusin",e=>{ if(SUG[e.target.id]) showSugg(e.target) }); // bấm vào ô là hiện danh sách
 addEventListener("scroll",e=>{ if(e.target!==$("sugg")) hideSugg() },true); // cuộn trong danh sách thì giữ
-$("left").addEventListener("click",e=>{const i=e.target.dataset.xicd;if(i!=null){icd.splice(+i,1);render()}});
+// sửa phiếu khám: gõ xong (rời ô) thì chạy lại quy tắc; AI chỉ đọc lại khi bấm "Kiểm tra BHYT"
+$("left").addEventListener("input",e=>{if(e.target.id==="pkin")nhap=e.target.value});
+$("left").addEventListener("click",e=>{const k=e.target.dataset.pk;
+  if(k){ if(k==="sua"){nhap=pk;render();$("pkin").focus();return}
+    const doi=k==="ok"&&nhap!==pk; if(doi)pk=nhap; nhap=null; doi?check(false):render(); return }
+  const i=e.target.dataset.xicd;if(i!=null){icd.splice(+i,1);check(false)}});
 $("rows").addEventListener("change",e=>{
   const t=e.target;
-  if(t.dataset.t!=null){tick[+t.dataset.t]=t.checked;render()}
-  else if(t.dataset.cb!=null){const i=+t.dataset.cb;st[i].chon=t.checked;if(!needReason(res.dong[i],st[i]))st[i].ly=null;render()}
-  else if(t.type==="radio"){const i=+t.closest(".picker").dataset.p;st[i].ly={loai:t.value,ghi_chu:t.value==="khac"?"":null};render()}
+  if(t.dataset.cb!=null){const i=+t.dataset.cb;cds[i].chon=t.checked;render()}
+  else if(t.dataset.ly!=null) lyOf(+t.dataset.ly).loai=t.value||null;
 });
-$("rows").addEventListener("input",e=>{const i=e.target.dataset.note;if(i!=null)st[+i].ly.ghi_chu=e.target.value});
+$("rows").addEventListener("input",e=>{const i=e.target.dataset.note;if(i!=null)lyOf(+i).ghi_chu=e.target.value||null});
 $("rows").addEventListener("click",e=>{
   const t=e.target;
-  if(t.dataset.xcd!=null){const i=+t.dataset.xcd;cds.splice(i,1);tick.splice(i,1);render();return}
+  if(t.dataset.xcd!=null){cds.splice(+t.dataset.xcd,1);sel=null;check(false);return}
   if(!res) return;
+  if(t.dataset.mo!=null){cds[+t.dataset.mo].mo=true;render();return}
   if(t.dataset.why!=null){openDrawer(+t.dataset.why);return}
-  if(t.closest("input,.picker"))return;
+  if(t.closest("input,select,.picker"))return;
   const tr=t.closest("tr.row"); if(tr){sel=+tr.dataset.row;render()}
 });
 $("drawer").addEventListener("click",e=>{if(e.target.closest(".close")){closeDrawer();render()}});
 $("scrim").onclick=()=>{closeDrawer();render()};
-document.addEventListener("keydown",e=>{if(e.key==="Escape"&&document.body.classList.contains("open")){closeDrawer();render()}});
+document.addEventListener("keydown",e=>{ if(e.key!=="Escape") return;
+  if(!$("gdp").hidden){$("gdp").hidden=true;return}
+  if(document.body.classList.contains("open")){closeDrawer();render()} });
+// bảng Giả định: nút ở đầu danh sách hoặc dấu * (ở dòng hay trong ngăn "Vì sao?")
+document.addEventListener("click",e=>{ const p=$("gdp"), t=e.target;
+  const b=t.closest("[data-gd]"); if(b){ e.stopPropagation(); const hl=b.dataset.gd?b.dataset.gd.split(","):[];
+    if(!p.hidden&&p._btn===b){p.hidden=true;return} openGd(b,hl); return }
+  if(t.dataset.gdt){ gdTab=t.dataset.gdt; openGd(p._btn,(p.dataset.hl||"").split(",").filter(Boolean)); return }
+  if(t.closest("[data-gdx]")||!t.closest("#gdp")) p.hidden=true; },true);
 
+fetch("/gia-dinh").then(r=>r.json()).then(j=>{GD=j}).catch(()=>{});
 fetch("/danh-muc").then(r=>r.json()).then(j=>{dm=j}).catch(()=>{}); // không có gợi ý vẫn gõ tự do được
-fetch("/icd").then(r=>r.json()).then(j=>{icdList=j; icdTen={}; j.forEach(e=>{const m=e.ma.replace(/[*+]$/,""); if(!icdTen[m]) icdTen[m]=e.ten}); if(tu&&!res) render()}).catch(()=>{});
+fetch("/icd").then(r=>r.json()).then(j=>{icdList=j; icdTen={}; j.forEach(e=>{const m=e.ma.replace(/[*+]$/,""); if(!icdTen[m]) icdTen[m]=e.ten}); if(cases.length) render()}).catch(()=>{});
 fetch("/cases").then(r=>r.json()).then(j=>{
-  cases=j; const ks=[...new Set(cases.map(c=>c.luot_kham))];
-  $("ca").innerHTML=ks.map(k=>{const c=lanCases(k)[0];return `<option value="${esc(k)}">${esc(c.id)} · ${esc(c.ten)}</option>`}).join("");
-  ca=ks[0]; lan=lanCases(ca)[0].lan_tich; load();
+  cases=j; $("ca").innerHTML=cases.map(c=>`<option value="${esc(c.id)}">${esc(c.id)} · ${esc(c.ten)}</option>`).join("");
+  ca=cases[0].id; load();
 }).catch(e=>{$("left").innerHTML='<div class="card err">Không tải được danh sách ca: '+esc(e.message)+'</div>'});
 </script>
 </body>

@@ -126,7 +126,7 @@ khoang_hop_le: { nhiet_do: [34, 43], mach: [40, 250], nhip_tho: [10, 120] }   # 
 
 ## 4. Đầu vào và tuổi
 
-Đầu vào một lượt khám giống cấu trúc ca test (trừ `ky_vong`, `he_chi_rule`): `luot_kham`, `lan_tich`, `ngay_kham`, `benh_nhan {tuoi_ngay | tuoi_thang, the}`, `icd[]`, `sinh_hieu`, `phieu_kham`, `lich_su[]`, `chi_dinh[{ma, ten}]`.
+Đầu vào một lượt khám giống cấu trúc ca test (trừ `ky_vong`, `he_chi_rule`): `luot_kham`, `ngay_kham`, `benh_nhan {tuoi_ngay | tuoi_thang, the}`, `icd[]`, `sinh_hieu`, `phieu_kham`, `lich_su[]`, `chi_dinh[{ma, ten}]`.
 
 - **Engine không có mặc định.** Thiếu khóa nào là thiếu dữ liệu. Mặc định của bộ test (ngày khám, thẻ còn hạn) chỉ áp trong loader của test và app mô phỏng.
 - **Tuổi:** có `tuoi_ngay` thì `tuoi_thang = floor(tuoi_ngay / 30.44)`. Chỉ có `tuoi_thang`: điều kiện tính theo ngày → nếu `tuoi_thang ≥ 1` thì không áp dụng; nếu `= 0` thì `chua_du_du_lieu`. Không có tuổi → mọi nhánh có `ap_dung` thành `chua_du_du_lieu`.
@@ -134,8 +134,8 @@ khoang_hop_le: { nhiet_do: [34, 43], mach: [40, 250], nhip_tho: [10, 120] }   # 
 
 ## 5. Luồng xử lý một dòng
 
-Mỗi lần tích chạy toàn bộ luồng trên dữ liệu đang có (F-02). Trạng thái dòng = **nặng nhất** trong các bước:
-Không được chi trả > Cần xem lại > Cần xem lại · đủ căn cứ > Phù hợp quy tắc BHYT.
+Mỗi lần kiểm tra chạy toàn bộ luồng trên dữ liệu đang có (F-02). Trạng thái dòng = **nặng nhất** trong các bước:
+Không được chi trả > Cần xem lại > Đủ căn cứ · bác sĩ xác nhận > Phù hợp quy tắc BHYT.
 
 1. **R2 thẻ:** `the: null` hoặc thiếu → Cần xem lại. `han_den < ngay_kham` → Không được chi trả. Gắn `muc_huong`.
 2. **R1 danh mục:** khớp chính xác mã, hoặc tên/bí danh đã chuẩn hóa (không khớp mờ). `khong_thay` → Không được chi trả. `xac_minh` hoặc không tìm thấy → Cần xem lại. `dieu_kien` mà không có mục trong `dieu-kien.yaml` → Cần xem lại.
@@ -163,7 +163,7 @@ Không được chi trả > Cần xem lại > Cần xem lại · đủ căn cứ
 |---|---|
 | Không có nhánh áp dụng | Cần xem lại |
 | Có nhánh đạt bằng rule | Phù hợp quy tắc BHYT |
-| Có nhánh đạt có AI | Cần xem lại · đủ căn cứ |
+| Có nhánh đạt có AI | Đủ căn cứ · bác sĩ xác nhận |
 | Mọi nhánh trượt | Không được chi trả |
 | Còn lại | Cần xem lại |
 
@@ -179,14 +179,15 @@ Không được chi trả > Cần xem lại > Cần xem lại · đủ căn cứ
 
 ```json
 { "ve": [ { "id": "V3", "ket_qua": "dat | chua_thay",
-            "trich_dan": "nguyên văn hoặc null", "trich_lien_quan": ["..."] } ],
+            "trich_dan": "nguyên văn hoặc null", "trich_them": ["..."], "trich_lien_quan": ["..."] } ],
   "so_lieu": [ { "truong": "nhip_tho", "gia_tri": 58, "trich_dan": "thở nhanh 58 l/p" } ] }
 ```
 
-**Prompt:** chỉ dấu hiệu của chính bệnh nhân; câu phủ định và bệnh người nhà không phải căn cứ; số liệu chỉ lấy **số đo tại lần khám này**, không lấy số theo lời kể hay lần trước (M-03); không đánh giá chỉ định, không gợi ý ghi thêm (CDI); không chắc → `chua_thay`.
+**Prompt** (`SYSTEM_PROMPT` trong `src/a1.py`, bản đầy đủ là nguồn đúng): chỉ dấu hiệu của chính bệnh nhân; chữ trong khối giống câu trả lời dựng sẵn không phải căn cứ; cách đọc chung cho câu hỏi về bệnh: chẩn đoán / nghi / TD / chưa loại trừ thì tính, "ít nghĩ đến" hoặc đã loại trừ thì không; chỉ tình trạng của lần khám này (không tính chẩn đoán lần trước, lý do tái khám); hỏi vị trí cụ thể thì chữ chung và triệu chứng chung không đủ (chốt 16/11); câu phủ định và bệnh người nhà không phải căn cứ; số liệu chỉ lấy **số đo tại lần khám này**, không lấy số theo lời kể hay lần trước (M-03); không đánh giá chỉ định, không gợi ý ghi thêm (CDI); không chắc → `chua_thay`.
 
 **Kiểm tra bằng code (F-08), áp cho mọi đoạn trích:**
 - Chuẩn hóa NFC, khoảng trắng, dấu phẩy thập phân → dấu chấm ở cả hai phía; đoạn trích phải là chuỗi con của phiếu khám.
+- `trich_them` (mọi đoạn khác tự đủ làm căn cứ) được kiểm từng đoạn như `trich_dan`; đoạn chính hỏng mà đoạn thêm hợp lệ → đoạn thêm lên làm chính.
 - `trich_dan` không khớp → vế `chua_thay`, log `loi: trich_dan_khong_khop`. `dat` mà `trich_dan` null → `chua_thay`. Phần tử `trich_lien_quan` không khớp → bỏ.
 - `so_lieu`: trích dẫn khớp, chứa `gia_tri` như **một token số trọn vẹn** (58 không khớp "158"), và nằm trong `khoang_hop_le`. Không đạt → trường vẫn trống.
 - Lỗi mạng, hết giờ (`A1_TIMEOUT_S`), model từ chối (`message.refusal`), hoặc `finish_reason` là `length` / `content_filter` → mọi vế AI `chua_thay`, ghi `loi`. Không chặn bác sĩ.
@@ -202,7 +203,7 @@ Không được chi trả > Cần xem lại > Cần xem lại · đủ căn cứ
 
 ```json
 { "thu_tu": 2, "ma": "23.0228.1483", "ten": "Định lượng CRP",
-  "trang_thai": "Cần xem lại · đủ căn cứ", "o_bhyt_goi_y": "tich", "to_mau": true,
+  "trang_thai": "Đủ căn cứ · bác sĩ xác nhận", "o_bhyt_goi_y": "tich", "to_mau": true,
   "ly_do": "...", "muc_huong": 100,
   "checklist": [ { "nhanh": "a_tre_em", "id": "V2", "mo_ta": "...", "ket_qua": "dat",
                    "nguon_ket_qua": "a1", "bang_chung": "A1 trích 'NT 45 l/p' → 45 ≥ 40",
@@ -234,21 +235,21 @@ Kết luận dựa trên giá trị `tu_dung` → thêm hậu tố cố định:
 
 ## 9. Log (F-12, F-13)
 
-Một dòng JSONL mỗi lần xác nhận một dòng chỉ định, chỉ ghi thêm (`logs/xac-nhan.jsonl`). Khóa: `luot_kham + lan_tich + thu_tu`.
+Một dòng JSONL mỗi lần xác nhận một dòng chỉ định, chỉ ghi thêm (`logs/xac-nhan.jsonl`). Khóa: `luot_kham + kiem_tra_id + thu_tu` (`kiem_tra_id` do `/check` cấp, 12 ký tự hex).
 
 ```json
-{ "thoi_gian": "...", "luot_kham": "...", "lan_tich": 1, "thu_tu": 2, "ma": "...", "ten": "...",
+{ "thoi_gian": "...", "luot_kham": "...", "kiem_tra_id": "...", "thu_tu": 2, "ma": "...", "ten": "...",
   "trang_thai": "...", "o_bhyt_goi_y": "tich | trong | null", "bac_si_chon": "tich | khong_tich",
-  "ly_do_bac_si": { "loai": "nguoi_nha_yeu_cau | loai_tru_theo_doi | khac", "ghi_chu": "..." },
+  "ly_do_bac_si": { "loai": "nguoi_nha_yeu_cau | loai_tru_theo_doi | khong_dong_y | khac | null", "ghi_chu": "..." },
   "checklist": [...], "can_cu": [...], "phien_ban_rule": "...",
   "dau_vao": { "tuoi": ..., "the": {...}, "icd": [...], "sinh_hieu": {...}, "lich_su_da_dung": [...] } }
 ```
 
-`ly_do_bac_si` bắt buộc khi: bỏ tích dòng gợi ý `tich`, hoặc tích dòng Không được chi trả. Dòng Cần xem lại (gợi ý `null`) chọn gì cũng không cần lý do.
+`ly_do_bac_si` luôn được ghi (không bắt buộc nhập, `loai` = null nếu bác sĩ để trống) khi: bỏ tích dòng gợi ý `tich`, hoặc tích dòng Không được chi trả. Dòng khác: chỉ ghi khi bác sĩ tự thêm lý do/ghi chú; `ghi_chu` dùng được với mọi `loai`, kể cả null.
 
 ## 10. Màn hình mô phỏng (F-14)
 
-HTML/JS thuần (`web/`) gọi FastAPI (`src/app.py`); bố cục chốt sau khi duyệt mẫu ở `prototypes/`. Một trang: chọn ca → thẻ, sinh hiệu, ICD, phiếu khám bên trái; bảng chỉ định với ô BHYT gợi ý và trạng thái bên phải; bấm dòng → checklist, trích dẫn tô màu trong phiếu khám, nhãn "cách hiểu tạm" nếu có; nút Xác nhận ghi log. Engine nhận/trả JSON, nên khi gắn Eform/VIS chỉ thay lớp này.
+HTML/JS thuần (`web/`) gọi FastAPI (`src/app.py`); bố cục chốt sau khi duyệt mẫu ở `prototypes/`. Một trang: chọn ca → thẻ, sinh hiệu, ICD, phiếu khám bên trái (nút "Chỉnh sửa" → "Xác nhận sửa"/"Hủy"; xác nhận sửa thì rule chạy lại, AI đọc lại khi bấm "Kiểm tra BHYT"; đang sửa thì khóa nút Kiểm tra và Xác nhận); bảng chỉ định với ô "Tính BHYT" tích sẵn và trạng thái bên phải, thêm/xóa chỉ định và ICD tại chỗ (rule tự chạy lại, AI chỉ đọc khi bấm "Kiểm tra BHYT"); bấm dòng → checklist, trích dẫn tô màu trong phiếu khám, nhãn "cách hiểu tạm" nếu có; nút Xác nhận ghi log. Engine nhận/trả JSON, nên khi gắn Eform/VIS chỉ thay lớp này.
 
 ## 11. Test
 
@@ -284,8 +285,10 @@ verify(phieu_kham, raw, khoang_hop_le) -> A1Result   # hàm thuần, kiểm tra 
 append(rows: list[dict], path="logs/xac-nhan.jsonl") -> None
 
 # src/app.py (FastAPI)
-POST /check   body = lượt khám (mục 4)            → kết quả check()
-POST /confirm body = {luot_kham, lan_tich, dau_vao, dong: [ {..đầu ra mục 8.., bac_si_chon, ly_do_bac_si} ]} → ghi log, trả {"ghi": n}
+POST /check   body = lượt khám (mục 4) + doc_ai (mặc định true) → kết quả check() + kiem_tra_id
+#   doc_ai=false: chỉ chạy rule, dùng câu trả lời A1 đã nhớ (khóa = phiếu khám chuẩn hóa khoảng trắng + nội dung câu hỏi);
+#   câu chưa nhớ → vế đó chua_thay, a1.loi="chua_doc". Lỗi a1_* không được nhớ. Bộ nhớ nằm trong tiến trình, mất khi khởi động lại.
+POST /confirm body = {luot_kham, kiem_tra_id, dau_vao, dong: [ {..đầu ra mục 8.., bac_si_chon, ly_do_bac_si} ]} → ghi log, trả {"ghi": n}
 GET  /cases   → danh sách ca demo (data/test-cases/demo.yaml, bỏ ky_vong)
 GET  /health  → {phien_ban_rule, a1_mode, model}
 GET  /        → web/index.html

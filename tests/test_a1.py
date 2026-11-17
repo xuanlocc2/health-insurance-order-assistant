@@ -303,3 +303,27 @@ def test_lien_quan_loi_api_tra_rong(monkeypatch):
             self.chat = NS(completions=NS(create=lambda **k: (_ for _ in ()).throw(RuntimeError("x"))))
     monkeypatch.setattr(a1, "OpenAI", Boom)
     assert a1.make_lien_quan("m", 1)({"dich_vu": ["PT"], "icd": [], "phieu_kham": "Ho"}) == {}
+
+
+def test_trich_them_kiem_tung_doan():
+    """Mọi đoạn căn cứ đều hiện; đoạn không khớp hoặc cắt phủ định bị bỏ riêng, không kéo cả vế về chua_thay."""
+    note = "Ho, sốt 3 ngày. Phổi ran ẩm nhỏ hạt đáy phải. Họng đỏ. Tai không chảy mủ."
+    raw = {"ve": [{"khoa": "1:V3", "ket_qua": "dat", "trich_dan": "Phổi ran ẩm nhỏ hạt đáy phải",
+                   "trich_them": ["Họng đỏ", "chảy mủ", "Amidan có mủ", "Phổi ran ẩm nhỏ hạt đáy phải"], "trich_lien_quan": []}]}
+    v = verify(note, raw, None)["ve"][0]
+    assert (v["ket_qua"], v["trich_dan"], v["trich_them"]) == ("dat", "Phổi ran ẩm nhỏ hạt đáy phải", ["Họng đỏ"])
+    raw["ve"][0]["trich_dan"] = "Amidan có mủ"  # đoạn chính hỏng, còn đoạn phụ hợp lệ → vẫn đạt, đoạn phụ lên làm chính
+    v = verify(note, raw, None)["ve"][0]
+    assert (v["ket_qua"], v["trich_dan"], v["trich_them"]) == ("dat", "Họng đỏ", ["Phổi ran ẩm nhỏ hạt đáy phải"])
+    raw["ve"][0].update(trich_dan="chảy mủ", trich_them=["Amidan có mủ"])
+    r = verify(note, raw, None)
+    assert (r["ve"][0]["ket_qua"], r["ve"][0]["trich_them"], r["loi"]) == ("chua_thay", [], "trich_dan_cat_phu_dinh")
+
+
+def test_phu_dinh_khong_tran_sang_cau_sau():
+    """Đoạn trích kết thúc bằng dấu chấm/phẩy: từ phủ định ở câu sau không làm hỏng nó (lỗi live A1-07, CRP-04)."""
+    for note, q in [("Sốt 39 độ, bú kém. Nước tiểu đục, mùi hôi. Họng không đỏ.", "Nước tiểu đục, mùi hôi."),
+                    ("Nghi viêm phổi. KQ: X-quang không thấy tổn thương.", "Nghi viêm phổi.")]:
+        assert verify(note, ve(q), None)["ve"][0]["ket_qua"] == "dat"
+    assert verify("Phổi ran ẩm, không sốt.", ve("Phổi ran ẩm"), None)["ve"][0]["ket_qua"] == "dat"  # phẩy ngắt mệnh đề như cũ
+    assert verify("Phổi không ran ẩm.", ve("ran ẩm."), None)["ve"][0]["ket_qua"] == "chua_thay"     # phủ định phía trước vẫn chặn

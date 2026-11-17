@@ -52,7 +52,7 @@ def luot_ngau_nhien(rnd):
     cds = [_chi_dinh(rnd) for _ in range(rnd.randrange(1, 7))]
     if co(0.3):
         cds.append(dict(chon(cds)))                                                # dòng trùng
-    luot = {"luot_kham": "LK", "lan_tich": 1, "ngay_kham": "2026-11-12", "benh_nhan": bn,
+    luot = {"luot_kham": "LK", "ngay_kham": "2026-11-12", "benh_nhan": bn,
             "icd": rnd.sample(["J18.9", "P36.9", "p36", "I21.0", "M30.3", "L51.1", "J06.9", ""], rnd.randrange(0, 4)),
             "sinh_hieu": sinh_hieu, "phieu_kham": "Ran ẩm đáy phổi phải. NT 45 l/p.", "lich_su": lich_su, "chi_dinh": cds}
     if co(0.05):

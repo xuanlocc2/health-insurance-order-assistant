@@ -112,7 +112,7 @@ def test_m_chi_rule_gia_tri_a1():
 
 def test_mac_dinh():
     luot = E.mac_dinh({"id": "X", "benh_nhan": {"tuoi_thang": 30}, "ky_vong": [], "bay": ["a"]})
-    assert luot["benh_nhan"]["the"]["muc_huong"] == 100 and luot["lan_tich"] == 2 and "ky_vong" not in luot
+    assert luot["benh_nhan"]["the"]["muc_huong"] == 100 and "ky_vong" not in luot
     assert E.mac_dinh({"id": "Y", "benh_nhan": {"tuoi_thang": 96}})["benh_nhan"]["the"]["muc_huong"] == 80
 
 

@@ -9,7 +9,7 @@ import unicodedata
 from datetime import date, datetime
 
 PHU_HOP = "Phù hợp quy tắc BHYT"
-DU_CAN_CU = "Cần xem lại · đủ căn cứ"
+DU_CAN_CU = "Đủ căn cứ · bác sĩ xác nhận"
 XEM_LAI = "Cần xem lại"
 KHONG_TRA = "Không được chi trả"
 NANG = {PHU_HOP: 0, DU_CAN_CU: 1, XEM_LAI: 2, KHONG_TRA: 3}
@@ -19,7 +19,7 @@ OPS = {"<=": operator.le, "<": operator.lt, ">=": operator.ge, ">": operator.gt,
 KY_HIEU = {"<=": "≤", ">=": "≥"}
 NHAN = {"nhiet_do": "nhiệt độ", "mach": "mạch", "nhip_tho": "nhịp thở"}  # nhãn hiển thị
 LOI_QUY_TAC = (XEM_LAI, "loi_quy_tac", "Quy tắc của dịch vụ này chưa đọc được")
-# nhắc mức lượt khám, không đổi trạng thái dòng: lần tích 1 chỉ định trước khi có chẩn đoán là bình thường (DEMO-01)
+# nhắc mức lượt khám, không đổi trạng thái dòng: chỉ định trước khi có chẩn đoán là bình thường (DEMO-01)
 _QD4750 = "QĐ 4750/QĐ-BYT (sửa đổi QĐ 130/QĐ-BYT), phụ lục bảng chỉ tiêu XML"
 THIEU_CHAN_DOAN = {
     "ma": "thieu_chan_doan",
@@ -175,11 +175,14 @@ def _doc_ai(kiem, ve, ctx):
         return _kq("chua_du_du_lieu", None, "Không hỏi A1 (nhánh đã trượt hoặc dòng đã có kết luận)")
     tl = ctx["ai"].get(khoa) or {}
     lq = tl.get("trich_lien_quan") or []
+    if tl.get("chua_doc"):
+        return _kq("chua_thay", None, "AI chưa đọc phiếu khám, bấm Kiểm tra BHYT")
     if tl.get("ket_qua") != "dat":
         return _kq("chua_thay", None, "Phiếu khám chưa thấy nội dung tương ứng", None, lq)
     if kiem.get("toi_da") == "chua_thay":
-        return _kq("chua_thay", None, "A1 chỉ trích dấu hiệu, không tự kết luận vế này", tl.get("trich_dan"), lq)
-    return _kq("dat", "a1", "A1 đọc phiếu khám", tl.get("trich_dan"), lq)
+        return _kq("chua_thay", None, "A1 chỉ trích dấu hiệu, không tự kết luận điều kiện này", tl.get("trich_dan"), lq)
+    # trich_them: các đoạn khác cũng đủ làm căn cứ, đã qua cùng phép kiểm như trich_dan (a1.verify)
+    return {**_kq("dat", "a1", "A1 đọc phiếu khám", tl.get("trich_dan"), lq), "trich_them": list(tl.get("trich_them") or [])}
 
 
 def kiem_tra(k, ve, ctx):
@@ -344,7 +347,7 @@ def _ly_do_r3(dk, ds, lt_kq, lt_state, tt_dk):
         if tt_dk == PHU_HOP:
             cau = "Đạt điều kiện: " + "; ".join(v.get("mo_ta", "") for v, _ in n["ves"])
         else:
-            cau = "Đạt điều kiện, có vế do AI đọc phiếu khám: " + "; ".join(
+            cau = "Đạt điều kiện, có phần do AI đọc phiếu khám: " + "; ".join(
                 v.get("mo_ta", "") for v, k in n["ves"] if k["nguon"] == "a1")
         return tt, "dat" if tt_dk == PHU_HOP else "dat_ai", cau, \
             [_nong(n["nhanh"]), n["nhanh"].get("ap_dung"), *_dua(n["ves"])]
@@ -362,12 +365,12 @@ def _ly_do_r3(dk, ds, lt_kq, lt_state, tt_dk):
         if n["state"] == "truot":
             continue
         if not n["ad"]:
-            return tt, "ve_chua_du", "Chưa đủ dữ liệu cho vế 'độ tuổi áp dụng nhánh'", [n["nhanh"].get("ap_dung")]
+            return tt, "ve_chua_du", "Chưa đủ dữ liệu cho điều kiện 'độ tuổi áp dụng nhánh'", [n["nhanh"].get("ap_dung")]
         for v, k in n["ves"]:
             if k["ket_qua"] == "chua_thay":
-                return tt, "ve_chua_thay", f"Điều kiện có vế '{v.get('mo_ta', '')}'; phiếu khám chưa thấy nội dung tương ứng", k["dua"]
+                return tt, "ve_chua_thay", f"Điều kiện yêu cầu '{v.get('mo_ta', '')}'; phiếu khám chưa thấy nội dung tương ứng", k["dua"]
             if k["ket_qua"] != "dat":
-                return tt, "ve_chua_du", f"Chưa đủ dữ liệu cho vế '{v.get('mo_ta', '')}'", k["dua"]
+                return tt, "ve_chua_du", f"Chưa đủ dữ liệu cho điều kiện '{v.get('mo_ta', '')}'", k["dua"]
     return tt, "ve_chua_du", "Chưa đủ dữ liệu", []
 
 
@@ -378,7 +381,7 @@ def _checklist(ds, lt_kq, ts):
             nguon, ma = _meta(v, ts)
             out.append({"nhanh": nhanh, "id": v.get("id"), "mo_ta": v.get("mo_ta"), "ket_qua": k["ket_qua"],
                         "nguon_ket_qua": k["nguon"], "bang_chung": k["bang_chung"], "trich_dan": k["trich_dan"],
-                        "trich_lien_quan": k["trich_lien_quan"],
+                        "trich_lien_quan": k["trich_lien_quan"], "trich_them": k.get("trich_them") or [],
                         "nguon_quy_tac": "tu_dung" if "tu_dung" in nguon else
                         "bac_si_duyet" if "bac_si_duyet" in nguon else "van_ban",
                         "diem_mo_ho": ma})

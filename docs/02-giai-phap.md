@@ -39,7 +39,7 @@ Dòng chỉ định → Rule R1–R4 ─┬─ kết luận được → Phù h�
                                                      Bác sĩ xác nhận → Lưu lịch sử
 ```
 
-**Mỗi lần tích chạy cùng một luồng** *(chốt 12/11/2026)*: lần 1 (trước khi làm) và lần 2 (sau khi có kết quả) đều chạy mọi kiểm tra trên dữ liệu đang có. Vế nào thiếu dữ liệu (vd cần ICD mà chưa nhập) ghi "chưa đủ dữ liệu" → dòng đó "Cần xem lại". Không chia rule theo lần tích, vì nhiều vế (vd CRP trẻ em: sinh hiệu + phiếu khám) đã kiểm được ngay từ lần 1.
+**Mỗi lần kiểm tra chạy cùng một luồng** *(chốt 12/11/2026; bỏ khái niệm "lần tích 1/2" ngày 16/11/2026)*: trong một lượt khám đang mở, bác sĩ thêm/xóa chỉ định và chẩn đoán lúc nào cũng được. Sau mỗi thay đổi, rule tự chạy lại trên dữ liệu đang có (không gọi AI). AI chỉ đọc phiếu khám khi bác sĩ bấm "Kiểm tra BHYT"; câu trả lời được nhớ theo nội dung phiếu khám + câu hỏi nên không gọi lại cho cùng nội dung. Vế nào thiếu dữ liệu (vd cần ICD mà chưa nhập) ghi "chưa đủ dữ liệu" → dòng đó "Cần xem lại". Không chia rule theo thời điểm, vì nhiều vế (vd CRP trẻ em: sinh hiệu + phiếu khám) kiểm được ngay cả khi chưa có ICD.
 
 **R2 trong MVP** chỉ gồm: thẻ hết hạn và hiển thị mức hưởng (vd trẻ < 6 tuổi 100%). Không làm tuyến/cấp chuyên môn.
 
@@ -53,7 +53,7 @@ Dòng chỉ định → Rule R1–R4 ─┬─ kết luận được → Phù h�
 |---|---|---|
 | Phù hợp quy tắc BHYT | Qua hết các rule; không phải cam kết BHXH sẽ trả | Tích BHYT |
 | Không được chi trả | Vi phạm ít nhất một rule, có lý do và căn cứ | Không tích, hoặc tự kiểm tra lại |
-| Cần xem lại · đủ căn cứ | Mọi vế điều kiện đều có căn cứ, nhưng ít nhất một vế do A1 đọc từ phiếu khám (AI không được dẫn tới "Phù hợp") | Đọc lướt đoạn trích rồi xác nhận |
+| Đủ căn cứ · bác sĩ xác nhận | Mọi vế điều kiện đều có căn cứ, nhưng ít nhất một vế do A1 đọc từ phiếu khám (AI không được dẫn tới "Phù hợp") | Đọc lướt đoạn trích rồi xác nhận |
 | Cần xem lại | Rule không kết luận được, hoặc có vế chưa thấy căn cứ / rơi vào điều khoản loại trừ; có trích dẫn nếu tìm thấy | Tự quyết định |
 
 **Trải nghiệm bác sĩ**
@@ -63,13 +63,13 @@ Dòng chỉ định → Rule R1–R4 ─┬─ kết luận được → Phù h�
   | Trạng thái | Ô BHYT |
   |---|---|
   | Phù hợp quy tắc BHYT | Tích sẵn |
-  | Cần xem lại · đủ căn cứ | Tích sẵn, tô màu để bác sĩ đọc lướt đoạn trích (nhãn này sinh ra để bác sĩ đỡ việc) |
+  | Đủ căn cứ · bác sĩ xác nhận | Tích sẵn, tô màu để bác sĩ đọc lướt đoạn trích (nhãn này sinh ra để bác sĩ đỡ việc) |
   | Cần xem lại | Để trống, bác sĩ tự chọn |
   | Không được chi trả | Để trống |
 - Không có nút hay gợi ý kiểu "thêm chỉ định để được chi trả".
-- **Lý do khi bỏ qua cảnh báo hoặc bỏ tích:** bác sĩ chọn nhanh một lý do — "Người nhà yêu cầu → chuyển tự túc" / "Loại trừ, theo dõi nghi ngờ (ghi 1 dòng)" / "Khác (ghi 1 dòng)". Không chặn, không phán xét; lý do được lưu vào lịch sử để giải trình và làm số liệu khảo sát (tỉ lệ dòng thiếu căn cứ do người nhà yêu cầu so với chỉ định loại trừ).
+- **Lý do khi bỏ qua cảnh báo hoặc bỏ tích:** ngay trong dòng có ô lý do — "Người nhà yêu cầu → chuyển tự túc" / "Loại trừ, theo dõi nghi ngờ" / "Không đồng ý kết quả kiểm tra" / "Khác" — và ô ghi chú tự do; không bắt buộc, sửa được đến lúc xác nhận. Không chặn, không phán xét; lý do được lưu vào lịch sử để giải trình và làm số liệu khảo sát (tỉ lệ dòng thiếu căn cứ do người nhà yêu cầu so với chỉ định loại trừ).
 - **Lịch sử:** mỗi lần xác nhận lưu lại trạng thái, lý do, căn cứ và lựa chọn của bác sĩ → khi bị xuất toán tra lại được ngay. *(Ý mới từ phần slide Lợi ích, chưa có trong báo cáo Claude Docs.)*
-  - Chỉ ghi thêm, không sửa/xóa. Mỗi lần tích (lần 1, lần 2) là một bản ghi riêng.
+  - Chỉ ghi thêm, không sửa/xóa. Mỗi lần bấm "Kiểm tra BHYT" có một mã `kiem_tra_id`; mỗi lần xác nhận là một loạt bản ghi riêng mang mã đó.
   - Chép nguyên văn căn cứ và phiên bản rule vào bản ghi (rule sẽ đổi, log thì không).
   - Ảnh chụp đầu vào tối thiểu: ICD, sinh hiệu rule đã dùng, đoạn trích A1. Không chép cả phiếu khám.
   - Khóa nối: mã lượt khám + mã dịch vụ, để ghép thẳng với danh sách xuất toán.
@@ -84,7 +84,7 @@ Lấy từ [a1-seed.yaml](../data/test-cases/a1-seed.yaml) (chi tiết từng v�
 
 | Ca | Chỉ định | Trạng thái | Lý do | Ô BHYT |
 |---|---|---|---|---|
-| A1-02 · 3 tuổi, sốt 39,2°C, amidan có mủ | CRP | Cần xem lại · đủ căn cứ | Sinh hiệu đạt (rule); "nghi ổ nhiễm trùng" có trích dẫn "Amidan 2 bên sưng to, có mủ trắng" (A1) | Tích sẵn, tô màu |
+| A1-02 · 3 tuổi, sốt 39,2°C, amidan có mủ | CRP | Đủ căn cứ · bác sĩ xác nhận | Sinh hiệu đạt (rule); "nghi ổ nhiễm trùng" có trích dẫn "Amidan 2 bên sưng to, có mủ trắng" (A1) | Tích sẵn, tô màu |
 | A1-01 · 4 tháng, sốt sau tiêm | CRP | Cần xem lại | Sinh hiệu đạt, nhưng phiếu khám chưa thấy ổ nhiễm trùng ("sau tiêm vắc xin 6 trong 1", "không ho", "phổi không ran"). Hệ chỉ rule sẽ báo Phù hợp | Để trống |
 | (minh họa R4) | CRP chỉ định 2 lần trong cùng lượt khám | Cần xem lại | Trùng trong cùng lượt khám; văn bản không có điều khoản nên không kết luận Không được chi trả (M-15) | Để trống |
 | (minh họa) | Siêu âm ổ bụng, ICD R10.4 | Phù hợp quy tắc BHYT | Có trong danh mục, không có điều kiện riêng (M-16) | Tích sẵn |
@@ -111,7 +111,7 @@ BHYT là bài toán chữ ở cả hai đầu: quy định là văn xuôi, hồ 
 
 | Mã | Việc | Khi nào chạy | Đầu ra | Vì sao rule không làm được |
 |---|---|---|---|---|
-| A1 | **Đọc hồ sơ như giám định viên:** đối chiếu từng vế văn xuôi của điều kiện chi trả thành văn (vd CRP: "nghi ổ nhiễm trùng") với phiếu khám. Dịch vụ không có điều kiện riêng thì A1 không chạy, kể cả khi ICD chỉ là triệu chứng (M-16) | Mỗi lần tích, khi điều kiện có vế văn xuôi | Checklist từng vế: ✅ kèm trích dẫn nguyên văn / ⚠️ "chưa thấy trong phiếu khám". Mọi vế ✅ → "Cần xem lại · đủ căn cứ"; còn ⚠️ → "Cần xem lại". Không đánh giá lý do đủ hay không | ~83% tiền bị cắt (2018–2022) đến từ người đọc hồ sơ; từ khóa không xử lý được phủ định ("không sốt") và viết tắt |
+| A1 | **Đọc hồ sơ như giám định viên:** đối chiếu từng vế văn xuôi của điều kiện chi trả thành văn (vd CRP: "nghi ổ nhiễm trùng") với phiếu khám. Dịch vụ không có điều kiện riêng thì A1 không chạy, kể cả khi ICD chỉ là triệu chứng (M-16) | Khi bác sĩ bấm "Kiểm tra BHYT" và điều kiện có vế văn xuôi | Checklist từng vế: ✅ kèm trích dẫn nguyên văn / ⚠️ "chưa thấy trong phiếu khám". Mọi vế ✅ → "Đủ căn cứ · bác sĩ xác nhận"; còn ⚠️ → "Cần xem lại". Không đánh giá lý do đủ hay không | ~83% tiền bị cắt (2018–2022) đến từ người đọc hồ sơ; từ khóa không xử lý được phủ định ("không sốt") và viết tắt |
 | A3 | *Đã cân nhắc và loại (16/11/2026), xem bên dưới.* Lưu ý hồ sơ do AI tự đánh giá | — | — | — |
 | A2 | *Đã bỏ (11/11/2026).* Hỏi đáp tự do (chatbot) rủi ro cao, khó kiểm soát và đánh giá | — | — | — |
 
@@ -126,7 +126,7 @@ BHYT là bài toán chữ ở cả hai đầu: quy định là văn xuôi, hồ 
 
 Thay bằng hai thay đổi không cần AI phán xét:
 - **Câu chữ:** dòng chỉ khớp danh mục (không có điều kiện riêng) hiển thị "Có trong danh mục BHYT", không ghi "Phù hợp". Trạng thái lưu trong log giữ nguyên. Chữ "Phù hợp quy tắc BHYT" chỉ còn ở dòng đã qua kiểm tra điều kiện.
-- **Nhắc thiếu chẩn đoán chính** ở mức lượt khám, không đổi trạng thái dòng, vì lần tích 1 chỉ định trước khi có chẩn đoán là bình thường. Căn cứ: QĐ 4750/QĐ-BYT, phụ lục bảng chỉ tiêu XML, Bảng 1 trường 26 `MA_BENH_CHINH` (tr. 12) và Bảng 3 trường 35 `MA_BENH` (tr. 41): "Trường hợp không có thông tin ở trường này thì được hiểu là DVKT được chỉ định để điều trị bệnh chính (MA_BENH_CHINH)."
+- **Nhắc thiếu chẩn đoán chính** ở mức lượt khám, không đổi trạng thái dòng, vì chỉ định trước khi có chẩn đoán là bình thường. Căn cứ: QĐ 4750/QĐ-BYT, phụ lục bảng chỉ tiêu XML, Bảng 1 trường 26 `MA_BENH_CHINH` (tr. 12) và Bảng 3 trường 35 `MA_BENH` (tr. 41): "Trường hợp không có thông tin ở trường này thì được hiểu là DVKT được chỉ định để điều trị bệnh chính (MA_BENH_CHINH)."
 
 Code A3 giữ lại sau công tắc `LQ_MODE=live` (mặc định tắt) để đo khi có dữ liệu thật; không bật cho người dùng.
 
@@ -144,7 +144,7 @@ Checklist từng vế cho các dịch vụ có điều kiện trong MVP (CRP, Pr
 | Cách bác sĩ ghi phiếu (vd "TD viêm tai", "chưa loại trừ NKH", "ở nhà sốt 39 độ") | Vô hạn, không liệt kê hết | A1 đọc và đoán, kèm trích nguyên văn → bác sĩ xem lại |
 
 - Không cố viết rule cho từng cách ghi phiếu. 45 ca khó ([a1-kho.yaml](../data/eval/a1-kho.yaml)) là bộ đề để **đo** A1 sai bao nhiêu và sai kiểu gì, không phải danh sách để phủ hết.
-- AI đoán sai không được làm dòng thành "Phù hợp": cao nhất là "Cần xem lại · đủ căn cứ"; không chắc → "chưa thấy". Chỉ số chặn: số dòng báo thuận lợi hơn kỳ vọng = 0.
+- AI đoán sai không được làm dòng thành "Phù hợp": cao nhất là "Đủ căn cứ · bác sĩ xác nhận"; không chắc → "chưa thấy". Chỉ số chặn: số dòng báo thuận lợi hơn kỳ vọng = 0.
 - Rủi ro chính là bác sĩ đồng ý theo quán tính (automation bias) → luôn hiện câu trích để nhìn là kiểm được.
 - **Học dần từ thực tế:** log ghi lần bác sĩ không đồng ý với A1 và lý do. Cách ghi nào lặp lại nhiều thì mới đưa thành nguyên tắc (hỏi bác sĩ chốt) hoặc thêm vào bộ ca thử. Về sau ghép với danh sách xuất toán (vòng học bên dưới).
 

@@ -26,7 +26,7 @@ def kq(ket_qua, nguon="nhap"):
 def luot(chi_dinh, **kw):
     bn = kw.pop("benh_nhan", {"tuoi_thang": 24})
     bn.setdefault("the", THE)
-    return {"luot_kham": "LK", "lan_tich": 1, "ngay_kham": "2026-11-12", "benh_nhan": bn, "icd": ["J18.9"],
+    return {"luot_kham": "LK", "ngay_kham": "2026-11-12", "benh_nhan": bn, "icd": ["J18.9"],
             "sinh_hieu": {"nhiet_do": 38.8, "mach": 150, "nhip_tho": 46}, "phieu_kham": "Ran ẩm đáy phổi phải.",
             "lich_su": [], "chi_dinh": [{"ma": m, "ten": m} if isinstance(m, str) else m for m in chi_dinh], **kw}
 
@@ -436,5 +436,5 @@ def test_can_cu_luon_co_trich(rules):
 def test_nhac_thieu_chan_doan_khong_doi_trang_thai(rules):
     co, khong = check(luot([CTM]), rules, None), check(luot([CTM], icd=[]), rules, None)
     assert co["nhac"] == [] and [n["ma"] for n in khong["nhac"]] == ["thieu_chan_doan"]
-    assert khong["dong"][0]["trang_thai"] == co["dong"][0]["trang_thai"] == PHU_HOP  # lần tích 1 chưa ICD là bình thường
+    assert khong["dong"][0]["trang_thai"] == co["dong"][0]["trang_thai"] == PHU_HOP  # chưa ICD lúc chỉ định là bình thường
     assert all(c["van_ban"].startswith("QĐ 4750") and c["trich"] for c in khong["nhac"][0]["can_cu"])

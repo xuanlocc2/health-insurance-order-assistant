@@ -9,7 +9,7 @@ Bác sĩ tự tích BHYT cho từng dòng xét nghiệm/CĐHA, không có công 
 ## 2. Người dùng và thời điểm
 
 - **Người dùng duy nhất:** bác sĩ khám ngoại trú Trung tâm Nhi (gồm phòng khám Ngoại Nhi).
-- **Thời điểm:** lúc tích BHYT cho các dòng đã chỉ định, ở cả hai lần: lần 1 trước khi làm và lần 2 sau khi có kết quả.
+- **Thời điểm:** lúc tích BHYT cho các dòng đã chỉ định, bất kỳ lúc nào trong lượt khám đang mở. Bác sĩ thêm chỉ định/chẩn đoán sau cũng được, kết quả tự cập nhật.
 - **Việc người dùng cần làm xong:** tích đúng từng dòng, và giữ được căn cứ để giải trình nếu bị hỏi lại.
 
 ## 3. Mục tiêu MVP
@@ -35,8 +35,8 @@ Chứng minh tính khả thi, không đặt mục tiêu hiệu năng:
 
 | Mã | Yêu cầu |
 |---|---|
-| F-01 | Với mỗi dòng chỉ định, trả về một trong 4 trạng thái kèm một câu lý do: Phù hợp quy tắc BHYT / Cần xem lại · đủ căn cứ / Cần xem lại / Không được chi trả |
-| F-02 | Mỗi lần tích chạy mọi kiểm tra trên dữ liệu đang có. Vế thiếu dữ liệu ghi "chưa đủ dữ liệu", dòng đó ra Cần xem lại |
+| F-01 | Với mỗi dòng chỉ định, trả về một trong 4 trạng thái kèm một câu lý do: Phù hợp quy tắc BHYT / Đủ căn cứ · bác sĩ xác nhận / Cần xem lại / Không được chi trả |
+| F-02 | Mỗi lần kiểm tra chạy mọi rule trên dữ liệu đang có; rule tự chạy lại sau mỗi lần thêm/xóa chỉ định hoặc ICD. AI (A1) chỉ gọi khi bấm "Kiểm tra BHYT", có nhớ kết quả theo nội dung; dòng cần AI mà AI chưa đọc thì báo rõ và cảnh báo khi xác nhận. Vế thiếu dữ liệu ghi "chưa đủ dữ liệu", dòng đó ra Cần xem lại |
 | F-03 | R1: dịch vụ không có trong danh mục BHYT → Không được chi trả; chưa xác minh → Cần xem lại |
 | F-04 | R2: thẻ hết hạn → Không được chi trả; hiển thị mức hưởng |
 | F-05 | R3: kiểm tra từng vế điều kiện có cấu trúc (tuổi, sinh hiệu theo ngưỡng tuổi, ICD) của 3 dịch vụ có điều kiện. Chỉ dùng căn cứ thành văn |
@@ -44,10 +44,10 @@ Chứng minh tính khả thi, không đặt mục tiêu hiệu năng:
 | F-07 | A1: với vế văn xuôi, đọc phiếu khám và trả ✅ kèm trích dẫn nguyên văn, ⚠️ "chưa thấy", hoặc "rơi vào điều khoản loại trừ". A1 cũng trích số liệu nằm trong chữ để rule so ngưỡng |
 | F-08 | Code kiểm tra trích dẫn của A1 khớp nguyên văn phiếu khám; không khớp thì vế đó thành "chưa thấy" |
 | F-09 | AI không bao giờ đưa một dòng tới "Phù hợp quy tắc BHYT", và không tự gây "Không được chi trả", kể cả qua số liệu AI trích từ phiếu khám. Thiếu dữ liệu hoặc không có nhánh điều kiện áp dụng → Cần xem lại |
-| F-10 | Điền sẵn ô BHYT: Phù hợp và Cần xem lại · đủ căn cứ → tích sẵn (dòng đủ căn cứ tô màu đoạn trích); hai trạng thái còn lại → để trống. Bác sĩ phải bấm xác nhận |
+| F-10 | Điền sẵn ô BHYT: Phù hợp và Đủ căn cứ · bác sĩ xác nhận → tích sẵn (dòng đủ căn cứ tô màu đoạn trích); hai trạng thái còn lại → để trống. Bác sĩ phải bấm xác nhận |
 | F-11 | Nút "Vì sao?": mẫu câu + nguyên văn căn cứ và checklist từng vế. Không dùng LLM |
-| F-12 | Khi bỏ tích dòng được tích sẵn, hoặc tích dòng Không được chi trả, bác sĩ chọn nhanh một lý do: Người nhà yêu cầu → tự túc / Loại trừ, theo dõi nghi ngờ / Khác. Dòng Cần xem lại chọn gì cũng không cần lý do. Không chặn |
-| F-13 | Lịch sử chỉ ghi thêm (JSONL): mỗi lần xác nhận lưu trạng thái, lựa chọn, lý do, căn cứ nguyên văn, phiên bản rule, đoạn trích A1. Khóa = mã lượt khám + mã dịch vụ |
+| F-12 | Khi bác sĩ chọn khác ô tích sẵn (bỏ tích dòng tích sẵn, hoặc tích dòng Không được chi trả), ngay trong dòng hiện ô lý do (Người nhà yêu cầu → tự túc / Loại trừ, theo dõi nghi ngờ / Không đồng ý kết quả kiểm tra / Khác) và ô ghi chú tự do. Không bắt buộc, không chặn, sửa được đến lúc xác nhận. Dòng nào cũng có "+ ghi chú" để bác sĩ phản hồi kết quả kiểm tra *(đổi 16/11/2026: bỏ hộp chọn lý do bật lên)* |
+| F-13 | Lịch sử chỉ ghi thêm (JSONL): mỗi lần xác nhận lưu trạng thái, lựa chọn, lý do, căn cứ nguyên văn, phiên bản rule, đoạn trích A1. Khóa = mã lượt khám + mã lần kiểm tra (`kiem_tra_id`) + thứ tự dòng |
 | F-14 | Màn hình mô phỏng: chọn ca từ bộ mock, gồm thông tin thẻ, sinh hiệu, ICD (có thể trống), phiếu khám, danh sách chỉ định, sidebar trạng thái |
 
 **Should** (có thì tốt, cắt đầu tiên nếu trễ)
@@ -69,7 +69,7 @@ Ca lấy từ [a1-seed.yaml](../data/test-cases/a1-seed.yaml); các ca còn lạ
 | Mã | Ca | Kết quả mong đợi |
 |---|---|---|
 | AC-01 | A1-01: CRP, 4 tháng, sốt sau tiêm | Cần xem lại, ô trống; vế "ổ nhiễm trùng" = chưa thấy, có trích các câu phủ định |
-| AC-02 | A1-02: CRP, amidan có mủ | Cần xem lại · đủ căn cứ, tích sẵn, đoạn trích khớp nguyên văn |
+| AC-02 | A1-02: CRP, amidan có mủ | Đủ căn cứ · bác sĩ xác nhận, tích sẵn, đoạn trích khớp nguyên văn |
 | AC-03 | A1-03: ô nhịp thở trống, "thở nhanh 58 l/p" trong phiếu | A1 trích 58, rule kết luận đạt (≥ 50) |
 | AC-04 | A1-04: PCT ngoại trú, trẻ tỉnh | Cần xem lại, cả hai nhánh = chưa thấy |
 | AC-05 | A1-05: PCT tái khám, hết sốt | Cần xem lại (không phải Không được chi trả), có đánh dấu điều khoản loại trừ |
@@ -79,7 +79,7 @@ Ca lấy từ [a1-seed.yaml](../data/test-cases/a1-seed.yaml); các ca còn lạ
 | AC-09 | Thẻ hết hạn | Mọi dòng: Không được chi trả (R2) |
 | AC-10 | CRP, không có sinh hiệu ở ô riêng lẫn trong phiếu | Cần xem lại, vế sinh hiệu = chưa đủ dữ liệu |
 | AC-11 | Trích dẫn A1 bị sửa một chữ | Vế đó thành chưa thấy |
-| AC-12 | Bác sĩ bỏ tích dòng Phù hợp | Bắt chọn lý do; log có đủ trường F-13 |
+| AC-12 | Bác sĩ bỏ tích dòng Phù hợp | Hiện ô lý do + ghi chú trong dòng (không bắt buộc); log có đủ trường F-13, thiếu lý do thì `loai` = null |
 | AC-13 | CRP, ô nhiệt độ trống, phiếu ghi "T° 37,5" | Cần xem lại (số do AI trích không được gây Không được chi trả) |
 | AC-14 | Kết luận dựa trên cách hiểu tạm (vd PCT-04) | Lý do có hậu tố "cách hiểu tạm M-xx, chưa được bác sĩ duyệt" |
 
@@ -92,7 +92,7 @@ Ca lấy từ [a1-seed.yaml](../data/test-cases/a1-seed.yaml); các ca còn lạ
 | Đúng trên bộ test | 50–100 ca, theo dòng và theo từng vế | Báo cáo theo rule |
 | Đồng thuận với bác sĩ | ~30 ca bác sĩ gán nhãn | Báo cáo |
 | **An toàn** | Số dòng công cụ báo "Phù hợp" nhưng bác sĩ gán là thiếu căn cứ | 0 |
-| An toàn (dòng tích sẵn có AI) | Số dòng "Cần xem lại · đủ căn cứ" nhưng bác sĩ gán là thiếu căn cứ | Báo cáo; cao thì đổi dòng này sang để trống |
+| An toàn (dòng tích sẵn có AI) | Số dòng "Đủ căn cứ · bác sĩ xác nhận" nhưng bác sĩ gán là thiếu căn cứ | Báo cáo; cao thì đổi dòng này sang để trống |
 | Giá trị của A1 | Số ca hệ chỉ rule báo Phù hợp nhưng hồ sơ thiếu căn cứ, A1 bắt được | Báo cáo (ca chính để demo) |
 | Trích dẫn | Tỉ lệ trích dẫn A1 qua kiểm tra nguyên văn | Báo cáo; trích dẫn bịa không bao giờ hiện ra |
 
@@ -101,7 +101,7 @@ Ca lấy từ [a1-seed.yaml](../data/test-cases/a1-seed.yaml); các ca còn lạ
 | Phụ thuộc | Ảnh hưởng nếu chưa có | Phương án tạm |
 |---|---|---|
 | Bác sĩ trả lời [phiếu hỏi](08-phieu-hoi-bac-si.md) (danh sách 50, M-xx, cách điền sẵn) | Ngưỡng và rule CRP/PCT chưa chốt | Dùng cách hiểu tạm, ghi `nguon: tu_dung` |
-| ICD nhập trước hay sau khi tích | Nhiều dòng "chưa đủ dữ liệu" ở lần 1 | F-02 xử lý cả hai trường hợp; quan sát tại khoa |
+| ICD nhập trước hay sau khi tích | Nhiều dòng "chưa đủ dữ liệu" khi chưa có ICD | F-02 xử lý cả hai trường hợp; quan sát tại khoa |
 | File Excel BHYT của viện | Thiếu lớp ghi đè | Chỉ dùng TT 35/2016 sđ TT 39/2024 |
 | Ca xuất toán kể lại | Demo thiếu ca thật | Mở đầu demo bằng ca A1-01 |
 

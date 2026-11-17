@@ -135,7 +135,6 @@
   muc_dich: "Theo khảo sát: khám trước, xác minh thẻ sau. Không đoán → Cần xem lại."
   benh_nhan: { tuoi_thang: 14, the: null }
   icd: []
-  lan_tich: 1
   sinh_hieu: { nhiet_do: 39.1, mach: 160, nhip_tho: 48 }
   phieu_kham: "Sốt cao, co giật 1 cơn ở nhà khoảng 2 phút. Hiện tỉnh."
   chi_dinh:
@@ -158,7 +157,7 @@
     - { ma: "23.0228.1483", ten: "Định lượng CRP" }
     - { ma: "23.0228.1483", ten: "Định lượng CRP" }
   ky_vong:
-    - { ma: "23.0228.1483", thu_tu: 1, trang_thai: "Cần xem lại · đủ căn cứ" }
+    - { ma: "23.0228.1483", thu_tu: 1, trang_thai: "Đủ căn cứ · bác sĩ xác nhận" }
     - { ma: "23.0228.1483", thu_tu: 2, trang_thai: "Cần xem lại", ly_do: "Trùng dịch vụ trong cùng lượt khám" }
   diem_mo_ho: [M-15]
 

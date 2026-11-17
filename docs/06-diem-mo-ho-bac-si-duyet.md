@@ -58,4 +58,4 @@ Theo ranh giới đã chốt, tool chỉ cảnh báo khi có căn cứ thành v�
 | Mã | Câu hỏi | Ảnh hưởng | Cách hiểu tạm | Bác sĩ trả lời |
 |---|---|---|---|---|
 | M-17 | Nhiệt độ, mạch, nhịp thở có ô riêng trên Eform/VIS không, hay chỉ ghi trong phiếu khám? | Rule đọc được trực tiếp hay phải nhờ A1 trích | Có ô riêng nhưng hay để trống (mock có cả hai kiểu) | |
-| M-18 | ICD nhập trước hay sau mỗi lần tích BHYT? (trùng câu hỏi mở ở [04-rui-ro.md](04-rui-ro.md)) | Bao nhiêu dòng "chưa đủ dữ liệu" ở lần 1 | Mỗi lần tích chạy mọi kiểm tra; vế cần ICD mà chưa có → "chưa đủ dữ liệu" (chốt 12/11) | |
+| M-18 | ICD nhập trước hay sau khi tích BHYT? (trùng câu hỏi mở ở [04-rui-ro.md](04-rui-ro.md)) | Bao nhiêu dòng "chưa đủ dữ liệu" khi chưa có ICD | Mỗi lần kiểm tra chạy mọi rule trên dữ liệu đang có, tự chạy lại khi thêm ICD/chỉ định (16/11: bỏ "lần tích 1/2"); vế cần ICD mà chưa có → "chưa đủ dữ liệu" (chốt 12/11) | |

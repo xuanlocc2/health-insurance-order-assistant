@@ -1,10 +1,8 @@
-# Lượt khám tổng hợp cho demo: 4–6 dòng như thật, có cặp lần tích 1 → 2.
+# Lượt khám tổng hợp cho demo: 4–6 dòng như thật, có cặp trước → sau khi có kết quả.
 # Phần lớn dòng nên ra Phù hợp: công cụ phải im lặng ở ca bình thường.
 
 - id: DEMO-01
-  ten: "Sốt ho 2 tuổi — lần tích 1, chưa có ICD"
-  lan_tich: 1
-  luot_kham: LK-DEMO-01
+  ten: "Sốt ho 2 tuổi — lúc mới khám, chưa có ICD"
   benh_nhan: { tuoi_thang: 24 }
   icd: []
   sinh_hieu: { nhiet_do: 38.9, mach: 150, nhip_tho: 46 }
@@ -17,17 +15,15 @@
     - { ma: null, ten: "Test nhanh RSV" }
   ky_vong:
     - { ma: "22.0121.1369", trang_thai: "Phù hợp quy tắc BHYT" }
-    - { ma: "23.0228.1483", trang_thai: "Cần xem lại · đủ căn cứ", trich_dan: "Phổi ran ẩm nhỏ hạt đáy phổi phải" }
+    - { ma: "23.0228.1483", trang_thai: "Đủ căn cứ · bác sĩ xác nhận", trich_dan: "Phổi ran ẩm nhỏ hạt đáy phổi phải" }
     - { ma: "18.0119.0028", trang_thai: "Phù hợp quy tắc BHYT" }
     - { ma: "24.0243.1671", trang_thai: "Phù hợp quy tắc BHYT" }
     - { ten: "Test nhanh RSV", trang_thai: "Phù hợp quy tắc BHYT" }   # giả định GD-01 (docs/10)
   diem_mo_ho: [M-02, M-13]
 
 - id: DEMO-02
-  ten: "Cùng lượt — lần tích 2, có ICD và thêm PCT"
+  ten: "Sốt ho 2 tuổi — sau X-quang, có ICD và thêm PCT"
   muc_dich: "Kết quả các dòng cũ không đổi; log có bản ghi thứ hai. PCT thêm vào ra Cần xem lại."
-  lan_tich: 2
-  luot_kham: LK-DEMO-01
   benh_nhan: { tuoi_thang: 24 }
   icd: [J18.9]
   sinh_hieu: { nhiet_do: 38.9, mach: 150, nhip_tho: 46 }
@@ -41,7 +37,7 @@
     - { ma: "23.0130.1549", ten: "Định lượng Procalcitonin" }
   ky_vong:
     - { ma: "22.0121.1369", trang_thai: "Phù hợp quy tắc BHYT" }
-    - { ma: "23.0228.1483", trang_thai: "Cần xem lại · đủ căn cứ" }
+    - { ma: "23.0228.1483", trang_thai: "Đủ căn cứ · bác sĩ xác nhận" }
     - { ma: "18.0119.0028", trang_thai: "Phù hợp quy tắc BHYT" }
     - { ma: "24.0243.1671", trang_thai: "Phù hợp quy tắc BHYT" }
     - { ten: "Test nhanh RSV", trang_thai: "Phù hợp quy tắc BHYT" }   # giả định GD-01 (docs/10)

@@ -34,7 +34,7 @@
   chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
   ky_vong:
     - ma: "23.0228.1483"
-      trang_thai: "Cần xem lại · đủ căn cứ"   # mọi vế đạt, có vế do AI kiểm
+      trang_thai: "Đủ căn cứ · bác sĩ xác nhận"   # mọi vế đạt, có vế do AI kiểm
       ve:
         - { id: V1, mo_ta: "Nhiệt độ ≤ 36°C hoặc ≥ 38,3°C", kiem_bang: rule, ket_qua: dat, bang_chung: "39,2°C" }
         - { id: V2, mo_ta: "Nhịp tim hoặc nhịp thở quá giới hạn sinh lý theo tuổi", kiem_bang: rule, ket_qua: dat, bang_chung: "nhịp thở 44 ≥ 40 (mạch 150: chưa có ngưỡng nhịp tim)" }
@@ -53,7 +53,7 @@
   chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
   ky_vong:
     - ma: "23.0228.1483"
-      trang_thai: "Cần xem lại · đủ căn cứ"
+      trang_thai: "Đủ căn cứ · bác sĩ xác nhận"
       ve:
         - { id: V1, mo_ta: "Nhiệt độ ≤ 36°C hoặc ≥ 38,3°C", kiem_bang: rule, ket_qua: dat, bang_chung: "38,6°C" }
         - { id: V2, mo_ta: "Nhịp tim hoặc nhịp thở quá giới hạn sinh lý theo tuổi", kiem_bang: rule, nguon_ket_qua: a1, ket_qua: dat, bang_chung: "A1 trích 'thở nhanh 58 l/p' → 58 ≥ 50" }
@@ -97,3 +97,40 @@
         - { id: X2, mo_ta: "Loại trừ: Procalcitonin ≤ 02 lần giá trị tham chiếu", kiem_bang: rule, ket_qua: dat, bang_chung: "0,4 ≤ 1,0" }
   he_chi_rule: "Cần xem lại"
   diem_mo_ho: [M-10]
+
+- id: A1-06
+  ten: "CRP — chỉ triệu chứng chung, không ghi ổ hay khám bất thường"
+  muc_dich: "AI không tự suy 'ho, sốt, thở nhanh' thành nghi ổ nhiễm trùng (docs/02: AI không trả lời câu hỏi lâm sàng)."
+  benh_nhan: { tuoi_thang: 24 }
+  icd: []
+  sinh_hieu: { nhiet_do: 38.9, mach: 150, nhip_tho: 46 }
+  phieu_kham: "Ho, sốt 3 ngày, thở nhanh. Trẻ tỉnh, ăn kém."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Cần xem lại"
+      ve:
+        - { id: V1, mo_ta: "Nhiệt độ ≤ 36°C hoặc ≥ 38,3°C", kiem_bang: rule, ket_qua: dat, bang_chung: "38,9°C" }
+        - { id: V2, mo_ta: "Nhịp tim hoặc nhịp thở quá giới hạn sinh lý theo tuổi", kiem_bang: rule, ket_qua: dat, bang_chung: "nhịp thở 46 ≥ 40" }
+        - { id: V3, mo_ta: "Nghi ngờ có ổ nhiễm trùng", kiem_bang: ai, ket_qua: chua_thay }
+  he_chi_rule: "Phù hợp quy tắc BHYT"
+  diem_mo_ho: [M-02, M-04]
+
+- id: A1-07
+  ten: "CRP — nghi viêm phổi, X-quang sau đó âm tính"
+  muc_dich: "Điều kiện tính lúc chỉ định: thêm kết quả âm tính vào phiếu không làm mất căn cứ."
+  benh_nhan: { tuoi_thang: 24 }
+  icd: []
+  sinh_hieu: { nhiet_do: 38.9, mach: 150, nhip_tho: 46 }
+  phieu_kham: "Ho, sốt 2 ngày, thở nhanh. Nghi viêm phổi.
+KQ: X-quang không thấy tổn thương."
+  chi_dinh: [{ ma: "23.0228.1483", ten: "Định lượng CRP" }]
+  ky_vong:
+    - ma: "23.0228.1483"
+      trang_thai: "Đủ căn cứ · bác sĩ xác nhận"
+      ve:
+        - { id: V1, mo_ta: "Nhiệt độ ≤ 36°C hoặc ≥ 38,3°C", kiem_bang: rule, ket_qua: dat, bang_chung: "38,9°C" }
+        - { id: V2, mo_ta: "Nhịp tim hoặc nhịp thở quá giới hạn sinh lý theo tuổi", kiem_bang: rule, ket_qua: dat, bang_chung: "nhịp thở 46 ≥ 40" }
+        - { id: V3, mo_ta: "Nghi ngờ có ổ nhiễm trùng", kiem_bang: ai, ket_qua: dat, trich_dan: "Nghi viêm phổi." }
+  he_chi_rule: "Phù hợp quy tắc BHYT"
+  diem_mo_ho: [M-02]

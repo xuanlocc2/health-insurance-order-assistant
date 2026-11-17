@@ -12,7 +12,7 @@
   chi_dinh: [{ ma: "23.0130.1549", ten: "Định lượng Procalcitonin" }]
   ky_vong:
     - ma: "23.0130.1549"
-      trang_thai: "Cần xem lại · đủ căn cứ"
+      trang_thai: "Đủ căn cứ · bác sĩ xác nhận"
       ve:
         - { id: N1, mo_ta: "nhiễm trùng huyết", kiem_bang: ai, ket_qua: dat, trich_dan: "Theo dõi nhiễm trùng huyết" }
   he_chi_rule: "Cần xem lại"
@@ -77,7 +77,7 @@
   chi_dinh: [{ ma: "23.0130.1549", ten: "Định lượng Procalcitonin" }]
   ky_vong:
     - ma: "23.0130.1549"
-      trang_thai: "Cần xem lại · đủ căn cứ"
+      trang_thai: "Đủ căn cứ · bác sĩ xác nhận"
       ve:
         - { id: N1, mo_ta: "nhiễm trùng huyết", kiem_bang: ai, ket_qua: dat, trich_dan: "Theo dõi nhiễm trùng huyết" }
         - { id: X2, mo_ta: "Loại trừ: PCT ≤ 2 × tham chiếu", kiem_bang: rule, ket_qua: khong_dat, bang_chung: "2,5 > 1,0" }

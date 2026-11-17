@@ -52,7 +52,7 @@
           trich: "Khi nghi ngờ có ô nhiễm trùng"
           kiem:
             loai: ai_doc
-            cau_hoi: "Phiếu khám có ghi nghi ngờ ổ nhiễm trùng, hoặc ghi dấu hiệu nhiễm trùng cụ thể của chính bệnh nhân này không?"
+            cau_hoi: "Phiếu khám có ghi nghi ngờ có ổ nhiễm trùng ở chính bệnh nhân này không: một bệnh nhiễm trùng ở một cơ quan hay vị trí cụ thể, hoặc dấu hiệu viêm hay nhiễm trùng rõ khi khám tại một vị trí cụ thể (vd mủ, chảy dịch đục hoặc hôi, ran ở phổi)? Bất thường không mang dấu hiệu viêm hay nhiễm trùng rõ thì không tính."
             diem_mo_ho: M-04
     - id: a_nguoi_lon
       trich: "a) Nghi ngờ có ổ nhiễm trùng, có ít nhất 02 trong 04 tiêu chuẩn sau: - Nhiệt độ cơ thể < 36°c hoặc > 38°C; - Nhịp tim nhanh > 90 lần/phút; - Nhịp thở > 22 lần/phút hoặc PaCO2 <32 mmHg; - Bạch cầu máu >12G/L, hoặc < 4G/L hoặc > 10% bạch cầu non."
@@ -75,7 +75,7 @@
             nguon: tu_dung
             diem_mo_ho: M-06
             neu_khong_khop: ai_doc
-            cau_hoi: "Phiếu khám có ghi nghi ngờ nhiễm trùng sơ sinh, hoặc ghi dấu hiệu nhiễm trùng của chính bệnh nhân này không?"
+            cau_hoi: "Phiếu khám có ghi nhiễm trùng sơ sinh ở chính bệnh nhân này không, hoặc một ổ nhiễm trùng: một bệnh nhiễm trùng ở một cơ quan hay vị trí cụ thể, hoặc dấu hiệu viêm hay nhiễm trùng rõ khi khám tại một vị trí cụ thể (vd mủ, chảy dịch đục hoặc hôi, ran ở phổi)? Bất thường không mang dấu hiệu viêm hay nhiễm trùng rõ thì không tính."
     - id: c_mach_vanh
       trich: "c) Bệnh mạch vành, nhồi máu cơ tim;"
       ve:
@@ -159,7 +159,7 @@
           mo_ta: "Nhiễm trùng huyết"
           kiem:
             loai: ai_doc
-            cau_hoi: "Phiếu khám có ghi chẩn đoán hoặc nghi ngờ nhiễm trùng huyết của chính bệnh nhân này không?"
+            cau_hoi: "Phiếu khám có ghi nhiễm trùng huyết ở chính bệnh nhân này không?"
             diem_mo_ho: M-08
     - id: n2_suy_da_co_quan
       trich: "- Theo dõi và tiên lượng suy đa tạng khi có rối loạn chức năng từ 2 cơ quan trở lên."
@@ -169,7 +169,7 @@
           mo_ta: "Rối loạn chức năng từ 2 cơ quan trở lên"
           kiem:
             loai: ai_doc
-            cau_hoi: "Phiếu khám có ghi dấu hiệu rối loạn chức năng cơ quan nào của chính bệnh nhân này không?"
+            cau_hoi: "Phiếu khám có ghi rõ rối loạn hoặc suy chức năng của một cơ quan cụ thể ở chính bệnh nhân này không?"
             toi_da: chua_thay   # A1 chỉ trích dấu hiệu, không đếm cơ quan → không bao giờ tự đạt
             diem_mo_ho: M-09
     - id: a_nguoi_lon
@@ -194,7 +194,7 @@
         mo_ta: "Hết dấu hiệu chỉ định"
         kiem:
           loai: ai_doc
-          cau_hoi: "Phiếu khám có ghi các dấu hiệu nhiễm trùng hoặc rối loạn chức năng cơ quan của chính bệnh nhân này đã hết không?"
+          cau_hoi: "Phiếu khám có câu ghi rõ các dấu hiệu nhiễm trùng hoặc rối loạn chức năng cơ quan của chính bệnh nhân này đã hết, không còn không? Chỉ một dấu hiệu hết (vd hết sốt) mà phiếu ghi dấu hiệu khác vẫn còn thì không tính. Không suy ra từ việc phiếu không nhắc tới dấu hiệu."
       - id: X2
         mo_ta: "Procalcitonin lần trước ≤ 2 × giá trị tham chiếu"
         kiem: { loai: lich_su_so_sanh, ma: "23.0130.1549", toan_tu: "<=", he_so: 2, tham_chieu: "@pct_tham_chieu" }

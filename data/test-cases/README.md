@@ -11,7 +11,7 @@ Dữ liệu giả, nhóm tự dựng (bắt đầu 11/11/2026), bác sĩ chưa d
 
 ## Quy ước chung
 
-- Mặc định (chỉ loader của test và app áp, engine không có mặc định) nếu ca không ghi: `ngay_kham: 2026-11-12`, `lan_tich: 2`, thẻ còn hạn, mức hưởng 100% (trẻ < 6 tuổi) hoặc 80%.
+- Mặc định (chỉ loader của test và app áp, engine không có mặc định) nếu ca không ghi: `ngay_kham: 2026-11-12`, thẻ còn hạn, mức hưởng 100% (trẻ < 6 tuổi) hoặc 80%.
 - `ket_qua` của vế: `dat | khong_dat | chua_thay | chua_du_du_lieu`; so theo `id` vế (V1, N1, X2…). Trong khối loại trừ, `dat` = điều khoản loại trừ khớp. `nguon_ket_qua: a1` khi số liệu do A1 trích.
 - `a1_gia_lap`: số liệu A1 giả lập cho chế độ stub (spec mục 7).
 - Ô BHYT không ghi trong ca, suy ra từ trạng thái (bảng điền sẵn ở [02-giai-phap.md](../../docs/02-giai-phap.md)).
@@ -29,7 +29,7 @@ Dữ liệu giả, nhóm tự dựng (bắt đầu 11/11/2026), bác sĩ chưa d
 | R1 danh mục | [r1-r2-r4.yaml](r1-r2-r4.yaml) | 6 | Không thấy, Xác minh, ca đoán sai (Vitamin D, IgE), dịch vụ ngoài danh sách |
 | R2 thẻ | (cùng file) | 5 | Hết hạn, đúng ngày hết hạn, mức hưởng 100% / 80%, thiếu thông tin thẻ |
 | R4 trùng | (cùng file) | 3 | Trùng cùng lượt, khác lượt |
-| Demo tổng hợp | [demo.yaml](demo.yaml) | 8 | Lượt khám 4–6 dòng, cặp lần tích 1 → 2, ca "sạch" (công cụ im lặng) |
+| Demo tổng hợp | [demo.yaml](demo.yaml) | 8 | Lượt khám 4–6 dòng, cặp cùng một bệnh nhi ở hai thời điểm (DEMO-01, DEMO-02), ca "sạch" (công cụ im lặng) |
 | **Tổng** | | **55** | + vòng lặp R1 qua 50 dịch vụ |
 
 Còn chỗ cho 10–20 ca dựng lại từ lời kể xuất toán của bác sĩ (phiếu hỏi câu 11).

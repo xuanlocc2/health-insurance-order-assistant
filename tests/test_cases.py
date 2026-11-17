@@ -38,7 +38,6 @@ def mac_dinh(case):
     luot = {k: v for k, v in case.items()
             if k not in ("id", "ten", "muc_dich", "ky_vong", "he_chi_rule", "diem_mo_ho", "a1_gia_lap")}
     luot.setdefault("ngay_kham", date(2026, 11, 12))
-    luot.setdefault("lan_tich", 2)
     luot.setdefault("luot_kham", "LK-" + case["id"])
     bn = luot["benh_nhan"] = dict(luot.get("benh_nhan") or {})
     if "the" not in bn:

@@ -5,10 +5,10 @@ from fastapi.testclient import TestClient
 
 from src import app as app_mod
 
-LUOT = {"luot_kham": "LK-T", "lan_tich": 1, "benh_nhan": {"tuoi_thang": 24}, "icd": [],
+LUOT = {"luot_kham": "LK-T", "benh_nhan": {"tuoi_thang": 24}, "icd": [],
         "sinh_hieu": {}, "phieu_kham": "Ho", "chi_dinh": [{"ma": None, "ten": "CRP"}]}
 DAU_VAO = {"tuoi": {"tuoi_thang": 24}, "the": None, "icd": [], "sinh_hieu": {}, "lich_su_da_dung": []}
-F13 = {"thoi_gian", "luot_kham", "lan_tich", "thu_tu", "ma", "ten", "trang_thai", "o_bhyt_goi_y",
+F13 = {"thoi_gian", "luot_kham", "kiem_tra_id", "thu_tu", "ma", "ten", "trang_thai", "o_bhyt_goi_y",
        "bac_si_chon", "ly_do_bac_si", "checklist", "can_cu", "phien_ban_rule", "dau_vao"}
 
 
@@ -18,7 +18,7 @@ def dong(thu_tu=1, trang_thai="Phù hợp quy tắc BHYT", goi_y="tich", chon="t
 
 
 def confirm_body(*rows, **kw):
-    return {"luot_kham": "LK-T", "lan_tich": 1, "dau_vao": DAU_VAO, "dong": list(rows), **kw}
+    return {"luot_kham": "LK-T", "dau_vao": DAU_VAO, "dong": list(rows), **kw}
 
 
 @pytest.fixture
@@ -62,7 +62,7 @@ def test_cases_strip_and_defaults(client):
     cs = client.get("/cases").json()
     assert len(cs) >= 8
     assert all(not {"ky_vong", "he_chi_rule", "a1_gia_lap"} & c.keys() for c in cs)
-    assert all(c["luot_kham"] and c["lan_tich"] and c["ngay_kham"] and c["benh_nhan"]["the"] for c in cs)
+    assert all(c["luot_kham"] and c["ngay_kham"] and c["benh_nhan"]["the"] for c in cs)
 
 
 def test_danh_muc(client, monkeypatch):
@@ -74,6 +74,11 @@ def test_danh_muc(client, monkeypatch):
 def test_icd(client):
     ds = client.get("/icd").json()
     assert len(ds) > 15000 and {"ma": "J18.9", "ten": "Viêm phổi, không xác định"} in ds
+
+
+def test_gia_dinh(client):
+    g = client.get("/gia-dinh").json()
+    assert len(g) >= 20 and g[0]["ma"] == "M-01" and all(x["cach_hieu"] and "**" not in x["tra_loi"] for x in g)
 
 
 def test_check_passthrough(client):
@@ -105,7 +110,7 @@ def test_check_luu_y_ho_so_chi_dong_danh_muc(client, monkeypatch):
 
 
 @pytest.mark.parametrize("bad", [
-    {}, {**LUOT, "chi_dinh": []}, {**LUOT, "lan_tich": "1"}, {**LUOT, "chi_dinh": [{"ma": "x"}]},
+    {}, {**LUOT, "chi_dinh": []}, {**LUOT, "chi_dinh": [{"ma": "x"}]},
     {**LUOT, "icd": "J18"}, {**LUOT, "icd": [1]},
     {**LUOT, "chi_dinh": [{"ma": ["x"], "ten": "CRP"}]},
     {**LUOT, "ngay_kham": "12/11/2026"},
@@ -136,10 +141,10 @@ def test_confirm_writes_jsonl_with_all_f13_fields(client):
 
 
 def test_confirm_row_cannot_override_server_fields(client):
-    row = dong(1, thoi_gian="1999-01-01", luot_kham="LK-GIA", lan_tich=9, dau_vao={})
+    row = dong(1, thoi_gian="1999-01-01", luot_kham="LK-GIA", kiem_tra_id="gia", dau_vao={})
     client.post("/confirm", json=confirm_body(row))
     r = logged()[0]
-    assert r["thoi_gian"] != "1999-01-01" and r["luot_kham"] == "LK-T" and r["lan_tich"] == 1
+    assert r["thoi_gian"] != "1999-01-01" and r["luot_kham"] == "LK-T" and r["kiem_tra_id"] is None
     assert r["dau_vao"] == DAU_VAO
 
 
@@ -168,7 +173,7 @@ def test_confirm_ly_do_bac_si_rules(client, row, expect):
     confirm_body(dong(1, chon="khong_tich", ly_do_bac_si={"loai": "tuy_y"})),       # lý do ngoài danh sách
     confirm_body(dong(1, o_bhyt_goi_y="co")),
     confirm_body(dong(1), dau_vao={"tuoi": 1}),                                     # dau_vao thiếu khóa §9
-    confirm_body(dong(1), lan_tich="1"),
+    confirm_body(dong(1), kiem_tra_id=1),
     confirm_body(),
 ])
 def test_confirm_bad_422(client, body):
@@ -186,7 +191,7 @@ def test_stub_a1_follows_subset_of_chi_dinh(monkeypatch):
     res = a1({"phieu_kham": case["phieu_kham"], "cau_hoi": [{"khoa": "1:V3", "mo_ta": "", "cau_hoi": ""}],
               "so_lieu": []})
     assert res["ve"] == [{"khoa": "1:V3", "ket_qua": "dat", "trich_dan": "Phổi ran ẩm nhỏ hạt đáy phổi phải",
-                          "trich_lien_quan": []}]
+                          "trich_them": [], "trich_lien_quan": []}]
 
 
 def test_load_env_bom_and_no_override(tmp_path, monkeypatch):
@@ -205,3 +210,29 @@ def test_load_env_bom_and_no_override(tmp_path, monkeypatch):
 def test_index(client):
     r = client.get("/")
     assert r.status_code == 200 and "Kiểm tra BHYT" in r.text
+
+
+def test_a1_nho_chi_goi_khi_bam_va_khong_goi_lai(client):
+    goi = []
+
+    def a1(req):
+        goi.append(1)
+        return {"ve": [{"khoa": q["khoa"], "ket_qua": "dat", "trich_dan": "Ho", "trich_lien_quan": []}
+                       for q in req["cau_hoi"]], "so_lieu": [], "loi": None}
+
+    def req(tt, pk="Ho  sốt"):
+        return {"phieu_kham": pk, "cau_hoi": [{"khoa": f"{tt}:V1", "mo_ta": "m", "cau_hoi": "c"}],
+                "so_lieu": [{"truong": "mach", "don_vi": None}]}
+
+    app_mod._NHO.clear()
+    r = app_mod._a1_nho(a1, False)(req(1))  # rule tự chạy lại: không gọi A1, báo chưa đọc
+    assert not goi and r["loi"] == "chua_doc" and r["ve"][0]["chua_doc"]
+    r = app_mod._a1_nho(a1, True)(req(1))  # bấm Kiểm tra BHYT
+    assert len(goi) == 1 and r["ve"][0]["ket_qua"] == "dat" and r["loi"] is None
+    r = app_mod._a1_nho(a1, False)(req(2, "Ho sốt"))  # xóa dòng phía trên (đổi thu_tu), phiếu như cũ: dùng lại
+    assert len(goi) == 1 and r["ve"][0]["khoa"] == "2:V1" and r["ve"][0]["ket_qua"] == "dat" and r["loi"] is None
+    hong = app_mod._a1_nho(lambda q: {"ve": [], "so_lieu": [], "loi": "a1_loi_Timeout"}, True)
+    n = len(app_mod._NHO)
+    assert hong(req(1, "khác"))["loi"] == "a1_loi_Timeout" and len(app_mod._NHO) == n  # gọi hỏng thì không nhớ
+    assert isinstance(client.post("/check", json=LUOT).json()["kiem_tra_id"], str)
+    app_mod._NHO.clear()
