@@ -134,7 +134,7 @@ Bảng gộp vế → nhánh → điều kiện → loại trừ: [09-spec mục
 
 ### 3.6. Gọi lại AI khi nào
 
-`src/app.py` nhớ câu trả lời A1 theo khóa (phiếu khám đã chuẩn hóa, nội dung câu hỏi) trong `_NHO`.
+`src/app.py` nhớ câu trả lời A1 theo khóa (phiếu khám đã chuẩn hóa, nội dung câu hỏi) qua `src/luu_tru.py`.
 
 - Bấm "Kiểm tra BHYT" hoặc "Xác nhận sửa" phiếu khám → `doc_ai=true`. Câu hỏi đã nhớ thì dùng lại, câu mới thì gọi AI.
 - Sửa chỉ định hoặc ICD → `doc_ai=false`, chỉ chạy lại rule. Câu chưa có trong bộ nhớ → `chua_thay`, ghi `chua_doc`. Màn hình không hiện băng cảnh báo riêng; chỉ hỏi lại khi bác sĩ bấm Xác nhận lúc còn câu chưa đọc.

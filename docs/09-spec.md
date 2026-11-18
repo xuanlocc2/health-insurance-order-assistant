@@ -287,7 +287,7 @@ append(rows: list[dict], path="logs/xac-nhan.jsonl") -> None
 # src/app.py (FastAPI)
 POST /check   body = lượt khám (mục 4) + doc_ai (mặc định true) → kết quả check() + kiem_tra_id
 #   doc_ai=false: chỉ chạy rule, dùng câu trả lời A1 đã nhớ (khóa = phiếu khám chuẩn hóa khoảng trắng + nội dung câu hỏi);
-#   câu chưa nhớ → vế đó chua_thay, a1.loi="chua_doc". Lỗi a1_* không được nhớ. Bộ nhớ nằm trong tiến trình, mất khi khởi động lại.
+#   câu chưa nhớ → vế đó chua_thay, a1.loi="chua_doc". Lỗi a1_* không được nhớ. Có DATABASE_URL thì nhớ ở Neon; không có thì nhớ trong tiến trình, mất khi khởi động lại.
 POST /confirm body = {luot_kham, kiem_tra_id, dau_vao, dong: [ {..đầu ra mục 8.., bac_si_chon, ly_do_bac_si} ]} → ghi log, trả {"ghi": n}
 GET  /cases   → danh sách ca demo (data/test-cases/demo.yaml, bỏ ky_vong)
 GET  /health  → {phien_ban_rule, a1_mode, model}

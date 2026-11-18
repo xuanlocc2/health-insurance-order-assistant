@@ -1,6 +1,5 @@
-fastapi
-uvicorn
-PyYAML
-openai
-pytest
-httpx
+fastapi==0.163.2
+uvicorn==0.54.0
+PyYAML==6.0.3
+openai==3.55.0
+psycopg[binary]==3.3.9

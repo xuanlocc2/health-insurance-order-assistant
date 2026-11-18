@@ -73,7 +73,7 @@ bhyt-order-assistant/
 | `data/rules/dieu-kien.yaml` | Nguồn duy nhất của điều kiện thanh toán. `cau_hoi` của vế `ai_doc` chỉ viết gần nguyên văn văn bản + phần riêng của vế đó; cách đọc dùng chung (mức chắc chắn, thời điểm, mức cụ thể) nằm trong prompt. Sửa xong chạy `python data/rules/check_rules.py`. Mọi thay đổi trong `data/rules/` đổi `phien_ban_rule` (hash cả thư mục) |
 | `src/a1.py` | `SYSTEM_PROMPT` có 15 quy tắc; 13–15 là cách đọc chung. Sửa prompt hay câu hỏi → **phải chạy eval live** để so (xem dưới). File dùng xuống dòng CRLF: script sửa tự động phải giữ CRLF |
 | `src/engine.py` | Bảng gộp trạng thái ở 09-spec mục 6. Câu lý do sinh từ mẫu, không dùng LLM; hậu tố "(cách hiểu tạm M-xx, chưa được bác sĩ duyệt)" do engine nối và được lưu nguyên trong log |
-| `src/app.py` | Nhớ câu trả lời AI trong `_NHO` (theo phiếu khám + nội dung câu hỏi), mất khi khởi động lại. `doc_ai=false` = chỉ chạy lại rule. `A1_MODE` = `live` / `stub` / `off`; `LQ_MODE` (A3) tắt mặc định, không bật cho người dùng |
+| `src/app.py` | Nhớ câu trả lời AI theo phiếu khám + nội dung câu hỏi, lưu qua `src/luu_tru.py` (có `DATABASE_URL` thì ở Neon, không có thì trong bộ nhớ và mất khi khởi động lại). `doc_ai=false` = chỉ chạy lại rule. `A1_MODE` = `live` / `stub` / `off`; `LQ_MODE` (A3) tắt mặc định, không bật cho người dùng |
 | `docs/06-diem-mo-ho-bac-si-duyet.md` | Endpoint `/gia-dinh` đọc thẳng các dòng bảng bắt đầu bằng `\| M-` (cột: mã, câu hỏi, vì sao, cách hiểu tạm, bác sĩ trả lời). **Giữ đúng định dạng bảng** khi sửa |
 | `web/index.html` | Lý do trên màn hình bỏ hậu tố M-xx, thay bằng dấu `*` + nút "Giả định". Sửa xong kiểm cú pháp JS (lệnh dưới) |
 | `data/test-cases/*.yaml`, `data/eval/*.yaml` | Nhãn do nhóm viết, bác sĩ chưa duyệt. **Không sửa nhãn cho khớp hệ thống**; nhãn chỉ đổi khi có quyết định cách hiểu, ghi vào docs/10 |
@@ -111,12 +111,12 @@ Bảng màu: nền tối `#16324F`, nền sáng `#F7F8F5` / `#EEF3F1`, nhấn `#
 
 ## Chạy demo
 
-### Lần đầu: cài đặt môi trường
+### Lần đầu: cài đặt môi trường (Python 3.13)
 ```powershell
 # Windows
 python -m venv venv
 .\venv\Scripts\Activate.ps1
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 copy .env.example .env
 # Sửa .env: điền OPENAI_API_KEY, OPENAI_MODEL. Không có khóa thì để A1_MODE=off
 ```
@@ -125,7 +125,7 @@ copy .env.example .env
 # Linux/macOS
 python -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 cp .env.example .env
 # Sửa .env: điền OPENAI_API_KEY, OPENAI_MODEL
 ```
@@ -144,3 +144,5 @@ uvicorn src.app:app --host 127.0.0.1 --port 8000
 ```
 
 Mở http://127.0.0.1:8000. Chọn ca mẫu (hoặc tự nhập), thêm/xóa chỉ định và ICD (rule tự chạy lại), bấm "Kiểm tra BHYT" để AI đọc phiếu khám, rồi "Xác nhận" để ghi `logs/xac-nhan.jsonl`. Chỉ dùng dữ liệu giả hoặc đã ẩn danh. Test: `python -m pytest -q` (xem mục "Lưu ý cho người làm tiếp").
+
+Buổi đo Before/After: ca đo và đáp án nằm ở `data/do-luong/bo-ca.yaml`, phân công theo tài khoản ở `src/do_luong.py`. Sau mỗi buổi đo chạy `python -m src.xuat_ket_qua` để xuất kết quả ra file CSV trong `logs/`.

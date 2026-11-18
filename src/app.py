@@ -4,20 +4,20 @@ import importlib
 import json
 import os
 import re
-import threading
 import uuid
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import asynccontextmanager
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import yaml
 from fastapi import Body, FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
-from src import log
+from src import auth, do_luong, luu_tru
+from src.luu_tru import TAI_KHOAN_TAM
 
 ROOT = Path(__file__).resolve().parent.parent
 RULES_DIR = ROOT / "data" / "rules"
@@ -26,10 +26,11 @@ CASES_PATH = ROOT / "data" / "test-cases" / "demo.yaml"
 # ca bác sĩ tự tạo trên màn hình; để ngoài test-cases/ để eval không quét phải (ca này không có nhãn)
 TU_TAO_PATH = ROOT / "data" / "ca-tu-tao.yaml"
 TU_TAO_ID = re.compile(r"^TU-[A-Z0-9]{1,20}$")
-_khoa_tu_tao = threading.Lock()  # ponytail: khóa trong một tiến trình; chạy nhiều worker → chuyển sang SQLite
 # mặc định của app mô phỏng (engine không có mặc định; test-cases/README.md)
 NGAY_KHAM = "2026-11-12"
 MAX_CHI_DINH, MAX_PHIEU = 50, 20000  # chặn body bất thường trước khi gửi A1
+GIOI_HAN_AI_NGAY = 50  # lượt bấm "Kiểm tra BHYT" của mỗi tài khoản mỗi ngày, để khóa OpenAI không bị dùng quá mức
+GIO_VN = timezone(timedelta(hours=7))
 LY_DO = ("nguoi_nha_yeu_cau", "loai_tru_theo_doi", "khong_dong_y", "khac")
 F13 = ("thu_tu", "ma", "ten", "trang_thai", "o_bhyt_goi_y", "bac_si_chon", "checklist", "can_cu", "phien_ban_rule")
 DAU_VAO = ("tuoi", "the", "icd", "sinh_hieu", "lich_su_da_dung")
@@ -38,7 +39,7 @@ LICH_SU_KHOA = ("ma", "ten", "ngay_cach", "ket_qua", "tham_chieu_tren", "don_vi"
 
 # test gán trực tiếp các khóa này
 state = {"rules": None, "check": None, "a1": None, "a1_mode": "off", "model": None, "reasoning_effort": None,
-         "lq": None}
+         "lq": None, "kho": luu_tru.KhoFile(TU_TAO_PATH, LOG_PATH)}
 
 
 def load_env(path=ROOT / ".env"):
@@ -57,6 +58,7 @@ def load_env(path=ROOT / ".env"):
 @asynccontextmanager
 async def lifespan(_app):
     load_env()
+    state["kho"] = luu_tru.tao_kho(TU_TAO_PATH, LOG_PATH)
     rules = importlib.import_module("src.rules").load_rules(RULES_DIR)
     state["rules"] = rules
     state["check"] = importlib.import_module("src.engine").check
@@ -76,13 +78,32 @@ async def lifespan(_app):
         if (os.environ.get("LQ_MODE") or "off").strip().lower() == "live":  # A3 tắt mặc định (docs/02)
             state["lq"] = importlib.import_module("src.a1").make_lien_quan(
                 model, float(os.environ.get("A1_TIMEOUT_S") or 8), effort)
-    print(f"[bhyt] a1_mode={mode} model={model} reasoning_effort={effort} rules={rules.phien_ban_rule[:10]}")
+    print(f"[bhyt] a1_mode={mode} model={model} reasoning_effort={effort} rules={rules.phien_ban_rule[:10]} "
+          f"kho={type(state['kho']).__name__}")
     yield
 
 
 app = FastAPI(title="Trợ lý BHYT (demo)", lifespan=lifespan)
-# chỉ nhận Host cục bộ: chặn DNS rebinding (trang lạ gọi /check tốn khóa OpenAI, hoặc ghi log giả)
-app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost"])
+
+
+@app.middleware("http")
+async def _bat_dang_nhap(request: Request, call_next):
+    """Mọi đường dẫn đều cần đăng nhập, trừ trang đăng nhập."""
+    if request.url.path == "/dang-nhap":
+        return await call_next(request)
+    tai_khoan = auth.doc_phien(request.cookies.get(auth.COOKIE))
+    if tai_khoan is None:
+        if request.url.path == "/":
+            return RedirectResponse("/dang-nhap", status_code=303)
+        return JSONResponse({"detail": "Cần đăng nhập."}, status_code=401)
+    request.state.tai_khoan = tai_khoan
+    return await call_next(request)
+
+
+# chỉ nhận Host đã khai báo: chặn DNS rebinding (trang lạ gọi /check tốn khóa OpenAI, hoặc ghi log giả).
+# Thêm sau cùng để chạy trước đăng nhập. Bản host khai báo tên miền trong ALLOWED_HOSTS (cách nhau bằng dấu phẩy).
+app.add_middleware(TrustedHostMiddleware, allowed_hosts=[
+    "127.0.0.1", "localhost", *(h.strip() for h in os.environ.get("ALLOWED_HOSTS", "").split(",") if h.strip())])
 
 
 @app.exception_handler(RequestValidationError)
@@ -90,28 +111,64 @@ async def _bad_body(_req: Request, _exc):
     return JSONResponse({"detail": "Dữ liệu gửi lên phải là một đối tượng JSON."}, status_code=422)
 
 
+@app.get("/dang-nhap")
+def trang_dang_nhap(request: Request):
+    if auth.doc_phien(request.cookies.get(auth.COOKIE)):
+        return RedirectResponse("/", status_code=303)
+    return FileResponse(ROOT / "web" / "dang-nhap.html")
+
+
+@app.post("/dang-nhap")
+def dang_nhap(request: Request, body: dict = Body(...)):
+    if not auth.da_cau_hinh():
+        raise HTTPException(503, "Hệ thống chưa được cấu hình đăng nhập.")
+    if body.get("cam_ket") is not True:
+        _fail("Cần xác nhận chỉ nhập dữ liệu giả.")
+    tai_khoan = body.get("tai_khoan")
+    if not auth.dung_mat_khau(tai_khoan, body.get("mat_khau")):
+        raise HTTPException(401, "Sai tài khoản hoặc mật khẩu.")
+    res = JSONResponse({"tai_khoan": tai_khoan})
+    res.set_cookie(auth.COOKIE, auth.tao_phien(tai_khoan), max_age=auth.THOI_HAN_S, httponly=True, samesite="lax",
+                   secure=request.headers.get("x-forwarded-proto", request.url.scheme) == "https")
+    return res
+
+
+@app.post("/dang-xuat")
+def dang_xuat():
+    res = JSONResponse({"dang_xuat": True})
+    res.delete_cookie(auth.COOKIE)
+    return res
+
+
+@app.get("/toi")
+def toi(request: Request):
+    return {"tai_khoan": request.state.tai_khoan}
+
+
+def _hom_nay():
+    return datetime.now(GIO_VN).date().isoformat()
+
+
 def _plain(x):
     return json.loads(json.dumps(x, default=str, ensure_ascii=False))  # date của YAML → chuỗi
 
 
-def _tu_tao():
-    return yaml.safe_load(TU_TAO_PATH.read_text(encoding="utf-8")) or [] if TU_TAO_PATH.exists() else []
+def _demo_cases(tai_khoan=TAI_KHOAN_TAM):
+    raw = (yaml.safe_load(CASES_PATH.read_text(encoding="utf-8")) or []) + \
+        [{**c, "tu_tao": True} for c in state["kho"].ds_ca(tai_khoan)]
+    return [_chuan_hoa_ca(c) for c in raw]
 
 
-def _demo_cases():
-    raw = (yaml.safe_load(CASES_PATH.read_text(encoding="utf-8")) or []) + [{**c, "tu_tao": True} for c in _tu_tao()]
-    out = []
-    for c in raw:
-        c = _plain(c)
-        bn = c.setdefault("benh_nhan", {})
-        if "the" not in bn:
-            thang = bn["tuoi_thang"] if bn.get("tuoi_thang") is not None else (bn.get("tuoi_ngay") or 0) / 30.44
-            bn["the"] = {"han_den": "2026-12-31", "muc_huong": 100 if thang < 72 else 80}
-        c.setdefault("luot_kham", "LK-" + c["id"])
-        c.setdefault("ngay_kham", NGAY_KHAM)
-        c.setdefault("lich_su", [])
-        out.append(c)
-    return out
+def _chuan_hoa_ca(c):
+    c = _plain(c)
+    bn = c.setdefault("benh_nhan", {})
+    if "the" not in bn:
+        thang = bn["tuoi_thang"] if bn.get("tuoi_thang") is not None else (bn.get("tuoi_ngay") or 0) / 30.44
+        bn["the"] = {"han_den": "2026-12-31", "muc_huong": 100 if thang < 72 else 80}
+    c.setdefault("luot_kham", "LK-" + c["id"])
+    c.setdefault("ngay_kham", NGAY_KHAM)
+    c.setdefault("lich_su", [])
+    return c
 
 
 def _fail(msg):
@@ -205,10 +262,6 @@ def _a1_for(luot):
     return None
 
 
-# ponytail: dict trong bộ nhớ, xóa sạch khi đầy; đủ cho demo một máy. Nhiều người dùng → LRU/Redis theo lượt khám.
-_NHO = {}
-
-
 def _a1_nho(a1, doc_ai):
     """Nhớ câu trả lời A1 theo (phiếu khám, nội dung câu hỏi): thêm/xóa chỉ định hay ICD không gọi lại A1.
     doc_ai=False (rule tự chạy lại): chỉ dùng câu đã nhớ; câu chưa có → chua_thay + loi 'chua_doc'."""
@@ -220,8 +273,9 @@ def _a1_nho(a1, doc_ai):
         cau, so = req.get("cau_hoi") or [], req.get("so_lieu") or []
         kv = lambda q: (pk, "ve", q.get("mo_ta"), q.get("cau_hoi"))
         ks = lambda s: (pk, "so", s["truong"])
+        nho = state["kho"].doc_nho([kv(q) for q in cau] + [ks(s) for s in so])
         loi = None
-        if any(kv(q) not in _NHO for q in cau) or any(ks(s) not in _NHO for s in so):
+        if any(kv(q) not in nho for q in cau) or any(ks(s) not in nho for s in so):
             if not doc_ai:
                 loi = "chua_doc"
             else:
@@ -229,26 +283,29 @@ def _a1_nho(a1, doc_ai):
                 loi = res.get("loi")
                 if str(loi or "").startswith("a1_"):  # gọi hỏng: không nhớ, lần bấm sau gọi lại
                     return res
-                if len(_NHO) > 5000:
-                    _NHO.clear()
                 tl = {v["khoa"]: v for v in res.get("ve") or []}
-                for q in cau:
-                    if q["khoa"] in tl:
-                        _NHO[kv(q)] = tl[q["khoa"]]
                 co = {s["truong"]: s for s in res.get("so_lieu") or []}
-                for s in so:
-                    _NHO[ks(s)] = co.get(s["truong"])
-        ve = [{**_NHO[kv(q)], "khoa": q["khoa"]} if kv(q) in _NHO else
+                moi = {**{kv(q): tl[q["khoa"]] for q in cau if q["khoa"] in tl},
+                       **{ks(s): co.get(s["truong"]) for s in so}}
+                state["kho"].ghi_nho(moi)
+                nho = {**nho, **moi}
+        ve = [{**nho[kv(q)], "khoa": q["khoa"]} if kv(q) in nho else
               {"khoa": q["khoa"], "ket_qua": "chua_thay", "trich_dan": None, "trich_them": [], "trich_lien_quan": [], "chua_doc": True}
               for q in cau]
-        return {"ve": ve, "so_lieu": [_NHO[ks(s)] for s in so if _NHO.get(ks(s))], "loi": loi}
+        return {"ve": ve, "so_lieu": [nho[ks(s)] for s in so if nho.get(ks(s))], "loi": loi}
     return f
 
 
 @app.post("/check")
-def check(body: dict = Body(...)):  # def → chạy trong threadpool, A1 chặn tới 8 s không treo server
+def check(request: Request, body: dict = Body(...)):  # def → chạy trong threadpool, A1 chặn tới 8 s không treo server
     _validate_luot(body)
     doc_ai = body.get("doc_ai") is not False  # false = rule tự chạy lại sau khi sửa chỉ định/ICD, không gọi A1
+    if do_luong.la_luot_do(body["luot_kham"]):  # lượt tự tra và ca chưa đến lượt không được xem gợi ý của công cụ
+        muc = _muc_do_hien_tai(request.state.tai_khoan)
+        if not muc or "LK-" + muc["ca"]["id"] != body["luot_kham"] or muc["che_do"] != "cong_cu":
+            raise HTTPException(403, "Ca đo này chưa được dùng công cụ kiểm tra.")
+    if doc_ai and state["kho"].tang_luot_ai(request.state.tai_khoan, _hom_nay()) > GIOI_HAN_AI_NGAY:
+        raise HTTPException(429, f"Tài khoản đã dùng hết {GIOI_HAN_AI_NGAY} lượt Kiểm tra BHYT hôm nay. Vui lòng thử lại vào ngày mai.")
     res = _check(body, doc_ai)
     # mã lần kiểm tra: /confirm ghi lại để biết bác sĩ xác nhận trên kết quả nào
     res["kiem_tra_id"] = uuid.uuid4().hex[:12]
@@ -287,7 +344,7 @@ def _ly_do(d):
 
 
 @app.post("/confirm")
-def confirm(body: dict = Body(...)):
+def confirm(request: Request, body: dict = Body(...)):
     if not isinstance(body.get("luot_kham"), str) or not body["luot_kham"]:
         _fail("Thiếu 'luot_kham' (chuỗi).")
     if not isinstance(body.get("kiem_tra_id"), (str, type(None))):
@@ -312,24 +369,65 @@ def confirm(body: dict = Body(...)):
         # trường của server đặt sau cùng: dòng gửi lên không ghi đè được thời gian, khóa lượt khám, đầu vào
         rows.append({**d, "ly_do_bac_si": ly, "thoi_gian": now, "luot_kham": body["luot_kham"],
                      "kiem_tra_id": body.get("kiem_tra_id"), "dau_vao": dv})
-    log.append(rows, LOG_PATH)
+    state["kho"].ghi_xac_nhan(request.state.tai_khoan, rows)
     return {"ghi": len(rows)}
 
 
+def _muc_do_hien_tai(tai_khoan):
+    """Ca đầu tiên chưa lưu trong lịch của tài khoản; làm lần lượt, không nhảy cóc."""
+    da_luu = {k["ca_id"] for k in state["kho"].doc_ket_qua_do(tai_khoan)}
+    return next((m for m in do_luong.lich(tai_khoan) if m["ca"]["id"] not in da_luu), None)
+
+
+def _trang_thai_do(tai_khoan):
+    lich = do_luong.lich(tai_khoan)
+    if not lich:
+        return {"co_phan_cong": False, "tong": 0, "da_xong": 0, "hien_tai": None}
+    muc = _muc_do_hien_tai(tai_khoan)
+    hien_tai = None
+    if muc:  # chỉ gửi ca đang làm và bỏ đáp án, tên ca gốc
+        ca = _chuan_hoa_ca({**muc["ca"], "ten": f"Ca đo {muc['thu_tu']}",
+                            "chi_dinh": [{"ma": d.get("ma"), "ten": d["ten"]} for d in muc["ca"]["chi_dinh"]]})
+        hien_tai = {**ca, "che_do": muc["che_do"], "thu_tu": muc["thu_tu"]}
+    return {"co_phan_cong": True, "tong": len(lich), "da_xong": muc["thu_tu"] - 1 if muc else len(lich), "hien_tai": hien_tai}
+
+
+@app.get("/do-luong")
+def trang_thai_do(request: Request):
+    return _trang_thai_do(request.state.tai_khoan)
+
+
+@app.post("/do-luong/{ca_id}")
+def luu_ket_qua_do(request: Request, ca_id: str, body: dict = Body(...)):
+    tai_khoan = request.state.tai_khoan
+    muc = _muc_do_hien_tai(tai_khoan)
+    if not muc or muc["ca"]["id"] != ca_id:
+        raise HTTPException(409, "Ca này đã lưu hoặc chưa đến lượt.")
+    dong, goc = body.get("dong"), muc["ca"]["chi_dinh"]
+    if not isinstance(dong, list) or len(dong) != len(goc) or not all(
+            isinstance(d, dict) and d.get("ten") == g["ten"] and d.get("bac_si_chon") in ("tich", "khong_tich")
+            for d, g in zip(dong, goc)):
+        _fail("Kết quả không khớp danh sách chỉ định của ca đo.")
+    kiem_tra_id = body.get("kiem_tra_id")
+    if muc["che_do"] == "cong_cu" and not (isinstance(kiem_tra_id, str) and kiem_tra_id):
+        _fail("Cần bấm Kiểm tra BHYT trước khi lưu ca này.")
+    ket = {"ca_id": ca_id, "bo": muc["bo"], "che_do": muc["che_do"], "thu_tu": muc["thu_tu"],
+           "kiem_tra_id": kiem_tra_id if muc["che_do"] == "cong_cu" else None,
+           "dong": [{k: d.get(k) for k in ("ma", "ten", "bac_si_chon", "trang_thai", "o_bhyt_goi_y")} for d in dong]}
+    if not state["kho"].luu_ket_qua_do(tai_khoan, ket):
+        raise HTTPException(409, "Ca này đã lưu hoặc chưa đến lượt.")
+    return _trang_thai_do(tai_khoan)
+
+
 @app.get("/cases")
-def cases():
-    return [{k: v for k, v in c.items() if k not in ("ky_vong", "he_chi_rule", "a1_gia_lap")} for c in _demo_cases()]
-
-
-def _ghi_tu_tao(ds):
-    tmp = TU_TAO_PATH.with_suffix(".tmp")
-    tmp.write_text(yaml.safe_dump(ds, allow_unicode=True, sort_keys=False), encoding="utf-8")
-    tmp.replace(TU_TAO_PATH)  # ghi đè nguyên khối: hỏng giữa chừng không làm mất file cũ
+def cases(request: Request):
+    return [{k: v for k, v in c.items() if k not in ("ky_vong", "he_chi_rule", "a1_gia_lap")}
+            for c in _demo_cases(request.state.tai_khoan)]
 
 
 @app.put("/cases/{ca_id}")
-def luu_ca(ca_id: str, body: dict = Body(...)):
-    """Tạo mới hoặc cập nhật một ca tự tạo (ghi vào data/ca-tu-tao.yaml). Ca mẫu trong demo.yaml không sửa được."""
+def luu_ca(request: Request, ca_id: str, body: dict = Body(...)):
+    """Tạo mới hoặc cập nhật một ca tự tạo. Ca mẫu trong demo.yaml không sửa được."""
     if not TU_TAO_ID.match(ca_id):
         _fail("Chỉ lưu được ca tự tạo (mã dạng TU-…).")
     ten = body.get("ten")
@@ -350,22 +448,14 @@ def luu_ca(ca_id: str, body: dict = Body(...)):
           "lich_su": [{k: r[k] for k in LICH_SU_KHOA if k in r} for r in lich_su],
           "phieu_kham": body.get("phieu_kham") or "", "phieu_o": phieu_o}
     _validate_luot({**ca, "luot_kham": "LK-" + ca_id}, cho_rong=True)
-    with _khoa_tu_tao:
-        ds = _tu_tao()
-        cu = next((c for c in ds if c.get("id") == ca_id), None)
-        now = datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds")
-        ca["tao_luc"], ca["sua_luc"] = (cu or {}).get("tao_luc") or now, now
-        _ghi_tu_tao(ds + [ca] if cu is None else [ca if c.get("id") == ca_id else c for c in ds])
+    state["kho"].luu_ca(request.state.tai_khoan, ca)
     return {"luu": ca_id}
 
 
 @app.delete("/cases/{ca_id}")
-def xoa_ca(ca_id: str):
-    with _khoa_tu_tao:
-        ds = _tu_tao()
-        if not any(c.get("id") == ca_id for c in ds):
-            raise HTTPException(404, "Không có ca tự tạo này.")
-        _ghi_tu_tao([c for c in ds if c.get("id") != ca_id])
+def xoa_ca(request: Request, ca_id: str):
+    if not state["kho"].xoa_ca(request.state.tai_khoan, ca_id):
+        raise HTTPException(404, "Không có ca tự tạo này.")
     return {"xoa": ca_id}
 
 
