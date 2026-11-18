@@ -33,6 +33,8 @@ MAX_CHI_DINH, MAX_PHIEU = 50, 20000  # chặn body bất thường trước khi 
 LY_DO = ("nguoi_nha_yeu_cau", "loai_tru_theo_doi", "khong_dong_y", "khac")
 F13 = ("thu_tu", "ma", "ten", "trang_thai", "o_bhyt_goi_y", "bac_si_chon", "checklist", "can_cu", "phien_ban_rule")
 DAU_VAO = ("tuoi", "the", "icd", "sinh_hieu", "lich_su_da_dung")
+PHIEU_O = ("ly_do", "benh_su", "tien_su", "kham", "chan_doan", "xu_tri")  # các ô của trang Phiếu khám ngoại trú
+LICH_SU_KHOA = ("ma", "ten", "ngay_cach", "ket_qua", "tham_chieu_tren", "don_vi")
 
 # test gán trực tiếp các khóa này
 state = {"rules": None, "check": None, "a1": None, "a1_mode": "off", "model": None, "reasoning_effort": None,
@@ -333,10 +335,20 @@ def luu_ca(ca_id: str, body: dict = Body(...)):
     ten = body.get("ten")
     if not isinstance(ten, str) or not ten.strip() or len(ten) > 200:
         _fail("Ca cần có tên (1–200 ký tự).")
-    ca = {"id": ca_id, "ten": ten.strip(), "benh_nhan": body.get("benh_nhan") or {},
+    lich_su, phieu_o = [] if body.get("lich_su") is None else body["lich_su"], body.get("phieu_o")
+    if not isinstance(lich_su, list) or not all(isinstance(r, dict) and isinstance(r.get("ten"), (str, type(None)))
+                                                and isinstance(r.get("don_vi"), (str, type(None))) for r in lich_su):
+        _fail("'lich_su' sai kiểu dữ liệu.")
+    if phieu_o is not None and not (isinstance(phieu_o, dict) and set(phieu_o) <= set(PHIEU_O)
+                                    and all(isinstance(v, str) for v in phieu_o.values())
+                                    and sum(map(len, phieu_o.values())) <= MAX_PHIEU):
+        _fail("'phieu_o' sai kiểu dữ liệu.")
+    ca = {"id": ca_id, "ten": ten.strip(), "ngay_kham": body.get("ngay_kham") or NGAY_KHAM,
+          "benh_nhan": body.get("benh_nhan") or {},
           "sinh_hieu": body.get("sinh_hieu") or {}, "icd": body.get("icd") or [],
           "chi_dinh": [{"ma": r.get("ma"), "ten": r.get("ten")} for r in body.get("chi_dinh") or [] if isinstance(r, dict)],
-          "phieu_kham": body.get("phieu_kham") or ""}
+          "lich_su": [{k: r[k] for k in LICH_SU_KHOA if k in r} for r in lich_su],
+          "phieu_kham": body.get("phieu_kham") or "", "phieu_o": phieu_o}
     _validate_luot({**ca, "luot_kham": "LK-" + ca_id}, cho_rong=True)
     with _khoa_tu_tao:
         ds = _tu_tao()

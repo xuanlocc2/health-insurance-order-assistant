@@ -253,3 +253,24 @@ def test_ca_tu_tao_luu_sua_xoa(client, tmp_path, monkeypatch):
     assert client.delete("/cases/TU-A1").status_code == 200
     assert not any(c.get("tu_tao") for c in client.get("/cases").json())
     assert client.delete("/cases/TU-A1").status_code == 404
+
+
+def test_ca_tu_tao_giu_du_lieu_phieu_kham(client, tmp_path, monkeypatch):
+    monkeypatch.setattr(app_mod, "TU_TAO_PATH", tmp_path / "ca-tu-tao.yaml")
+    xn = {"ma": "23.0130.1549", "ten": "Procalcitonin", "ngay_cach": 3, "ket_qua": 0.4, "tham_chieu_tren": 0.5,
+          "don_vi": "ng/mL"}
+    o = {"ly_do": "Sốt", "kham": "Họng đỏ"}
+    ca = {"ten": "Ca giả", "ngay_kham": "2026-11-15", "benh_nhan": {"tuoi_thang": 24, "the": None},
+          "sinh_hieu": {"spo2": 98, "can_nang": 12.5}, "icd": [], "chi_dinh": [], "lich_su": [{**xn, "la": "bỏ"}],
+          "phieu_kham": "Lý do khám: Sốt\nKhám lâm sàng: Họng đỏ", "phieu_o": o}
+    assert client.put("/cases/TU-B1", json=ca).status_code == 200
+    tu = next(c for c in client.get("/cases").json() if c["id"] == "TU-B1")
+    assert tu["ngay_kham"] == "2026-11-15" and tu["lich_su"] == [xn] and tu["phieu_o"] == o
+    assert tu["benh_nhan"]["the"] is None and tu["sinh_hieu"]["can_nang"] == 12.5
+    # ca lưu theo cách cũ (không có các khóa mới) vẫn mở được
+    assert client.put("/cases/TU-B2", json={"ten": "Ca cũ", "phieu_kham": "Sốt 2 ngày"}).status_code == 200
+    cu = next(c for c in client.get("/cases").json() if c["id"] == "TU-B2")
+    assert cu["phieu_o"] is None and cu["lich_su"] == [] and cu["ngay_kham"] == app_mod.NGAY_KHAM
+    for sai in ({"phieu_o": {"la": "x"}}, {"phieu_o": {"kham": 1}}, {"phieu_o": "x"}, {"lich_su": "x"}, {"lich_su": {}}, {"lich_su": [1]},
+                {"lich_su": [{"ket_qua": "cao"}]}, {"ngay_kham": "15/11/2026"}):
+        assert client.put("/cases/TU-B3", json={**ca, **sai}).status_code == 422
