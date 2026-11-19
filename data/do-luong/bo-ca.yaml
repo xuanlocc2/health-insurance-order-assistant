@@ -1,0 +1,241 @@
+bo:
+  A:
+  - id: DO-A1
+    nguon: CRP-01
+    ten: Đúng ngưỡng 38,3°C, viêm tai giữa
+    benh_nhan:
+      tuoi_thang: 18
+    sinh_hieu:
+      nhiet_do: 38.3
+      mach: 140
+      nhip_tho: 44
+    icd:
+    - H66.9
+    phieu_kham: Sốt 2 ngày, quấy khóc, hay kéo tai phải. Màng nhĩ phải đỏ, phồng,
+      mất nón sáng. Họng đỏ nhẹ, phổi thông khí đều.
+    chi_dinh:
+    - ma: 23.0228.1483
+      ten: Định lượng CRP
+      dap_an: tich
+    - ma: 22.0121.1369
+      ten: Tổng phân tích tế bào máu ngoại vi
+      dap_an: tich
+    - ma: 24.0243.1671
+      ten: Influenza virus A, B test nhanh
+      dap_an: tich
+  - id: DO-A2
+    nguon: PCT-05
+    ten: Làm lại sau 3 ngày, PCT cũ còn cao — không rơi vào loại trừ
+    benh_nhan:
+      tuoi_thang: 60
+    sinh_hieu:
+      nhiet_do: 37.9
+      mach: 120
+      nhip_tho: 26
+    icd:
+    - A41.9
+    phieu_kham: Tái khám sau ra viện 3 ngày, đang uống kháng sinh. Theo dõi nhiễm
+      trùng huyết. Còn sốt nhẹ về chiều.
+    lich_su:
+    - ma: 23.0130.1549
+      ngay_cach: 3
+      ket_qua: 2.5
+      tham_chieu_tren: 0.5
+      don_vi: ng/mL
+    chi_dinh:
+    - ma: 23.0130.1549
+      ten: Định lượng Procalcitonin
+      dap_an: tich
+    - ma: 22.0121.1369
+      ten: Tổng phân tích tế bào máu ngoại vi
+      dap_an: tich
+    - ma: 23.0051.1494
+      ten: Định lượng Creatinin (máu)
+      dap_an: tich
+  - id: DO-A3
+    nguon: CRP-02
+    ten: 38,2°C — dưới ngưỡng 0,1 độ
+    benh_nhan:
+      tuoi_thang: 18
+    sinh_hieu:
+      nhiet_do: 38.2
+      mach: 135
+      nhip_tho: 46
+    icd:
+    - J06.9
+    phieu_kham: Sốt 1 ngày, ho, chảy mũi trong. Họng đỏ, amidan không mủ. Phổi không
+      ran.
+    chi_dinh:
+    - ma: 23.0228.1483
+      ten: Định lượng CRP
+      dap_an: khong_tich
+    - ma: 22.0121.1369
+      ten: Tổng phân tích tế bào máu ngoại vi
+      dap_an: tich
+    - ma: 24.0243.1671
+      ten: Influenza virus A, B test nhanh
+      dap_an: tich
+  - id: DO-A4
+    nguon: DOP-02
+    ten: Doppler + siêu âm tim cản âm cùng lượt
+    benh_nhan:
+      tuoi_thang: 48
+    sinh_hieu:
+      nhiet_do: 36.7
+      mach: 105
+      nhip_tho: 24
+    icd:
+    - Q21.1
+    phieu_kham: Theo dõi thông liên nhĩ. Chỉ định siêu âm tim cản âm đánh giá luồng
+      thông.
+    chi_dinh:
+    - ma: 18.0052.0004
+      ten: Siêu âm doppler tim, van tim
+      dap_an: khong_tich
+    - ma: null
+      ten: Siêu âm tim cản âm
+      dap_an: tich
+    - ma: 02.0085.1778
+      ten: Điện tim thường
+      dap_an: tich
+  - id: DO-A5
+    nguon: A1-01
+    ten: CRP — sinh hiệu đạt nhưng sốt sau tiêm
+    benh_nhan:
+      tuoi_thang: 4
+    sinh_hieu:
+      nhiet_do: 38.5
+      mach: null
+      nhip_tho: 55
+    icd:
+    - R50.9
+    phieu_kham: Sốt từ chiều qua, sau tiêm vắc xin 6 trong 1 sáng qua. Bú tốt, không
+      ho, không chảy mũi. Họng không đỏ, phổi không ran, bụng mềm. Vết tiêm sưng nhẹ.
+    chi_dinh:
+    - ma: 23.0228.1483
+      ten: Định lượng CRP
+      dap_an: khong_tich
+    - ma: 22.0121.1369
+      ten: Tổng phân tích tế bào máu ngoại vi
+      dap_an: tich
+    - ma: 23.0206.1596
+      ten: Tổng phân tích nước tiểu
+      dap_an: tich
+  B:
+  - id: DO-B1
+    nguon: CRP-03
+    ten: Hạ thân nhiệt 35,8°C
+    benh_nhan:
+      tuoi_thang: 30
+    sinh_hieu:
+      nhiet_do: 35.8
+      mach: 150
+      nhip_tho: 48
+    icd:
+    - J18.9
+    phieu_kham: Ho đờm 5 ngày, 1 ngày nay li bì, ăn kém. Chi lạnh. Phổi ran ẩm nhỏ
+      hạt đáy phổi phải.
+    chi_dinh:
+    - ma: 23.0228.1483
+      ten: Định lượng CRP
+      dap_an: tich
+    - ma: 22.0121.1369
+      ten: Tổng phân tích tế bào máu ngoại vi
+      dap_an: tich
+    - ma: 18.0119.0028
+      ten: Chụp X-quang ngực thẳng
+      dap_an: tich
+  - id: DO-B2
+    nguon: PCT-03
+    ten: Viêm phổi ngoại trú thường
+    benh_nhan:
+      tuoi_thang: 48
+    sinh_hieu:
+      nhiet_do: 38.7
+      mach: 130
+      nhip_tho: 36
+    icd:
+    - J18.9
+    phieu_kham: Ho sốt 3 ngày. Ran ẩm đáy phổi trái. Trẻ tỉnh, ăn được, SpO2 97%.
+    chi_dinh:
+    - ma: 23.0130.1549
+      ten: Định lượng Procalcitonin
+      dap_an: khong_tich
+    - ma: 22.0121.1369
+      ten: Tổng phân tích tế bào máu ngoại vi
+      dap_an: tich
+    - ma: 18.0119.0028
+      ten: Chụp X-quang ngực thẳng
+      dap_an: tich
+  - id: DO-B3
+    nguon: DEMO-03
+    ten: Đau bụng 5 tuổi R10.4 (thay ví dụ cũ)
+    benh_nhan:
+      tuoi_thang: 60
+    sinh_hieu:
+      nhiet_do: 37.2
+      mach: 100
+      nhip_tho: 24
+    icd:
+    - R10.4
+    phieu_kham: Đau bụng quanh rốn 1 ngày, nôn 1 lần. Ấn đau hố chậu phải, không phản
+      ứng thành bụng.
+    chi_dinh:
+    - ma: 22.0121.1369
+      ten: Tổng phân tích tế bào máu ngoại vi
+      dap_an: tich
+    - ma: 23.0228.1483
+      ten: Định lượng CRP
+      dap_an: khong_tich
+    - ma: 18.0015.0001
+      ten: Siêu âm ổ bụng
+      dap_an: tich
+    - ma: 23.0206.1596
+      ten: Tổng phân tích nước tiểu
+      dap_an: tich
+  - id: DO-B4
+    nguon: DOP-03
+    ten: Doppler hôm nay, cản âm ở lượt khám trước
+    benh_nhan:
+      tuoi_thang: 48
+    sinh_hieu:
+      nhiet_do: 36.7
+      mach: 102
+      nhip_tho: 24
+    icd:
+    - Q21.1
+    phieu_kham: Tái khám sau 3 ngày, đọc kết quả siêu âm cản âm. Làm lại doppler đánh
+      giá áp lực động mạch phổi.
+    lich_su:
+    - ten: Siêu âm tim cản âm
+      ngay_cach: 3
+    chi_dinh:
+    - ma: 18.0052.0004
+      ten: Siêu âm doppler tim, van tim
+      dap_an: tich
+    - ma: 02.0085.1778
+      ten: Điện tim thường
+      dap_an: tich
+  - id: DO-B5
+    nguon: CRP-17
+    ten: 'Từ khóa bẫy: bệnh của người nhà'
+    benh_nhan:
+      tuoi_thang: 36
+    sinh_hieu:
+      nhiet_do: 38.5
+      mach: 140
+      nhip_tho: 42
+    icd:
+    - R50.9
+    phieu_kham: 'Sốt 1 ngày. Mẹ đang viêm họng, anh trai mới khỏi viêm phổi tuần trước.
+      Khám: họng hồng, phổi không ran, tai bình thường.'
+    chi_dinh:
+    - ma: 23.0228.1483
+      ten: Định lượng CRP
+      dap_an: khong_tich
+    - ma: 22.0121.1369
+      ten: Tổng phân tích tế bào máu ngoại vi
+      dap_an: tich
+    - ma: 24.0243.1671
+      ten: Influenza virus A, B test nhanh
+      dap_an: tich

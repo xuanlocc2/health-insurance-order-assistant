@@ -169,7 +169,7 @@
           mo_ta: "Rối loạn chức năng từ 2 cơ quan trở lên"
           kiem:
             loai: ai_doc
-            cau_hoi: "Phiếu khám có ghi rõ rối loạn hoặc suy chức năng của một cơ quan cụ thể ở chính bệnh nhân này không?"
+            cau_hoi: "Phiếu khám có ghi rõ rối loạn hoặc suy chức năng của một cơ quan cụ thể ở chính bệnh nhân này không? Dấu hiệu khám tại cơ quan đang bệnh (như ran phổi, giảm thông khí) mà phiếu không ghi là suy hay rối loạn chức năng thì không tính."
             toi_da: chua_thay   # A1 chỉ trích dấu hiệu, không đếm cơ quan → không bao giờ tự đạt
             diem_mo_ho: M-09
     - id: a_nguoi_lon

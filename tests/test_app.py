@@ -4,6 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from src import app as app_mod
+from src import luu_tru
 
 LUOT = {"luot_kham": "LK-T", "benh_nhan": {"tuoi_thang": 24}, "icd": [],
         "sinh_hieu": {}, "phieu_kham": "Ho", "chi_dinh": [{"ma": None, "ten": "CRP"}]}
@@ -31,6 +32,7 @@ def client(tmp_path, monkeypatch):
                 "dong": [{"thu_tu": 1, "ten": r["ten"], "trang_thai": "Cần xem lại"} for r in luot["chi_dinh"]]}
 
     monkeypatch.setattr(app_mod, "LOG_PATH", tmp_path / "x" / "log.jsonl")
+    monkeypatch.setitem(app_mod.state, "kho", luu_tru.KhoFile(tmp_path / "ca-tu-tao.yaml", app_mod.LOG_PATH))
     monkeypatch.setitem(app_mod.state, "check", fake_check)
     monkeypatch.setitem(app_mod.state, "rules", type("R", (), {"phien_ban_rule": "fake"})())
     monkeypatch.setitem(app_mod.state, "a1_mode", "off")
@@ -38,8 +40,11 @@ def client(tmp_path, monkeypatch):
     monkeypatch.setitem(app_mod.state, "model", None)
     monkeypatch.setitem(app_mod.state, "reasoning_effort", None)
     monkeypatch.setitem(app_mod.state, "lq", None)
+    monkeypatch.setenv("MAT_KHAU_CHUNG", "mat-khau-gia")
+    monkeypatch.setenv("KHOA_PHIEN", "k" * 40)
     # không dùng "with": bỏ qua lifespan (rules/engine thật có thể chưa có)
     c = TestClient(app_mod.app, base_url="http://127.0.0.1")
+    assert c.post("/dang-nhap", json={"tai_khoan": "bs01", "mat_khau": "mat-khau-gia", "cam_ket": True}).status_code == 200
     c.calls = calls
     return c
 
@@ -224,7 +229,7 @@ def test_a1_nho_chi_goi_khi_bam_va_khong_goi_lai(client):
         return {"phieu_kham": pk, "cau_hoi": [{"khoa": f"{tt}:V1", "mo_ta": "m", "cau_hoi": "c"}],
                 "so_lieu": [{"truong": "mach", "don_vi": None}]}
 
-    app_mod._NHO.clear()
+    nho = app_mod.state["kho"]._nho
     r = app_mod._a1_nho(a1, False)(req(1))  # rule tự chạy lại: không gọi A1, báo chưa đọc
     assert not goi and r["loi"] == "chua_doc" and r["ve"][0]["chua_doc"]
     r = app_mod._a1_nho(a1, True)(req(1))  # bấm Kiểm tra BHYT
@@ -232,14 +237,12 @@ def test_a1_nho_chi_goi_khi_bam_va_khong_goi_lai(client):
     r = app_mod._a1_nho(a1, False)(req(2, "Ho sốt"))  # xóa dòng phía trên (đổi thu_tu), phiếu như cũ: dùng lại
     assert len(goi) == 1 and r["ve"][0]["khoa"] == "2:V1" and r["ve"][0]["ket_qua"] == "dat" and r["loi"] is None
     hong = app_mod._a1_nho(lambda q: {"ve": [], "so_lieu": [], "loi": "a1_loi_Timeout"}, True)
-    n = len(app_mod._NHO)
-    assert hong(req(1, "khác"))["loi"] == "a1_loi_Timeout" and len(app_mod._NHO) == n  # gọi hỏng thì không nhớ
+    n = len(nho)
+    assert hong(req(1, "khác"))["loi"] == "a1_loi_Timeout" and len(nho) == n  # gọi hỏng thì không nhớ
     assert isinstance(client.post("/check", json=LUOT).json()["kiem_tra_id"], str)
-    app_mod._NHO.clear()
 
 
-def test_ca_tu_tao_luu_sua_xoa(client, tmp_path, monkeypatch):
-    monkeypatch.setattr(app_mod, "TU_TAO_PATH", tmp_path / "ca-tu-tao.yaml")
+def test_ca_tu_tao_luu_sua_xoa(client):
     ca = {"ten": "Viêm phổi 3 tuổi", "benh_nhan": {"tuoi_thang": 36}, "sinh_hieu": {"nhiet_do": 39}, "icd": [],
           "chi_dinh": [], "phieu_kham": ""}
     assert client.put("/cases/TU-A1", json=ca).status_code == 200  # tạo khi chưa có chỉ định
@@ -253,3 +256,23 @@ def test_ca_tu_tao_luu_sua_xoa(client, tmp_path, monkeypatch):
     assert client.delete("/cases/TU-A1").status_code == 200
     assert not any(c.get("tu_tao") for c in client.get("/cases").json())
     assert client.delete("/cases/TU-A1").status_code == 404
+
+
+def test_ca_tu_tao_giu_du_lieu_phieu_kham(client):
+    xn ={"ma": "23.0130.1549", "ten": "Procalcitonin", "ngay_cach": 3, "ket_qua": 0.4, "tham_chieu_tren": 0.5,
+          "don_vi": "ng/mL"}
+    o = {"ly_do": "Sốt", "kham": "Họng đỏ"}
+    ca = {"ten": "Ca giả", "ngay_kham": "2026-11-15", "benh_nhan": {"tuoi_thang": 24, "the": None},
+          "sinh_hieu": {"spo2": 98, "can_nang": 12.5}, "icd": [], "chi_dinh": [], "lich_su": [{**xn, "la": "bỏ"}],
+          "phieu_kham": "Lý do khám: Sốt\nKhám lâm sàng: Họng đỏ", "phieu_o": o}
+    assert client.put("/cases/TU-B1", json=ca).status_code == 200
+    tu = next(c for c in client.get("/cases").json() if c["id"] == "TU-B1")
+    assert tu["ngay_kham"] == "2026-11-15" and tu["lich_su"] == [xn] and tu["phieu_o"] == o
+    assert tu["benh_nhan"]["the"] is None and tu["sinh_hieu"]["can_nang"] == 12.5
+    # ca lưu theo cách cũ (không có các khóa mới) vẫn mở được
+    assert client.put("/cases/TU-B2", json={"ten": "Ca cũ", "phieu_kham": "Sốt 2 ngày"}).status_code == 200
+    cu = next(c for c in client.get("/cases").json() if c["id"] == "TU-B2")
+    assert cu["phieu_o"] is None and cu["lich_su"] == [] and cu["ngay_kham"] == app_mod.NGAY_KHAM
+    for sai in ({"phieu_o": {"la": "x"}}, {"phieu_o": {"kham": 1}}, {"phieu_o": "x"}, {"lich_su": "x"}, {"lich_su": {}}, {"lich_su": [1]},
+                {"lich_su": [{"ket_qua": "cao"}]}, {"ngay_kham": "15/11/2026"}):
+        assert client.put("/cases/TU-B3", json={**ca, **sai}).status_code == 422

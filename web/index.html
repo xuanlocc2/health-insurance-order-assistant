@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Chỉ định dịch vụ · Trợ lý BHYT</title>
+<link rel="icon" href="data:,">
 <style>
 /* ===== THEME: bố cục và màu theo màn "Chỉ định dịch vụ" của EForm ===== */
 :root{
@@ -49,7 +50,24 @@ a:hover,.lk:hover{text-decoration:underline}
 header{background:#fff;border-bottom:1px solid #eee}
 header .wrap{display:flex;align-items:center;justify-content:flex-end;gap:12px;padding-top:8px;padding-bottom:8px;flex-wrap:wrap}
 .hctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:var(--fs-sm)}
-.hctl select{max-width:280px;padding:3px 6px}
+.hctl select{max-width:440px;padding:3px 6px}
+.tkhoan{display:flex;align-items:center;gap:8px;font-size:var(--fs-sm)}
+.tkhoan b{color:var(--blue-d)}
+.tkhoan button{border:1px solid #ccc;border-radius:2px;background:#fff;padding:3px 9px;font-size:var(--fs-sm);cursor:pointer}
+/* buổi đo Before/After */
+body.dang-do .hctl,body.dang-do .x,body.dang-do [data-xnthem],body.dang-do #icdin{display:none}
+body.dang-do #view :disabled{opacity:1;color:var(--text);-webkit-text-fill-color:var(--text);background:#fafafa}
+.dobar{display:flex;gap:4px 12px;flex-wrap:wrap;margin:6px 0;padding:7px 10px;border-radius:2px;font-size:var(--fs);background:var(--cc-bg);color:var(--cc)}
+.dobar.tu_tra{background:var(--tag-bg);color:var(--tag)}
+.doman{max-width:520px;margin:56px auto;padding:28px 24px;background:#fff;border:1px solid var(--line);border-top:4px solid var(--blue);border-radius:4px;text-align:center}
+.doman h1{margin:0 0 4px;font-size:22px;font-weight:600;color:var(--blue-d)}
+.doman .cd{display:inline-block;margin:6px 0 12px;padding:3px 12px;border-radius:999px;font-weight:700;background:var(--cc-bg);color:var(--cc)}
+.doman .cd.tu_tra{background:var(--tag-bg);color:var(--tag)}
+.doman p{margin:0 0 16px;line-height:1.5}
+.doman .bd{min-width:200px;padding:10px 22px;border:1px solid #e0b000;border-radius:2px;background:var(--yellow);font-size:14px;font-weight:700;cursor:pointer}
+.doman .phu{display:block;margin:14px auto 0;border:0;background:none;color:var(--link);font-size:var(--fs-sm);text-decoration:underline;cursor:pointer}
+.tu-tra h4{margin:10px 0 2px}
+.tu-tra .dv{display:flex;gap:8px;align-items:flex-start;padding:8px 2px;border-bottom:1px solid #eee;font-size:var(--fs);cursor:pointer}
 .seg{display:inline-flex;border:1px solid #ccc;border-radius:2px}
 .seg button{border:0;background:#fff;padding:3px 9px;font-size:var(--fs-sm)}
 .seg button.on{background:var(--blue);color:#fff}
@@ -101,6 +119,7 @@ mark{background:var(--hl);color:inherit;padding:0 2px}
 .bar1{background:var(--blue);color:#fff;font-weight:700;padding:6px 8px;margin:6px 0 0;display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:var(--fs-sm)}
 .bar1:first-child{margin-top:0}
 .bar1 .lk{color:#fff;text-decoration:underline}
+.bar1r{display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
 .row{display:grid;grid-template-columns:150px 1fr;border:1px solid var(--line);border-top:0}
 .row>label,.row>.lb{background:var(--soft);padding:8px;text-align:right;font-weight:700;font-size:var(--fs-sm);border-right:1px solid var(--line)}
 .row>div{padding:6px 8px;min-width:0}
@@ -156,6 +175,8 @@ td{padding:5px 8px;border-bottom:1px solid #eee;vertical-align:top;font-size:var
 .btns .wrap{display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap;padding-top:9px;padding-bottom:9px}
 .btns button{border:1px solid #ccc;border-radius:2px;padding:5px 14px;background:#fff}
 .btns .back{margin-right:auto}
+.btns button:disabled{opacity:1;background:#7f9cbb!important;border-color:#7f9cbb!important;color:#e8eef5}
+.tot .xem{color:#fff;text-decoration:underline;font-size:var(--fs);font-weight:700}
 .b-c{background:var(--cyan)!important;border-color:var(--cyan)!important;color:#fff}
 .b-y{background:var(--yellow)!important;border-color:#e0b000!important;min-width:220px;font-weight:700}
 .spin{display:inline-block;width:12px;height:12px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px;margin-right:6px}@keyframes sp{to{transform:rotate(360deg)}}
@@ -174,6 +195,34 @@ dialog#moi::backdrop{background:rgba(0,0,0,.35)}
 dialog#moi h2{margin:0 0 10px;font-size:15px} dialog#moi input{width:100%;margin:4px 0 8px}
 .dlg-btn{display:flex;justify-content:flex-end;gap:12px;margin-top:12px}
 .dlg-btn button{border:1px solid #ccc;background:#fff;padding:5px 14px}
+/* Trang Phiếu khám ngoại trú */
+.pkt{text-align:center;font-size:24px;font-weight:400;color:#444;margin:8px 0 2px}
+.pkn{text-align:center;color:var(--muted);font-size:var(--fs-sm);margin-bottom:10px}
+.cbdl{margin:0 0 10px;padding:7px 10px;border:1px solid #f0d9ad;border-radius:2px;background:var(--rv-bg);color:var(--rv);font-size:var(--fs);text-align:center}
+.pgr{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px 14px;padding:10px 8px}
+.pf{display:flex;flex-direction:column;gap:3px;min-width:0}
+.pf>label,.pfl{font-weight:700;font-size:var(--fs-sm)}
+.pf small{font-weight:400;color:var(--muted)}
+.pf input{width:100%;border:1px solid #ccc;border-radius:2px;padding:5px 8px;background:#fff}
+.pfw{padding:8px 8px 2px}
+.pfw textarea{width:100%;display:block;min-height:58px;resize:vertical;line-height:1.5}
+.pfd{grid-column:span 2}
+input.sai,.pf input.sai{border-color:var(--no);background:var(--no-bg)}
+.xnt{overflow-x:auto}
+.xnt table{min-width:520px}
+.xnt input{width:90px;padding:3px 6px}
+.xnt .lk{margin-top:6px}
+@media (max-width:420px){.pfd{grid-column:auto}}
+/* Ô tìm dịch vụ có nút mũi tên sổ danh sách */
+.tk{position:relative}
+.tk input{width:100%;padding-right:40px}
+.tkm{position:absolute;top:1px;right:1px;bottom:1px;width:36px;border:0;border-left:1px solid #ddd;border-radius:0 2px 2px 0;background:#f5f5f5;color:#444;font-size:14px;line-height:1}
+.tkm:hover{background:#e8f1fb;color:var(--blue)}
+.sugg .kq0{cursor:default;color:var(--muted);padding:8px}
+/* Popup: dịch vụ đã có trong danh sách */
+.tbao{position:fixed;z-index:40;top:64px;left:50%;transform:translateX(-50%);width:min(460px,calc(100vw - 32px));background:#fffaf0;border:1px solid #f3dcb0;border-left:4px solid var(--rv);box-shadow:0 8px 24px rgba(0,0,0,.18);padding:10px 40px 10px 12px;color:var(--text)}
+.tbao b{display:block;color:var(--rv);margin-bottom:2px}
+.tbao .close{position:absolute;top:8px;right:8px}
 </style>
 </head>
 <body>
@@ -182,11 +231,14 @@ dialog#moi h2{margin:0 0 10px;font-size:15px} dialog#moi input{width:100%;margin
     <span class="seg" id="mode"><button data-m="1">Bác sĩ tự nhập</button><button data-m="0">Ca có sẵn</button></span>
     <select id="ca" aria-label="Ca mẫu"></select>
   </div>
+  <div class="tkhoan"><button type="button" id="vaodo" hidden>Vào buổi đo</button><b id="tk"></b><button type="button" id="dxuat">Đăng xuất</button></div>
 </div></header>
+<div class="doman" id="doman" hidden></div>
 <div class="wrap" id="app">
   <div class="crumb">Chỉ định dịch vụ</div>
+  <div class="dobar" id="dobar" hidden></div>
   <div id="pid"></div>
-  <div class="tabs" role="tablist"><button data-tab="cd">Chỉ định</button><button data-tab="ls">Lịch sử chỉ định</button></div>
+  <div class="tabs" role="tablist"><button data-tab="pk">Phiếu khám</button><button data-tab="cd">Chỉ định</button><button data-tab="ls">Lịch sử chỉ định</button></div>
   <div id="view"></div>
 </div>
 <div class="foot" id="bar"></div>
@@ -195,10 +247,11 @@ dialog#moi h2{margin:0 0 10px;font-size:15px} dialog#moi input{width:100%;margin
   <h2>Tạo ca mới</h2>
   <label for="moiten">Tên ca</label>
   <input type="text" id="moiten" required pattern=".*\S.*" maxlength="200" autocomplete="off" placeholder="vd Viêm phổi 3 tuổi, có CRP">
-  <div class="muted">Ca được lưu vào dữ liệu mẫu (data/ca-tu-tao.yaml) và tự lưu mỗi lần sửa.</div>
+  <div class="muted">Ca được lưu lại và tự lưu mỗi lần sửa.</div>
   <div class="dlg-btn"><button value="huy" formnovalidate>Hủy</button><button value="ok">Tạo ca</button></div>
 </form></dialog>
 <div class="gdp" id="gdp" role="dialog" aria-label="Giả định" hidden></div>
+<div class="tbao" id="tbao" role="alert" hidden></div>
 <script>
 const S = {"Phù hợp quy tắc BHYT":"ok","Đủ căn cứ · bác sĩ xác nhận":"cc","Cần xem lại":"rv","Không được chi trả":"no"};
 const nhan = r => r.ma_ly_do==="danh_muc" ? "Có trong danh mục BHYT" : r.trang_thai;
@@ -210,13 +263,20 @@ const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",
 
 let cases=[], ca=null, sel=null;
 let res=null, sent=null, seq=0, dang=false;          // res = kết quả /check khớp với cds hiện tại (null khi đang chạy lại)
-let tu=true, icd=[], cds=[], dm=[], pk="", nhap=null; // tu = bác sĩ tự nhập; pk = phiếu khám đã xác nhận; nhap = bản đang sửa (null = không sửa)
+let tu=true, icd=[], cds=[], dm=[], pk="";            // tu = bác sĩ tự nhập; pk = văn bản phiếu khám gửi cho AI
                                                       // cds[i] = {ma, ten, chon?, ly?, open?, ct?}: chon = bác sĩ tự đổi ô BHYT; open/ct = khung đang mở / mục "Vì sao?" đang mở
+// Trang Phiếu khám: po = nội dung từng ô; poTuDo = ca cũ chỉ có một đoạn văn bản; pkPhien tăng khi cần vẽ lại form; pkBan = đã sửa, chưa chạy lại quy tắc
+let po={}, poTuDo=false, pkPhien=0, pkBan=false, barCu="";
+const oLoi=new Map(), GOC=new Map();                  // oLoi: ô số đang nhập sai; GOC: bản gốc của ca mẫu, trả lại khi đổi ca
 let icdList=[], icdTen={};                            // danh mục ICD-10 (TT 06/2026) cho ô tìm chẩn đoán
-// điều hướng giống EForm: tab Chỉ định (trang 1 chọn dịch vụ → "Kiểm tra BHYT" → trang 2 tích BHYT) và tab Lịch sử chỉ định
-let tab="cd", trang=1, sang2=false, doc=false, moRong=false, errMsg="", okMsg="";
+// điều hướng giống EForm: Phiếu khám → "Chỉ định CLS" → tab Chỉ định (trang 1 chọn dịch vụ → "Kiểm tra BHYT" → trang 2 tích BHYT) và tab Lịch sử chỉ định
+let tab="pk", trang=1, sang2=false, doc=false, moRong=false, errMsg="", okMsg="";
+let daGhi=null; // kiem_tra_id của lần đã xác nhận: không ghi log trùng khi bấm lại
 const nhomMo=new Set(["xn"]), lsMo=new Set(), daXN=[];  // daXN = các lần "Xác nhận chỉ định" trong phiên, hiện ở Lịch sử
 const cur = () => cases.find(c=>c.id===ca);
+// buổi đo Before/After: DO = trạng thái từ /do-luong; ca đo có do_luong=true và che_do = tu_tra | cong_cu
+let DO=null, caThuong=[], sanSang=false, daDocDo=false; // daDocDo: ca đo đã bấm "Kiểm tra BHYT"
+const laDo=()=>!!cur()?.do_luong, laTuTra=()=>cur()?.che_do==="tu_tra";
 // ô BHYT gợi ý: ưu tiên o_bhyt_goi_y của engine (spec §8), dự phòng theo trạng thái
 const gy = r => r.o_bhyt_goi_y !== undefined ? r.o_bhyt_goi_y : ({ok:"tich",cc:"tich",rv:null,no:"trong"})[stOf(r)];
 const chonOf = i => cds[i].chon ?? gy(res.dong[i])==="tich";
@@ -265,29 +325,50 @@ function highlight(text,qs){
   const sents=[...new Set(cau.map(([a,b,at,n])=>esc(text.slice(a,at)).trimStart()+"<b>"+esc(text.slice(at,at+n))+"</b>"+esc(text.slice(at+n,b)).trimEnd()))];
   return {full,sents};
 }
-const post=async(url,body,method="POST")=>{
-  const r=await fetch(url,{method,headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+const post=async(url,body,method="POST",keepalive=false)=>{
+  const r=await fetch(url,{method,keepalive,headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+  if(r.status===401){ location.href="/dang-nhap"; throw new Error("Phiên đăng nhập đã hết hạn.") }
   const j=await r.json().catch(()=>({}));
   if(!r.ok) throw new Error(typeof j.detail==="string"?j.detail:"Lỗi "+r.status);
   return j;
 };
 const setErr=t=>{errMsg=t; render()};
 
-// ca bác sĩ tự tạo: lưu lên server (data/ca-tu-tao.yaml), tự lưu sau mỗi lần sửa
-let hen=null;
+// ca bác sĩ tự tạo: lưu lên server, tự lưu sau mỗi lần sửa
+let hen=null, choLuu=null, hangLuu=Promise.resolve(); // hangLuu: gửi lần lượt để bản cũ không ghi đè bản mới
 function luu(){ const c=cur(); if(!c||!c.tu_tao) return;
-  c.icd=[...icd]; c.chi_dinh=cds.map(d=>({ma:d.ma,ten:d.ten})); c.phieu_kham=pk;
-  clearTimeout(hen); hen=setTimeout(()=>post("/cases/"+c.id,{ten:c.ten,benh_nhan:c.benh_nhan,sinh_hieu:c.sinh_hieu,
-    icd:c.icd,chi_dinh:c.chi_dinh,phieu_kham:c.phieu_kham},"PUT").catch(e=>setErr("Không lưu được ca: "+e.message)),400); }
-const theOf=t=>({han_den:"2026-12-31",muc_huong:t!=null&&t>=72?80:100}); // cùng mặc định với _demo_cases ở server
-function caMoi(ten){ if(!ten) return; const id="TU-"+Date.now().toString(36).toUpperCase();
+  c.icd=[...icd]; c.chi_dinh=cds.map(d=>({ma:d.ma,ten:d.ten})); c.phieu_kham=pk; c.phieu_o=laVanBanCu()?null:{...po};
+  clearTimeout(hen);
+  const guiCa=ka=>post("/cases/"+c.id,{ten:c.ten,ngay_kham:c.ngay_kham,benh_nhan:c.benh_nhan,sinh_hieu:c.sinh_hieu,icd:c.icd,
+    chi_dinh:c.chi_dinh,lich_su:c.lich_su,phieu_kham:c.phieu_kham,phieu_o:c.phieu_o},"PUT",ka);
+  choLuu=ka=>{ choLuu=null; if(ka){ guiCa(true).catch(()=>{}); return }
+    hangLuu=hangLuu.then(()=>guiCa()).catch(e=>setErr("Không lưu được ca: "+e.message)) };
+  hen=setTimeout(()=>choLuu&&choLuu(),400); }
+const luuNgay=()=>{ clearTimeout(hen); if(choLuu) choLuu() }; // đổi ca trong lúc chờ lưu: không để mất phần vừa sửa
+addEventListener("pagehide",()=>{ clearTimeout(hen); if(choLuu) choLuu(true) }); // đóng hoặc tải lại trang ngay sau khi gõ
+
+// Các ô ghép thành văn bản cho AI: thứ tự cố định, mỗi ô một dòng, bỏ ô trống, không điền sẵn nội dung.
+const PO=[["ly_do","Lý do khám","Lý do đưa trẻ đến khám"],["benh_su","Bệnh sử","Diễn tiến bệnh từ lúc khởi phát đến nay"],
+  ["tien_su","Tiền sử","Tiền sử bản thân và gia đình"],["kham","Khám lâm sàng","Khám toàn thân và các cơ quan"],
+  ["chan_doan","Chẩn đoán sơ bộ","Chẩn đoán hoặc nghi ngờ theo đánh giá của bác sĩ"],["xu_tri","Hướng xử trí","Hướng xử trí và theo dõi tiếp theo"]];
+const oCoNoiDung=()=>PO.filter(([k])=>(po[k]||"").trim());
+// ca cũ chỉ có một đoạn văn bản: giữ nguyên từng chữ cho đến khi bác sĩ điền thêm ô khác
+const laVanBanCu=()=>{ const co=oCoNoiDung(); return poTuDo&&(!co.length||(co.length===1&&co[0][0]==="benh_su")); };
+const ghepPhieu=()=>laVanBanCu()?(po.benh_su||""):oCoNoiDung().map(([k,ten])=>`${ten}: ${po[k].trim()}`).join("\n");
+function caMoi(ten){ if(!ten) return; luuNgay(); const id="TU-"+Date.now().toString(36).toUpperCase();
   cases.push({id,ten,tu_tao:true,luot_kham:"LK-"+id,ngay_kham:"2026-11-12",
-    benh_nhan:{tuoi_thang:null,the:theOf(null)},sinh_hieu:{},icd:[],chi_dinh:[],phieu_kham:"",lich_su:[]});
-  ca=id; dsCa(); moRong=true; load(); } // load → check → luu: ca được ghi ngay lúc tạo
+    benh_nhan:{tuoi_thang:null,the:{han_den:"2026-12-31",muc_huong:100}},sinh_hieu:{},icd:[],chi_dinh:[],phieu_kham:"",phieu_o:{},lich_su:[]});
+  ca=id; dsCa(); load(); } // load → check → luu: ca được ghi ngay lúc tạo
 function dsCa(){ $("ca").innerHTML=cases.map(c=>`<option value="${esc(c.id)}">${c.tu_tao?"✎ ":""}${esc(c.id)} · ${esc(c.ten)}</option>`).join("")
   +'<option value="__moi">+ Tạo ca mới…</option>'; $("ca").value=ca; }
-function load(){ const c=cur(), giu=!tu||c.tu_tao; pk=c.phieu_kham||""; nhap=null; icd=giu?[...(c.icd||[])]:[]; cds=giu?c.chi_dinh.map(x=>({ma:x.ma,ten:x.ten})):[];
-  sel=null; tab="cd"; trang=1; sang2=false; okMsg=""; check(false); }
+function load(){ const c=cur(), giu=!tu||c.tu_tao||c.do_luong; sanSang=true;
+  if(!c.tu_tao){ // ca mẫu: phần sửa trên form chỉ giữ đến khi đổi ca
+    if(!GOC.has(c.id)) GOC.set(c.id,JSON.stringify({ngay_kham:c.ngay_kham,benh_nhan:c.benh_nhan,sinh_hieu:c.sinh_hieu||{},lich_su:c.lich_su||[]}));
+    Object.assign(c,JSON.parse(GOC.get(c.id))); }
+  c.sinh_hieu??={}; c.lich_su??=[];
+  poTuDo=!c.phieu_o; po=c.phieu_o?{...c.phieu_o}:{benh_su:c.phieu_kham||""}; pk=ghepPhieu(); oLoi.clear(); // AI luôn đọc đúng nội dung đang hiện trên form pkBan=false; pkPhien++;
+  icd=giu?[...(c.icd||[])]:[]; cds=giu?c.chi_dinh.map(x=>({ma:x.ma,ten:x.ten})):[];
+  sel=null; tab="pk"; trang=c.do_luong?2:1; sang2=false; okMsg=""; tatTb(); check(false); }
 
 // nhóm dịch vụ như EForm: Xét nghiệm / Chẩn đoán hình ảnh / Dịch vụ chung (theo đầu mã, dự phòng theo tên)
 const NHOM=[["xn","Xét nghiệm","Dịch vụ xét nghiệm"],["cdha","Chẩn đoán hình ảnh","Dịch vụ CĐHA"],["chung","Dịch vụ chung","Dịch vụ chung"]];
@@ -298,61 +379,108 @@ const nhomOf=d=>{ const m=d.ma||"";
 const mt=(ma,ten)=>(ma?esc(ma)+" - ":"")+esc(ten); // "mã - tên", dịch vụ chưa có mã chỉ hiện tên
 const khop=(x,e)=> x.ma&&e.ma ? x.ma===e.ma : [e.ten,...(e.bi_danh||[])].map(norm).includes(norm(x.ten));
 const theoNhom=()=>NHOM.map(([k,,h])=>[h,cds.map((d,i)=>[d,i]).filter(([d])=>nhomOf(d)===k)]).filter(([,ds])=>ds.length);
+// cùng một dịch vụ: cùng mã, hoặc cùng dòng danh mục khi gõ tên/tên tắt
+const khoaDv=d=>{ const e=dm.find(x=>khop(d,x)); return e?(e.ma||norm(e.ten)):(d.ma||norm(d.ten)); };
 const fmtNgay=(iso,tru=0)=>{ const d=new Date((iso||"2026-11-12")+"T00:00:00"); d.setDate(d.getDate()-tru); return d.toLocaleDateString("vi-VN",{day:"2-digit",month:"2-digit",year:"numeric"}); };
 // căn cứ: định dạng can_cu của engine chưa chốt trong spec §8, hiển thị phòng thủ
 function canCu(x){ if(typeof x==="string") return {t:x,v:""};
   return {t:x.nguyen_van||x.trich||(x.ma?"Có mã giá dịch vụ "+x.ma:""),
     v:[x.van_ban,x.phu_luc,x.stt!=null?"STT "+x.stt:"",x.ma_ky_thuat?"mã kỹ thuật "+x.ma_ky_thuat:"",x.trang!=null?"tr. "+x.trang:""].filter(Boolean).join(", ")}; }
 
-// Thanh PID + "Mở rộng" = phiếu khám của lượt khám hiện tại. Không dùng tên bệnh nhân thật.
+function theTT(c){ const the=c.benh_nhan.the; if(!the||!the.han_den) return '<span class="badge s-rv">Chưa có thông tin thẻ</span>';
+  const conHan=the.han_den>=(c.ngay_kham||""); return `<span class="badge ${conHan?"s-ok":"s-no"}">${conHan?"Còn hạn":"Hết hạn"} đến ${esc(fmtNgay(the.han_den))}</span>`; }
+const chipIcd=()=>icd.map((x,i)=>`<span class="chip"><b>${esc(x)}</b>${icdTen[x]?" "+esc(icdTen[x]):""} <button class="x" data-xicd="${i}" aria-label="Xóa ${esc(x)}">✖</button></span>`).join("");
+
+// Thanh PID + "Mở rộng" = tóm tắt phiếu khám để đối chiếu khi chỉ định. Không dùng tên bệnh nhân thật.
 function pidHtml(c){
   const bn=c.benh_nhan, the=bn.the, t=bn.tuoi_thang, sh=c.sinh_hieu||{};
-  const tuoi = t!=null ? `${t} tháng (${(t/12).toFixed(t%12?1:0)} tuổi)` : (bn.tuoi_ngay!=null?bn.tuoi_ngay+" ngày":"chưa rõ tuổi");
-  const conHan = the && the.han_den >= (c.ngay_kham||"");
+  const tuoi = bn.tuoi_ngay!=null ? bn.tuoi_ngay+" ngày" : t!=null ? `${t} tháng (${(t/12).toFixed(t%12?1:0)} tuổi)` : "chưa rõ tuổi"; // engine ưu tiên tuổi theo ngày
   const q = res&&sel!=null&&res.dong[sel] ? trichOf(res.dong[sel]) : [];
-  const vit=(k,lab,u)=>`<dt>${lab}</dt><dd>${c.tu_tao
-    ?`<input type="number" step="any" min="0" id="sh-${k}" data-sh="${k}" value="${esc(sh[k]??"")}" placeholder="—" aria-label="${lab}" style="width:80px"> ${u}`
-    :`${esc(sh[k]??"—")} ${u}`}</dd>`;
-  const bar=`<div class="pid corner"><span>PID: <b>${esc(c.id)}</b> - BỆNH NHÂN THỬ - <b>BS:</b> bs.nhi - Phòng khám Nhi</span><button class="lk" data-mr>${moRong?"Thu gọn ⌃":"Mở rộng ⌄"}</button></div>`;
-  if(!moRong) return bar;
+  const vit=(k,lab,u)=>`<dt>${lab}</dt><dd>${esc(sh[k]??"—")} ${u}</dd>`;
+  const bar=`<div class="pid corner"><span>PID: <b>${esc(c.id)}</b> - BỆNH NHÂN THỬ - <b>BS:</b> bs.nhi - Phòng khám Nhi</span>${tab==="pk"?"":`<button class="lk" data-mr>${moRong?"Thu gọn ▴":"Mở rộng ▾"}</button>`}</div>`;
+  if(!moRong||tab==="pk") return bar;
   return bar+`<div class="mr">
-    <div><h4>Hành chính · Thẻ BHYT</h4><dl class="kv">${c.tu_tao?`
-      <dt>Tên ca</dt><dd><input type="text" id="sh-ten" data-sh="ten" value="${esc(c.ten)}" maxlength="200" aria-label="Tên ca"></dd>`:""}
-      <dt>Tuổi</dt><dd>${c.tu_tao?`<input type="number" min="0" step="1" id="sh-tuoi" data-sh="tuoi_thang" value="${esc(t??"")}" placeholder="vd 24" aria-label="Tuổi (tháng)" style="width:80px"> tháng`:esc(tuoi)}</dd>
+    <div><h4>Hành chính · Thẻ BHYT</h4><dl class="kv">
+      <dt>Tuổi</dt><dd>${esc(tuoi)}</dd>
       <dt>Lượt khám</dt><dd>${esc(c.luot_kham)} · ${esc(fmtNgay(c.ngay_kham))}</dd>
-      <dt>Thẻ BHYT</dt><dd>${the?`<span class="badge ${conHan?"s-ok":"s-no"}">${conHan?"Còn hạn":"Hết hạn"} đến ${esc(the.han_den)}</span>`:'<span class="badge s-rv">Chưa có thông tin thẻ</span>'}</dd>
-      <dt>Mức hưởng</dt><dd>${the&&the.muc_huong!=null?esc(the.muc_huong)+"%":"—"}</dd></dl>
-      ${c.tu_tao?'<p><button class="lk" data-xca>Xóa ca tự tạo này</button></p>':""}</div>
+      <dt>Thẻ BHYT</dt><dd>${theTT(c)}</dd>
+      <dt>Mức hưởng</dt><dd>${the&&the.muc_huong!=null?esc(the.muc_huong)+"%":"—"}</dd></dl></div>
     <div><h4>Sinh hiệu</h4><dl class="kv">${vit("nhiet_do","Nhiệt độ","°C")}${vit("mach","Mạch","lần/phút")}${vit("nhip_tho","Nhịp thở","lần/phút")}</dl></div>
-    <div><h4>Chẩn đoán (ICD-10)</h4>${icd.map(x=>`<span class="chip"><b>${esc(x)}</b>${icdTen[x]?" "+esc(icdTen[x]):""}</span>`).join("")||'<span class="muted">(chưa nhập)</span>'}
-      <div class="muted" style="margin-top:4px">Sửa ở mục “Chẩn đoán/ Lịch sử lâm sàng” sau khi bấm Kiểm tra BHYT.</div></div>
-    <div class="full"><h4>Phiếu khám ${nhap==null?'<button class="lk" data-pk="sua" style="font-weight:400;margin-left:8px">Chỉnh sửa</button>':""}</h4>${nhap==null
-      ?`<div class="pk">${highlight(pk,q).full||'<span class="muted">(trống)</span>'}</div>${q.length?'<div class="muted">Tô vàng: đoạn AI dẫn làm căn cứ cho chỉ định đang mở.</div>':""}`
-      :`<textarea id="pkin" class="pk" rows="7" aria-label="Phiếu khám" placeholder="Bệnh sử, khám, lý do chỉ định, kết quả cận lâm sàng…">${esc(nhap)}</textarea>
-       <div style="margin-top:6px;display:flex;gap:12px"><button data-pk="ok">Xác nhận sửa</button><button class="lk" data-pk="huy">Hủy</button></div>`}</div>
+    <div><h4>Chẩn đoán (ICD-10)</h4>${icd.map(x=>`<span class="chip"><b>${esc(x)}</b>${icdTen[x]?" "+esc(icdTen[x]):""}</span>`).join("")||'<span class="muted">(chưa nhập)</span>'}</div>
+    <div class="full"><h4>Phiếu khám <button class="lk" data-tab="pk" style="font-weight:400;margin-left:8px">Sửa phiếu khám</button></h4>
+      <div class="pk">${highlight(pk,q).full||'<span class="muted">(trống)</span>'}</div>${q.length?'<div class="muted">Tô vàng: đoạn AI dẫn làm căn cứ cho chỉ định đang mở.</div>':""}</div>
+  </div>`;
+}
+
+// Trang Phiếu khám ngoại trú: chỉ gồm các ô quy tắc BHYT và AI cần, cùng vài ô cơ bản
+const PCT_MA="23.0130.1549";
+function oSo(k,lab,v,u){ const id="pf-"+k, sai=oLoi.has(id);
+  return `<div class="pf"><label for="${id}">${lab}${u?` <small>(${u})</small>`:""}</label><input type="text" inputmode="decimal" autocomplete="off" id="${id}" data-pf="${k}" class="${sai?"sai":""}" aria-invalid="${sai}" value="${esc(sai?oLoi.get(id):v??"")}"></div>`; }
+const oNgay=(k,lab,v)=>`<div class="pf"><label for="pf-${k}">${lab}</label><input type="date" id="pf-${k}" data-pf="${k}" value="${esc(v||"")}"></div>`;
+function oChu(k){ const [,ten,goiY]=PO.find(x=>x[0]===k);
+  return `<div class="pf pfw"><label for="po-${k}">${ten}</label><textarea id="po-${k}" data-po="${k}" rows="3" placeholder="${goiY}">${esc(po[k]||"")}</textarea>${
+    k==="benh_su"&&poTuDo&&pk?'<div class="muted">Ca này ghi phiếu thành một đoạn, nên toàn bộ nội dung đang nằm ở ô này.</div>':""}</div>`; }
+function oXn(i,k,v,lab){ const id=`xn-${i}-${k}`, sai=oLoi.has(id);
+  return `<input type="text" inputmode="decimal" autocomplete="off" id="${id}" data-xn="${i}" data-xk="${k}" aria-label="${lab}" class="${sai?"sai":""}" aria-invalid="${sai}" value="${esc(sai?oLoi.get(id):v??"")}">`; }
+const tenXn=x=>x.ten||(dm.find(e=>e.ma===x.ma)||{}).ten||x.ma||"Dịch vụ";
+// kết quả chưa có ngày: engine sẽ xếp nó cũ nhất và bỏ qua giới hạn tần suất, nên chưa cho kiểm tra đến khi bổ sung
+const xnThieu=c=>(c.lich_su||[]).some(r=>r.ngay_cach==null&&(r.ket_qua!=null||r.tham_chieu_tren!=null));
+function trangPK(c){ const bn=c.benh_nhan, the=bn.the, sh=c.sinh_hieu;
+  const xn=c.lich_su.map((x,i)=>`<tr><td>${esc(tenXn(x))}</td><td>${oXn(i,"ngay_cach",x.ngay_cach,"Cách đây bao nhiêu ngày")}</td>
+    <td>${oXn(i,"ket_qua",x.ket_qua,"Kết quả")} ${esc(x.don_vi||"")}</td><td>${oXn(i,"tham_chieu_tren",x.tham_chieu_tren,"Ngưỡng tham chiếu trên")}</td>
+    <td><button class="x" data-xnx="${i}" aria-label="Bỏ kết quả ${esc(tenXn(x))}">✖</button></td></tr>`).join("");
+  return `<h1 class="pkt">Phiếu khám ngoại trú</h1>
+  <div class="pkn">Dữ liệu mô phỏng, không kết nối EMR.${c.tu_tao?"":" Ca mẫu: phần sửa chỉ giữ đến khi đổi ca."}</div>
+  <div class="cbdl" role="note"><b>Chỉ nhập dữ liệu giả.</b> Nội dung phiếu khám được gửi đến dịch vụ AI, không nhập họ tên, mã hồ sơ hay thông tin thật của người bệnh.</div>
+  <div class="frm corner">
+    <div class="bar1">1. Thông tin lượt khám</div>
+    <div class="pgr">${c.tu_tao?`<div class="pf pfd"><label for="pf-ten">Tên ca</label><input type="text" id="pf-ten" data-pf="ten" maxlength="200" autocomplete="off" value="${esc(c.ten)}"></div>`:""}
+      ${oSo("tuoi_thang","Tuổi",bn.tuoi_thang,"tháng")}${oSo("tuoi_ngay","Tuổi",bn.tuoi_ngay,"ngày, trẻ dưới 1 tháng")}
+      ${oNgay("ngay_kham","Ngày khám",c.ngay_kham)}${oNgay("han_den","Hạn thẻ BHYT",the&&the.han_den)}${oSo("muc_huong","Mức hưởng",the&&the.muc_huong,"%")}
+      <div class="pf"><span class="pfl">Tình trạng thẻ</span><span id="the-tt">${theTT(c)}</span></div></div>
+    <div class="bar1">2. Sinh hiệu</div>
+    <div class="pgr">${oSo("nhiet_do","Nhiệt độ",sh.nhiet_do,"°C")}${oSo("mach","Mạch",sh.mach,"lần/phút")}${oSo("nhip_tho","Nhịp thở",sh.nhip_tho,"lần/phút")}${oSo("spo2","SpO2",sh.spo2,"%")}${oSo("can_nang","Cân nặng",sh.can_nang,"kg")}</div>
+    <div class="bar1">3. Hỏi bệnh và khám</div>
+    ${oChu("ly_do")}${oChu("benh_su")}${oChu("tien_su")}${oChu("kham")}
+    <div class="pf pfw"><span class="pfl">Kết quả xét nghiệm trước đó</span><div class="xnt">${xn?`<table><thead><tr><th>Dịch vụ</th><th>Cách đây (ngày)</th><th>Kết quả</th><th>Ngưỡng trên</th><th></th></tr></thead><tbody>${xn}</tbody></table>`:'<span class="muted">Chưa có kết quả.</span>'}
+      <div><button class="lk" data-xnthem>+ Thêm kết quả Procalcitonin</button></div></div></div>
+    ${oChu("chan_doan")}
+    <div class="pf pfw"><label for="icdin">Chẩn đoán ICD-10</label><div>${chipIcd()}<input type="text" id="icdin" autocomplete="off" placeholder="Nhập mã hoặc tên chẩn đoán (vd J18.9, viêm phổi)"></div></div>
+    <div class="bar1" style="margin-top:10px">4. Điều trị</div>
+    ${oChu("xu_tri")}
+    ${c.tu_tao?'<p style="padding:0 8px"><button class="lk" data-xca>Xóa ca tự tạo này</button></p>':'<div style="height:8px"></div>'}
   </div>`;
 }
 
 // Trang 1: tìm và tích dịch vụ (không làm gói chỉ định)
 function trang1(){
   const nh=NHOM.map(([k,ten])=>{ const mo=nhomMo.has(k), ds=dm.map((e,j)=>[e,j]).filter(([e])=>nhomOf(e)===k);
-    return `<div class="sec corner"><div class="sech ${mo?"on":""}" data-nh="${k}"><span class="ic">${mo?"⌃":"⌄"}</span>${ten} <span style="font-weight:400">(${ds.length})</span></div>${mo?`<div class="grid">${
+    return `<div class="sec corner"><div class="sech ${mo?"on":""}" data-nh="${k}"><span class="ic">${mo?"▴":"▾"}</span>${ten} <span style="font-weight:400">(${ds.length})</span></div>${mo?`<div class="grid">${
       ds.map(([e,j])=>`<label class="opt"><input type="checkbox" data-dm="${j}" ${cds.some(x=>khop(x,e))?"checked":""}><span>${e.ma?`<span class="ma">${esc(e.ma)} -</span>`:""}${esc(e.ten)}</span></label>`).join("")||'<span class="muted">Không có dịch vụ.</span>'}</div>`:""}</div>` }).join("");
   const phai=theoNhom().map(([h,ds])=>`<div class="box"><h4>${h}</h4>${ds.map(([d,i],n)=>`<div class="it"><span>${n+1}, ${mt(d.ma,d.ten)}</span><button class="x" data-xcd="${i}" aria-label="Bỏ ${esc(d.ten)}">✖</button></div>`).join("")}</div>`).join("")
     ||'<div class="box"><h4>Dịch vụ đã chọn</h4><span class="muted">Chưa chọn dịch vụ nào.</span></div>';
   return `<div class="cols"><div><div class="box"><label class="fl" for="cdin">Tìm kiếm dịch vụ:</label>
-      <input type="text" id="cdin" autocomplete="off" placeholder="Gõ để tìm dịch vụ … (tên, mã, tên tắt: CTM, CRP), Enter để thêm" style="width:100%"></div>${nh}</div>
+      <div class="tk"><input type="text" id="cdin" autocomplete="off" placeholder="Gõ để tìm dịch vụ … (tên, mã, tên tắt: CTM, CRP), Enter để thêm"><button type="button" class="tkm" data-sx aria-haspopup="listbox" aria-label="Mở danh sách dịch vụ" title="Mở danh sách dịch vụ">▾</button></div></div>${nh}</div>
     <div>${phai}</div></div>`;
 }
 
+// dòng đang mở: bác sĩ đã bấm thì theo bác sĩ, chưa bấm thì mở dòng không xanh (Cần xem lại, Không được chi trả)
+const moOf=(d,r)=>d.open??(stOf(r)!=="ok");
+// nút ở thanh "2. Thông tin chỉ định dịch vụ": còn dòng nào đang mở thì thu gọn hết, không còn thì mở hết
+function nutGon(){
+  const co=cds.map((d,i)=>[d,res&&res.dong[i]]).filter(([,r])=>r);
+  if(!co.length) return "";
+  const dangMo=co.some(([d,r])=>moOf(d,r));
+  return `<button class="lk" data-gon="${dangMo?0:1}">${dangMo?"Thu gọn tất cả ▴":"Mở tất cả ▾"}</button>`;
+}
 // Trang 2: cột trái tích BHYT, cột phải từng khung chỉ định giải thích lý do
 function frame(i){
   const d=cds[i], r=res&&res.dong[i], ma=(r&&r.ma)||d.ma||"— chưa có mã";
   if(!r) return `<div class="fr" id="fr-${i}"><div class="frh"><span class="t">${esc(ma)} - ${esc(d.ten)}</span><span class="badge s-na">${dang?"Đang kiểm tra…":"Chưa kiểm tra"}</span></div></div>`;
-  const k=stOf(r), mo=d.open??(k!=="ok"), chon=chonOf(i), g=gy(r), cl=r.checklist||[], h=highlight(sent.phieu_kham,trichOf(r));
+  const k=stOf(r), mo=moOf(d,r), chon=chonOf(i), g=gy(r), cl=r.checklist||[], h=highlight(sent.phieu_kham,trichOf(r));
   const goiY=g==="tich"?"Hệ thống tích sẵn":g==="trong"?"Hệ thống để trống":"Bác sĩ tự chọn";
   const doi=g!=null&&chon!==(g==="tich");
-  return `<div class="fr" id="fr-${i}"><div class="frh" data-fr="${i}"><span class="t">${esc(ma)} - ${esc(r.ten||d.ten)}</span><span class="badge s-${k}">${esc(nhan(r))}</span><span class="car">${mo?"⌃":"⌄"}</span></div>${mo?`
+  return `<div class="fr" id="fr-${i}"><div class="frh" data-fr="${i}"><span class="t">${esc(ma)} - ${esc(r.ten||d.ten)}</span><span class="badge s-${k}">${esc(nhan(r))}</span><span class="car">${mo?"▴":"▾"}</span></div>${mo?`
     <div class="frb">
       <div class="row"><div class="lb">Kết quả kiểm tra BHYT</div><div>${lyDoHtml(r.ly_do)}</div></div>
       <div class="row"><label for="cb-${i}">Dịch vụ đủ điều kiện thanh toán BHYT</label><div><input type="checkbox" id="cb-${i}" data-cb="${i}" ${chon?"checked":""}> <span class="muted">${goiY}${doi?" · bác sĩ đã đổi":""}</span></div></div>
@@ -377,24 +505,52 @@ function trang2(){
   return `<div class="cols2"><div><div class="alert">Lưu ý: Tích chọn với các dịch vụ đủ điều kiện thanh toán BHYT</div>${trai||'<div class="box muted">Chưa có dịch vụ.</div>'}</div>
     <div class="frm corner">
       <div class="bar1">1. Thông tin chung</div>
-      <div class="row"><label for="icdin">Chẩn đoán/ Lịch sử lâm sàng <i>*</i></label><div>${icd.map((x,i)=>`<span class="chip"><b>${esc(x)}</b>${icdTen[x]?" "+esc(icdTen[x]):""} <button class="x" data-xicd="${i}" aria-label="Xóa ${esc(x)}">✖</button></span>`).join("")}
+      <div class="row"><label for="icdin">Chẩn đoán/ Lịch sử lâm sàng <i>*</i></label><div>${chipIcd()}
         <input type="text" id="icdin" autocomplete="off" placeholder="Nhập mã hoặc tên chẩn đoán (vd J18.9, viêm phổi)" style="width:100%">
         ${((res&&res.nhac)||[]).map(n=>`<div class="warn" role="status">${esc(n.noi_dung)} <details><summary>Căn cứ</summary>${(n.can_cu||[]).map(x=>{const y=canCu(x);return `<blockquote>“${esc(y.t)}”<cite>${esc(y.v)}</cite></blockquote>`}).join("")}</details></div>`).join("")}</div></div>
-      <div class="bar1">2. Thông tin chỉ định dịch vụ <button class="lk" data-gd="">${ng?`Giả định (${ng})`:"Giả định"}</button></div>
-      ${loi?`<div class="warn" role="status">AI chưa đọc được phiếu khám, nên các điều kiện cần đọc phiếu để “chưa thấy”. Bấm “Kiểm tra lại BHYT” để thử lại. (mã lỗi: ${esc(loi)})</div>`:""}
+      <div class="bar1">2. Thông tin chỉ định dịch vụ <span class="bar1r">${nutGon()}<button class="lk" data-gd="">${ng?`Giả định (${ng})`:"Giả định"}</button></span></div>
+      ${loi==="a1_tat"?`<div class="warn" role="status">Bản thử này chưa bật AI đọc phiếu khám. Các điều kiện cần đọc phiếu khám tạm để “Cần xem lại”, bác sĩ tự quyết định các dòng đó.</div>`
+        :loi?`<div class="warn" role="status">AI chưa đọc được phiếu khám, nên các điều kiện cần đọc phiếu để “chưa thấy”. Bấm “Kiểm tra lại BHYT” để thử lại. (mã lỗi: ${esc(loi)})</div>`:""}
       ${nhom.map(([h,ds])=>`<div class="grp"><div class="grph">${h}</div><div class="grpb">${ds.map(([,i])=>frame(i)).join("")}</div></div>`).join("")}
     </div></div>`;
 }
 
+// Lượt tự tra của buổi đo: chỉ có danh sách để bác sĩ tự tích, không có gợi ý nào của công cụ
+function trangTuTra(){
+  return `<div class="box tu-tra"><div class="alert">Tích chọn các dịch vụ đủ điều kiện thanh toán BHYT</div>
+    <div>Chẩn đoán: ${icd.map(x=>`<span class="chip"><b>${esc(x)}</b>${icdTen[x]?" "+esc(icdTen[x]):""}</span>`).join("")||'<span class="muted">(chưa có)</span>'}</div>
+    ${theoNhom().map(([h,ds])=>`<h4>${h}</h4>${ds.map(([d,i])=>`<label class="dv"><input type="checkbox" data-tt="${i}" ${d.chon?"checked":""}><span>${mt(d.ma,d.ten)}</span></label>`).join("")}`).join("")}</div>`;
+}
+const nutDo=()=>`<button class="back" data-tab="pk">‹ Phiếu khám</button>${laTuTra()?"":`<button id="chk" ${doc?"disabled":""}>${doc?'<span class="spin"></span>AI đang đọc phiếu khám…':"Kiểm tra BHYT"}</button>`}
+  <button class="b-y" id="luudo" ${(!laTuTra()&&(!res||!daDocDo))||doc||dangXN?"disabled":""}>Xác nhận và lưu</button>`;
+// màn giữa các ca: bác sĩ bấm "Bắt đầu ca" thì mới bấm giờ, ca chưa bắt đầu chưa hiện nội dung
+function manDo(d){ DO=d; const c=d.hien_tai, m=$("doman"), tt=c&&c.che_do==="tu_tra";
+  document.body.classList.add("dang-do"); $("app").hidden=true; $("bar").hidden=true; m.hidden=false; scrollTo(0,0);
+  m.innerHTML=c?`<h1>Ca đo ${c.thu_tu}/${d.tong}</h1><div class="cd ${esc(c.che_do)}">${tt?"Tự tra":"Dùng công cụ"}</div>
+    <p>${tt?"Bác sĩ tra cứu theo cách quen dùng hằng ngày, không dùng công cụ AI, rồi tích các dịch vụ đủ điều kiện BHYT.":"Bác sĩ bấm Kiểm tra BHYT để xem gợi ý của công cụ, rồi tự quyết định tích dịch vụ nào."} Sau khi bấm “Xác nhận và lưu”, ca sẽ được khóa.</p>
+    <button class="bd" data-dobd>Bắt đầu ca</button>${c.thu_tu===1?'<button class="phu" data-dobo>Để sau, dùng thử tự do</button>':""}`
+    :`<h1>Đã hoàn thành buổi đo</h1><p>Bác sĩ đã làm xong ${d.da_xong}/${d.tong} ca. Cảm ơn bác sĩ đã tham gia.</p><button class="bd" data-dobo>Dùng thử tự do</button>`; }
+function moCaDo(c){ $("doman").hidden=true; $("app").hidden=false; $("bar").hidden=false; cases=[{...c,do_luong:true}]; ca=c.id; res=null; daDocDo=false; load(); }
+function thoatDo(){ document.body.classList.remove("dang-do"); $("doman").hidden=true; $("app").hidden=false; $("bar").hidden=false;
+  $("vaodo").hidden=!DO.hien_tai; cases=caThuong; ca=cases[0].id; dsCa(); load(); }
+async function luuDo(){ const c=cur(); if(dangXN||doc||(!laTuTra()&&(!res||!daDocDo))) return;
+  const dong=laTuTra()?cds.map(d=>({ma:d.ma,ten:d.ten,bac_si_chon:d.chon?"tich":"khong_tich"}))
+    :res.dong.map((r,i)=>({ma:r.ma||cds[i].ma,ten:cds[i].ten,bac_si_chon:chonOf(i)?"tich":"khong_tich",trang_thai:r.trang_thai,o_bhyt_goi_y:gy(r)}));
+  dangXN=true; veBar(); let j;
+  try{ j=await post("/do-luong/"+c.id,{kiem_tra_id:res?res.kiem_tra_id:null,dong}) }
+  catch(e){ dangXN=false; setErr("Không lưu được: "+e.message); return }
+  dangXN=false; manDo(j); }
+
 // Tab Lịch sử chỉ định: lượt đã xác nhận trong phiên + lịch sử dịch vụ đã dùng của ca (lich_su)
 function lichSu(c){
   const ten=ma=>(dm.find(e=>e.ma===ma)||{}).ten;
-  const past=[...new Set((c.lich_su||[]).map(x=>x.ngay_cach))].sort((a,b)=>a-b).map(nc=>({id:"ls"+nc, ngay:fmtNgay(c.ngay_kham,nc), lk:`${nc} ngày trước`,
-    items:c.lich_su.filter(x=>x.ngay_cach===nc).map(x=>({ma:x.ma,ten:x.ten||ten(x.ma)||x.ma,tt:"Đã có kết quả",
+  const coNgay=(c.lich_su||[]).filter(x=>x.ngay_cach!=null);
+  const past=[...new Set(coNgay.map(x=>x.ngay_cach))].sort((a,b)=>a-b).map(nc=>({id:"ls"+nc, ngay:fmtNgay(c.ngay_kham,nc), lk:`${nc} ngày trước`,
+    items:coNgay.filter(x=>x.ngay_cach===nc).map(x=>({ma:x.ma,ten:x.ten||ten(x.ma)||x.ma,tt:"Đã có kết quả",
       kq:x.ket_qua!=null?`Kết quả: ${x.ket_qua}${x.don_vi?" "+x.don_vi:""}${x.tham_chieu_tren!=null?` (ngưỡng trên ${x.tham_chieu_tren})`:""}`:""}))}));
   const vs=[...daXN.filter(v=>v.ca===c.id).reverse(),...past];
   const visit=v=>{ const mo=lsMo.has(v.id);
-    return `<div class="vs ${mo?"on":""} corner"><div class="vsh" data-ls="${v.id}"><b>(${v.gio?v.gio+" ":""}${esc(v.ngay)} - ${esc(v.lk)})</b> Phòng khám Nhi - bs.nhi<span class="ic">${mo?"⌃":"⌄"}</span></div>${mo?`
+    return `<div class="vs ${mo?"on":""} corner"><div class="vsh" data-ls="${v.id}"><b>(${v.gio?v.gio+" ":""}${esc(v.ngay)} - ${esc(v.lk)})</b> Phòng khám Nhi - bs.nhi<span class="ic">${mo?"▴":"▾"}</span></div>${mo?`
       <div class="vsb"><div class="sub">${v.gio?v.gio+" ":""}${esc(v.ngay)} - bs.nhi</div><div class="in">
         <h4>Danh sách đã chỉ định</h4><b>Chẩn đoán/ Lịch sử lâm sàng</b>
         <input type="text" readonly value="${esc(v.icd&&v.icd.length?v.icd.map(x=>icdTen[x]?`${icdTen[x]} (${x})`:x).join("; "):"—")}">
@@ -406,72 +562,127 @@ function lichSu(c){
   return `<div class="box ls"><h3>Lịch sử bệnh nhân</h3>${okMsg?`<div class="ok-msg">${esc(okMsg)}</div>`:""}${vs.map(visit).join("")||'<div class="muted">Chưa có lịch sử chỉ định.</div>'}</div>`;
 }
 
+function nhacXem(){ // dòng Cần xem lại / Không được chi trả: bấm để lần lượt nhảy tới từng dòng
+  const ds=res.dong.map((r,i)=>[stOf(r),i]).filter(([k])=>k==="rv"||k==="no"); if(!ds.length) return "";
+  const rv=ds.filter(([k])=>k==="rv").length, no=ds.length-rv, ke=(ds.find(([,i])=>i>(sel??-1))||ds[0])[1];
+  return `<button class="lk xem" data-go="${ke}">Xem ${[rv?rv+" dòng Cần xem lại":"",no?no+" dòng Không được chi trả":""].filter(Boolean).join(", ")}</button>`; }
+
+function veBar(){
+  const n=cds.length, k=laTuTra()?cds.filter(d=>d.chon).length:res?cds.filter((_,i)=>chonOf(i)).length:0;
+  const spin='<span class="spin"></span>', xong=!!res&&res.kiem_tra_id===daGhi, laPk=tab==="pk", thieu=xnThieu(cur());
+  const trai=errMsg?`<span class="errt">${esc(errMsg)}</span>`:thieu?'<span class="errt">Kết quả xét nghiệm thiếu số ngày: điền “Cách đây” hoặc bỏ dòng đó ở trang Phiếu khám.</span>':laPk&&oLoi.size?'<span class="errt">Ô viền đỏ chưa phải số hợp lệ, hệ thống coi như chưa nhập.</span>':!laPk&&trang===2&&res?nhacXem():"";
+  const h=`<div class="tot"><div class="wrap"><span>${trai}</span>
+      <span>Tổng số: ${n} Dịch vụ${!laPk&&trang===2&&(res||laTuTra())?`, Tính BHYT: <b>${k}/${n}</b>`:""}</span></div></div>
+    <div class="btns"><div class="wrap">${laPk
+      ?`<button class="b-y" data-cls>Chỉ định CLS ›</button>`
+      :laDo()?nutDo()
+      :trang===1
+      ?`<button class="back" data-tab="pk">‹ Phiếu khám</button><button data-huy ${n?"":"disabled"}>Hủy toàn bộ dịch vụ</button><button class="b-y" id="chk" ${!n||doc||thieu?"disabled":""}>${doc?spin+"AI đang đọc phiếu khám…":"Kiểm tra BHYT"}</button>`
+      :`<button class="back" data-tr="1">‹ Quay lại</button><button data-huy ${n?"":"disabled"}>Hủy toàn bộ dịch vụ</button><button class="b-c" data-tr="1">Thêm chỉ định</button>
+        <button id="chk" ${!n||doc||thieu?"disabled":""} title="AI đọc lại phiếu khám">${doc?spin+"AI đang đọc phiếu khám…":"Kiểm tra lại BHYT"}</button>
+        <button class="b-y" id="ok" ${!res||doc||xong||thieu?"disabled":""}>${xong?"Đã xác nhận":"Xác nhận chỉ định"}</button>`}</div></div>`;
+  $("bar").hidden=tab==="ls";
+  if(h!==barCu){ $("bar").innerHTML=h; barCu=h } // không thay nút khi không đổi: giữ cú bấm đang diễn ra
+}
+
 function render(){
-  const c=cur(); if(!c) return;
+  const c=cur(); if(!c||!sanSang) return;
   const a=document.activeElement, fid=a&&a.id&&$("app").contains(a)?a.id:null; // vẽ lại không làm mất chỗ đang gõ
   const fv=fid?a.value:null, fs=fid&&/text|textarea/.test(a.type)?[a.selectionStart,a.selectionEnd,a.scrollTop]:null;
+  const moSg=!!fid&&!$("sugg").hidden&&sg.id===fid; // danh sách gợi ý đang mở hay đóng thì vẽ lại vẫn giữ nguyên
   document.querySelectorAll("#mode button").forEach(b=>b.classList.toggle("on",(b.dataset.m==="1")===tu));
   document.querySelectorAll("[data-tab]").forEach(b=>b.classList.toggle("on",b.dataset.tab===tab));
+  const ten=tab==="pk"?"Phiếu khám ngoại trú":"Chỉ định dịch vụ";
+  document.querySelector(".crumb").textContent=ten; document.title=ten+" · Trợ lý BHYT";
   $("pid").innerHTML=pidHtml(c);
-  $("view").innerHTML=tab==="ls"?lichSu(c):trang===1?trang1():trang2();
-  const n=cds.length, k=res?cds.filter((_,i)=>chonOf(i)).length:0, khoa=nhap!=null; // đang sửa phiếu khám: chưa kiểm tra/xác nhận
-  const spin='<span class="spin"></span>';
-  $("bar").hidden=tab==="ls";
-  $("bar").innerHTML=`<div class="tot"><div class="wrap"><span>${errMsg?`<span class="errt">${esc(errMsg)}</span>`:khoa?'<span class="errt">Đang sửa phiếu khám: bấm “Xác nhận sửa” trước.</span>':""}</span>
-      <span>Tổng số: ${n} Dịch vụ${trang===2&&res?`, Tính BHYT: <b>${k}/${n}</b>`:""}</span></div></div>
-    <div class="btns"><div class="wrap">${trang===1
-      ?`<button data-huy ${n?"":"disabled"}>Hủy toàn bộ dịch vụ</button><button class="b-y" id="chk" ${!n||doc||khoa?"disabled":""}>${doc?spin+"AI đang đọc phiếu khám…":"Kiểm tra BHYT"}</button>`
-      :`<button class="back" data-tr="1">‹ Quay lại</button><button data-huy ${n?"":"disabled"}>Hủy toàn bộ dịch vụ</button><button class="b-c" data-tr="1">Thêm chỉ định</button>
-        <button id="chk" ${!n||doc||khoa?"disabled":""} title="AI đọc lại phiếu khám">${doc?spin+"AI đang đọc phiếu khám…":"Kiểm tra lại BHYT"}</button>
-        <button class="b-y" id="ok" ${!res||doc||khoa?"disabled":""}>Xác nhận chỉ định</button>`}</div></div>`;
-  if(fid&&$(fid)){ const el=$(fid); el.focus(); if(fid==="cdin"||fid==="icdin") el.value=fv;
-    if(fs) try{el.setSelectionRange(fs[0],fs[1]); el.scrollTop=fs[2]}catch(_){} }
+  const bd=$("dobar"); bd.hidden=!laDo();
+  if(laDo()){ bd.className="dobar "+c.che_do; bd.innerHTML=`<b>Ca đo ${c.thu_tu}/${DO.tong}</b><span>${laTuTra()?"Tự tra: tra cứu theo cách bác sĩ quen dùng, không dùng công cụ AI.":"Dùng công cụ: bấm Kiểm tra BHYT, xem gợi ý rồi tự quyết định."}</span>`; }
+  // trang Phiếu khám không vẽ lại khi đang nhập, để không mất ô đang gõ hoặc cú bấm kế tiếp
+  const vk=tab==="pk"?`pk|${ca}|${pkPhien}`:"";
+  if(!vk||$("view").dataset.vk!==vk){ $("view").innerHTML=tab==="pk"?trangPK(c):tab==="ls"?lichSu(c):laTuTra()?trangTuTra():trang===1?trang1():trang2(); $("view").dataset.vk=vk;
+    if(laDo()&&tab==="pk") $("view").querySelectorAll("input,textarea,select").forEach(e=>{e.disabled=true}); } // ca đo giữ nguyên đề bài
+  veBar();
+  if(fid&&$(fid)){ const el=$(fid); if(fid==="cdin"||fid==="icdin") el.value=fv; // đặt chữ trước khi focus để gợi ý lọc đúng chữ đang gõ
+    chanSg=true; el.focus(); chanSg=false;
+    if(fs) try{el.setSelectionRange(fs[0],fs[1]); el.scrollTop=fs[2]}catch(_){}
+    if(SUG[fid]) moSg?showSugg(el):hideSugg(); }
 }
 
 // docAi=false: chỉ chạy lại quy tắc (tức thì, không gọi AI; câu AI đã đọc được server nhớ). docAi=true: nút "Kiểm tra BHYT".
 async function check(docAi){
-  const c=cur(), my=++seq; errMsg=""; luu();
-  if(!cds.length){res=null;dang=false;render();return}
+  const c=cur(), my=++seq; errMsg=""; pkBan=false; luu();
+  if(laTuTra()||!cds.length||xnThieu(c)){res=null;dang=false;sang2=false;render();return} // lượt tự tra không gọi công cụ
   sent={luot_kham:c.luot_kham,ngay_kham:c.ngay_kham,benh_nhan:c.benh_nhan,icd:[...icd],sinh_hieu:c.sinh_hieu||{},
-        phieu_kham:pk,lich_su:c.lich_su||[],chi_dinh:cds.map(d=>({ma:d.ma,ten:d.ten})),doc_ai:docAi};
+        phieu_kham:pk,lich_su:(c.lich_su||[]).filter(r=>r.ngay_cach!=null||r.ket_qua!=null||r.tham_chieu_tren!=null),chi_dinh:cds.map(d=>({ma:d.ma,ten:d.ten})),doc_ai:docAi};
   if(docAi) doc=true;
   res=null; dang=true; render();
   let j=null, err=null;
   try{ j=await post("/check",sent) }catch(e){ err=e }
-  if(docAi) doc=false;
+  if(docAi){ doc=false; if(j) daDocDo=true }
   if(my!==seq){ if(docAi) check(false); return } // bác sĩ sửa trong lúc AI đọc: chạy lại quy tắc, lấy câu AI vừa đọc từ bộ nhớ
   dang=false; res=j; if(err){ errMsg="Không kiểm tra được: "+err.message; sang2=false }
   if(res&&sang2&&!doc){ trang=2; sang2=false; scrollTo(0,0) } // trang 1 → "Kiểm tra BHYT" xong thì sang trang 2
   render();
 }
+let dangXN=false; // đang gửi xác nhận: bấm thêm lần nữa không ghi log trùng
 async function confirmAll(){
-  if(!res) return;
+  if(!res||res.kiem_tra_id===daGhi||dangXN) return;
   if(res.a1&&res.a1.loi==="chua_doc"&&!confirm("Còn chỉ định cần AI đọc phiếu khám mà AI chưa đọc. Vẫn xác nhận với kết quả hiện tại?")) return;
-  const bn=sent.benh_nhan;
+  const bn=sent.benh_nhan, kq=res, gui=sent, caXn=ca; // giữ kết quả đang xác nhận: bác sĩ có thể sửa hoặc đổi ca trong lúc chờ lưu
+  const muc=kq.dong.map((r,i)=>({ma:r.ma||cds[i].ma,ten:r.ten||cds[i].ten,bhyt:chonOf(i),tt:"Placed",tt2:nhan(r)}));
   const dau_vao={tuoi:bn.tuoi_thang??bn.tuoi_ngay,the:bn.the,icd:sent.icd,sinh_hieu:sent.sinh_hieu,lich_su_da_dung:sent.lich_su};
   const dong=res.dong.map((r,i)=>({...r,phien_ban_rule:r.phien_ban_rule||res.phien_ban_rule,
     bac_si_chon:chonOf(i)?"tich":"khong_tich",
     ly_do_bac_si:cds[i].ly&&(cds[i].ly.loai||cds[i].ly.ghi_chu)?cds[i].ly:null}));
+  dangXN=true;
   try{
-    const j=await post("/confirm",{luot_kham:sent.luot_kham,kiem_tra_id:res.kiem_tra_id,dau_vao,dong});
+    const j=await post("/confirm",{luot_kham:gui.luot_kham,kiem_tra_id:kq.kiem_tra_id,dau_vao,dong});
+    daGhi=kq.kiem_tra_id;
     const id="xn"+Date.now(), now=new Date();
-    daXN.push({id,ca:ca,gio:now.toLocaleTimeString("vi-VN",{hour12:false}),ngay:fmtNgay(sent.ngay_kham),lk:"Visit "+sent.luot_kham,icd:[...sent.icd],
-      items:res.dong.map((r,i)=>({ma:r.ma||cds[i].ma,ten:r.ten||cds[i].ten,bhyt:chonOf(i),tt:"Placed",tt2:nhan(r)}))});
-    okMsg=`Đã lưu lựa chọn của bác sĩ cho ${j.ghi} dòng (tệp logs/xac-nhan.jsonl).`;
-    lsMo.add(id); tab="ls"; scrollTo(0,0); render();
+    daXN.push({id,ca:caXn,gio:now.toLocaleTimeString("vi-VN",{hour12:false}),ngay:fmtNgay(gui.ngay_kham),lk:"Visit "+gui.luot_kham,icd:[...gui.icd],items:muc});
+    lsMo.add(id);
+    if(ca===caXn){ okMsg=`Đã lưu lựa chọn của bác sĩ cho ${j.ghi} dòng.`; tab="ls"; scrollTo(0,0) } // đã đổi sang ca khác thì giữ nguyên màn hình
+    render();
   }catch(e){ setErr("Không lưu được: "+e.message) }
+  finally{ dangXN=false }
 }
 
 $("ca").onchange=e=>{ if(e.target.value==="__moi"){ $("ca").value=ca; $("moiten").value=""; $("moi").returnValue=""; $("moi").showModal(); return }
-  ca=e.target.value; load() };
+  luuNgay(); ca=e.target.value; load() };
 $("moi").addEventListener("close",()=>{ if($("moi").returnValue==="ok") caMoi($("moiten").value.trim()) });
-$("mode").onclick=e=>{const m=e.target.dataset.m;if(m!=null){tu=m==="1";load()}};
+$("mode").onclick=e=>{const m=e.target.dataset.m;if(m!=null){luuNgay();tu=m==="1";load()}};
 // thêm chỉ định: chọn từ danh mục thì gửi kèm mã; gõ tự do thì ma=null, engine tự tra theo tên/bí danh
-function addCd(v,e){ v=v.trim(); if(!v&&!e) return;
-  cds.push(e?{ma:e.ma,ten:e.ten}:{ma:null,ten:v}); $("cdin").value=""; check(false); }
+function addCd(v,e){ v=v.trim(); if(!v&&!e) return; const moi=e?{ma:e.ma,ten:e.ten}:{ma:null,ten:v};
+  $("cdin").value=""; const co=cds.find(x=>khoaDv(x)===khoaDv(moi));
+  if(co){ baoDaCo(co); return } // như EForm: dịch vụ đã chọn thì chọn lại không thêm dòng
+  cds.push(moi); check(false); }
+// popup tự tắt, không lấy mất ô đang gõ để bác sĩ tìm tiếp được ngay
+let henTb=null;
+const tatTb=()=>{ clearTimeout(henTb); $("tbao").hidden=true };
+function baoDaCo(d){ const p=$("tbao");
+  p.innerHTML=`<b>${nhomOf(d)==="xn"?"Xét nghiệm":"Dịch vụ"} này đã có trong danh sách</b><div>${mt(d.ma,d.ten)}</div><button class="close" data-tbx aria-label="Đóng thông báo">×</button>`;
+  p.hidden=false; clearTimeout(henTb); henTb=setTimeout(tatTb,4000); }
+$("tbao").addEventListener("click",e=>{ if(e.target.closest("[data-tbx]")) tatTb() });
 function addIcd(v){ v=v.trim().toUpperCase().replace(/\s+/g,"").replace(/[*+]$/,""); // mã ghi * hoặc + trong danh mục: hồ sơ/XML chỉ dùng phần mã
   if(!/^[A-Z]\d{2}(\.\d{1,2})?$/.test(v)) return; // không phải mã, không có gợi ý → giữ nguyên chữ đang gõ
-  $("icdin").value=""; if(!icd.includes(v)){icd.push(v); check(false)} }
+  $("icdin").value=""; if(!icd.includes(v)){icd.push(v); pkPhien++; check(false)} }
+
+// nhập trên trang Phiếu khám: chỉ cập nhật dữ liệu, rời trang mới chạy lại quy tắc
+function soO(t){ const raw=t.value.trim().replace(",","."), v=raw===""?null:Number(raw), ok=v===null||(Number.isFinite(v)&&v>=0);
+  ok?oLoi.delete(t.id):oLoi.set(t.id,t.value); t.classList.toggle("sai",!ok); t.setAttribute("aria-invalid",!ok); return ok?v:null; }
+function nhapPK(t){ const c=cur(), d=t.dataset, bn=c.benh_nhan;
+  if(d.po){ po[d.po]=t.value; pk=ghepPhieu() }
+  else if(d.xn!=null) c.lich_su[+d.xn][d.xk]=soO(t);
+  else if(d.pf==="ten"){ const s=t.value.trim(); if(s) c.ten=s }
+  else if(d.pf==="ngay_kham"){ if(t.value) c.ngay_kham=t.value; $("the-tt").innerHTML=theTT(c) }
+  else if(d.pf==="han_den"){ bn.the=t.value?{han_den:t.value,muc_huong:soO($("pf-muc_huong"))}:null; $("the-tt").innerHTML=theTT(c) }
+  else if(d.pf==="muc_huong"){ const v=soO(t); if(bn.the) bn.the.muc_huong=v }
+  else if(d.pf==="tuoi_thang"||d.pf==="tuoi_ngay"){ // chỉ giữ một cách ghi tuổi: engine ưu tiên tuổi theo ngày nên số cũ không được sót lại
+    const v=soO(t), kia=d.pf==="tuoi_thang"?"tuoi_ngay":"tuoi_thang"; bn[d.pf]=v;
+    if(v!=null){ bn[kia]=null; const e=$("pf-"+kia); e.value=""; soO(e) } }
+  else c.sinh_hieu[d.pf]=soO(t);
+  pkBan=true; luu(); veBar(); }
+function di(t){ tab=t; okMsg=""; scrollTo(0,0); pkBan?check(false):render() }
 
 // xếp hạng gợi ý: trùng hẳn > bắt đầu bằng > mọi từ khớp đầu từ > chứa chuỗi > chứa đủ các từ; hòa thì tên ngắn trước
 const norm=s=>String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/đ/g,"d").replace(/Đ/g,"d").toLowerCase().trim();
@@ -490,12 +701,18 @@ function rank(list,q,by){ q=norm(q); if(!q) return macDinh(list,by); const qt=q.
   return list.map(e=>[score(e._k||(e._k=keys(e)),q,qt),e]).filter(x=>x[0])
     .sort((a,b)=>b[0]-a[0]||a[1].ten.length-b[1].ten.length).slice(0,12).map(x=>x[1]); }
 
-const SUG={icdin:()=>[icdList,"ma"], cdin:()=>[dm,"ten"]}; let sg={id:null,items:[],k:0};
-function showSugg(inp){ const b=$("sugg"), [list,by]=SUG[inp.id](); sg={id:inp.id,items:rank(list,inp.value,by),k:inp.value.trim()?0:-1}; // ô trống: chưa chọn sẵn dòng nào
-  if(!sg.items.length){b.hidden=true;return}
+const SUG={icdin:()=>[icdList,"ma"], cdin:()=>[dm,"ten"]}; let sg={id:null,items:[],k:0}, chanSg=false;
+// tatCa: bỏ qua chữ đang gõ, hiện toàn bộ danh sách (nút mũi tên khi chữ đang gõ không khớp dòng nào)
+function showSugg(inp,tatCa=false){ const b=$("sugg"), [list,by]=SUG[inp.id](), q=tatCa?"":inp.value; sg={id:inp.id,items:rank(list,q,by),k:q.trim()?0:-1}; // ô trống: chưa chọn sẵn dòng nào
+  if(!sg.items.length&&!q.trim()){b.hidden=true;return} // danh mục chưa tải xong
   const r=inp.getBoundingClientRect(), w=Math.min(Math.max(r.width,380),innerWidth-16);
-  Object.assign(b.style,{left:Math.max(8,Math.min(r.left,innerWidth-w-8))+"px",top:r.bottom+4+"px",width:w+"px"});
-  b.innerHTML=""; sg.shown=0; more(60); b.scrollTop=0; b.hidden=false; }
+  Object.assign(b.style,{left:Math.max(8,Math.min(r.left,innerWidth-w-8))+"px",width:w+"px"});
+  b.innerHTML=""; sg.shown=0;
+  if(sg.items.length) more(60); else b.innerHTML=`<div class="kq0">${inp.id==="cdin"?"Không tìm thấy dịch vụ phù hợp. Bấm mũi tên để xem toàn bộ danh sách.":"Không tìm thấy mã ICD phù hợp."}</div>`;
+  // ô nằm sát mép dưới màn hình thì mở danh sách lên trên, để không bị khuất
+  const duoi=innerHeight-r.bottom-12, tren=r.top-12, lenTren=duoi<180&&tren>duoi;
+  b.style.maxHeight=Math.min(340,lenTren?tren:duoi)+"px"; b.scrollTop=0; b.hidden=false;
+  b.style.top=(lenTren?r.top-4-b.offsetHeight:r.bottom+4)+"px"; }
 // vẽ dần từng đợt: danh sách mặc định có tới ~15.000 mã, vẽ hết một lúc sẽ giật
 function more(upto){ const b=$("sugg"), to=Math.min(sg.items.length,Math.max(upto,sg.shown+60));
   b.insertAdjacentHTML("beforeend",sg.items.slice(sg.shown,to).map((e,j)=>`<div role="option" data-k="${sg.shown+j}" class="${sg.shown+j===sg.k?"on":""}"><span class="ma">${esc(e.ma||"—")}</span><span>${esc(e.ten)}</span></div>`).join("")); sg.shown=to; }
@@ -505,54 +722,63 @@ function pick(inp,e){ hideSugg(); inp.id==="icdin"?addIcd(e?e.ma:inp.value):addC
 document.addEventListener("input",e=>{ if(SUG[e.target.id]) showSugg(e.target) });
 document.addEventListener("keydown",e=>{ const inp=e.target; if(!SUG[inp.id]) return;
   const open=!$("sugg").hidden&&sg.id===inp.id, n=sg.items.length;
-  if(open&&(e.key==="ArrowDown"||e.key==="ArrowUp")){ e.preventDefault(); const dn=e.key==="ArrowDown"; sg.k=Math.max(0,Math.min(n-1,sg.k+(dn?1:-1))); if(sg.k>=sg.shown) more(sg.k+1);
+  if(!open&&e.key==="ArrowDown"){ e.preventDefault(); showSugg(inp); return }
+  if(open&&n&&(e.key==="ArrowDown"||e.key==="ArrowUp")){ e.preventDefault(); const dn=e.key==="ArrowDown"; sg.k=Math.max(0,Math.min(n-1,sg.k+(dn?1:-1))); if(sg.k>=sg.shown) more(sg.k+1);
     [...$("sugg").children].forEach((d,i)=>d.classList.toggle("on",i===sg.k)); $("sugg").children[sg.k].scrollIntoView({block:"nearest"}); }
   else if(e.key==="Enter"){ e.preventDefault(); pick(inp,open&&sg.k>=0?sg.items[sg.k]:null); }
   else if(e.key==="Escape") hideSugg(); });
 // rê chuột: dòng dưới con trỏ sáng lên (dùng chung chỉ số với phím mũi tên), bấm là chọn
 $("sugg").addEventListener("mousemove",e=>{ const d=e.target.closest("[data-k]"); if(!d||+d.dataset.k===sg.k) return;
   sg.k=+d.dataset.k; [...$("sugg").children].forEach((x,i)=>x.classList.toggle("on",i===sg.k)); });
-$("sugg").addEventListener("mousedown",e=>{ const d=e.target.closest("[data-k]"); if(!d) return; e.preventDefault();
+$("sugg").addEventListener("mousedown",e=>{ e.preventDefault(); const d=e.target.closest("[data-k]"); if(!d) return; // kéo thanh cuộn không làm đóng danh sách
   const inp=$(sg.id); if(inp) pick(inp,sg.items[+d.dataset.k]); });
 document.addEventListener("focusout",e=>{ if(SUG[e.target.id]) hideSugg() });
-document.addEventListener("focusin",e=>{ if(SUG[e.target.id]) showSugg(e.target) }); // bấm vào ô là hiện danh sách
+document.addEventListener("focusin",e=>{ if(SUG[e.target.id]&&!chanSg) showSugg(e.target) }); // bấm vào ô là hiện danh sách
+document.addEventListener("click",e=>{ if(SUG[e.target.id]&&$("sugg").hidden) showSugg(e.target) }); // ô đang focus mà danh sách đã đóng: bấm lại là mở
+document.addEventListener("mousedown",e=>{ if(e.target.closest("[data-sx]")) e.preventDefault() }); // bấm mũi tên không làm mất focus ô tìm kiếm
 addEventListener("scroll",e=>{ if(e.target!==$("sugg")) hideSugg() },true); // cuộn trong danh sách thì giữ
 
 // mọi thao tác trong màn hình: một bộ lắng nghe chung
 document.addEventListener("click",e=>{
   const t=e.target, on=a=>t.closest(`[${a}]`), v=a=>on(a).getAttribute(a);
   if(!t.closest("#app,#bar")) return;
-  if(on("data-tab")){ tab=v("data-tab"); okMsg=""; render(); return }
+  if(on("data-tab")){ di(v("data-tab")); return }
+  if(on("data-cls")){ di("cd"); return }
+  if(on("data-sx")){ const inp=$("cdin"); if(!$("sugg").hidden&&sg.id==="cdin"){ hideSugg(); return } // bấm lần nữa để đóng
+    inp.focus({preventScroll:true}); showSugg(inp,!rank(dm,inp.value,"ten").length); return }
+  if(on("data-xnthem")){ cur().lich_su.push({ma:PCT_MA,ten:(dm.find(e=>e.ma===PCT_MA)||{}).ten||"Định lượng Procalcitonin",ngay_cach:null,ket_qua:null,tham_chieu_tren:null,don_vi:"ng/mL"});
+    pkPhien++; pkBan=true; luu(); render(); return }
+  if(on("data-xnx")){ cur().lich_su.splice(+v("data-xnx"),1); [...oLoi.keys()].filter(k=>k.startsWith("xn-")).forEach(k=>oLoi.delete(k));
+    pkPhien++; pkBan=true; luu(); render(); return }
   if(on("data-mr")){ moRong=!moRong; render(); return }
   if(on("data-nh")){ const k=v("data-nh"); nhomMo.has(k)?nhomMo.delete(k):nhomMo.add(k); render(); return }
   if(on("data-ls")){ const k=v("data-ls"); lsMo.has(k)?lsMo.delete(k):lsMo.add(k); render(); return }
-  if(on("data-fr")){ const i=+v("data-fr"), d=cds[i], k=stOf(res.dong[i]); d.open=!(d.open??(k!=="ok")); sel=d.open?i:null; render(); return }
+  if(on("data-fr")){ const i=+v("data-fr"), d=cds[i]; d.open=!moOf(d,res.dong[i]); sel=d.open?i:null; render(); return }
+  if(on("data-gon")){ const mo=v("data-gon")==="1"; cds.forEach((d,i)=>{ if(res&&res.dong[i]) d.open=mo }); sel=null; render(); return } // dòng chưa có kết quả giữ mặc định, để lần kiểm tra sau dòng vàng/đỏ vẫn tự mở
   if(on("data-go")){ const i=+v("data-go"); cds[i].open=true; sel=i; render(); $("fr-"+i).scrollIntoView({block:"center",behavior:"smooth"}); return }
   if(on("data-xcd")){ cds.splice(+v("data-xcd"),1); sel=null; check(false); return }
-  if(on("data-xicd")){ icd.splice(+v("data-xicd"),1); check(false); return }
+  if(on("data-xicd")){ icd.splice(+v("data-xicd"),1); pkPhien++; check(false); return }
   if(on("data-huy")){ if(confirm("Bỏ toàn bộ dịch vụ đã chọn?")){ cds=[]; trang=1; sel=null; check(false) } return }
   if(on("data-tr")){ trang=+v("data-tr"); scrollTo(0,0); render(); return }
   if(t.closest("#chk")){ if(trang===1) sang2=true; check(true); return }
   if(t.closest("#ok")){ confirmAll(); return }
-  const pkb=on("data-pk"); // sửa phiếu khám: xác nhận sửa thì chạy lại quy tắc; AI chỉ đọc lại khi bấm "Kiểm tra BHYT"
-  if(pkb){ const k=pkb.dataset.pk; if(k==="sua"){nhap=pk;render();$("pkin").focus();return}
-    const doi=k==="ok"&&nhap!==pk; if(doi)pk=nhap; nhap=null; doi?check(false):render(); return }
-  if(on("data-xca")&&confirm("Xóa ca tự tạo này? Không khôi phục được.")){ const id=ca; clearTimeout(hen);
-    post("/cases/"+id,undefined,"DELETE").then(()=>{ cases=cases.filter(x=>x.id!==id); ca=cases[0].id; dsCa(); load() })
-      .catch(e=>setErr("Không xóa được ca: "+e.message)); }
+  if(t.closest("#luudo")){ luuDo(); return }
+  if(on("data-xca")&&confirm("Xóa ca tự tạo này? Không khôi phục được.")){ const id=ca, giu=choLuu; clearTimeout(hen); choLuu=null;
+    hangLuu.then(()=>post("/cases/"+id,undefined,"DELETE")).then(()=>{ cases=cases.filter(x=>x.id!==id); ca=cases[0].id; dsCa(); load() })
+      .catch(e=>{ if(giu) giu(); setErr("Không xóa được ca: "+e.message) }); } // xóa hỏng: vẫn lưu phần vừa sửa
 });
 document.addEventListener("change",e=>{ const t=e.target, ds=t.dataset;
-  if(ds.dm!=null){ const en=dm[+ds.dm], i=cds.findIndex(x=>khop(x,en)); if(i>=0) cds.splice(i,1); else cds.push({ma:en.ma,ten:en.ten}); check(false); }
-  else if(ds.cb!=null){ cds[+ds.cb].chon=t.checked; render() }
-  else if(ds.ly!=null) lyOf(+ds.ly).loai=t.value||null;
-  else if(ds.sh){ const c=cur(), k=ds.sh, raw=t.value.trim(), v=raw===""?null:Number(raw); // tuổi, sinh hiệu của ca tự tạo: rời ô thì chạy lại quy tắc
-    if(k==="ten"){ if(raw){ c.ten=raw; dsCa() } else t.value=c.ten } // không cho để trống tên
-    else if(k==="tuoi_thang"){ c.benh_nhan.tuoi_thang=v; c.benh_nhan.the=theOf(v) } else c.sinh_hieu[k]=v;
-    check(false); }
+  if(ds.tt!=null){ cds[+ds.tt].chon=t.checked; veBar() }
+  else if(ds.dm!=null){ const en=dm[+ds.dm]; cds=cds.some(x=>khop(x,en))?cds.filter(x=>!khop(x,en)):[...cds,{ma:en.ma,ten:en.ten}]; check(false); } // bỏ tích: bỏ mọi dòng của dịch vụ đó
+  else if(ds.cb!=null){ cds[+ds.cb].chon=t.checked; daGhi=null; render() } // đổi lựa chọn sau khi xác nhận thì được xác nhận lại
+  else if(ds.ly!=null){ lyOf(+ds.ly).loai=t.value||null; daGhi=null; render() }
+  else if(ds.note!=null&&daGhi){ daGhi=null; render() }
+  else if(ds.pf==="ten"){ if(!t.value.trim()) t.value=cur().ten; dsCa() } // không cho để trống tên
+  else if(ds.pf==="ngay_kham"&&!t.value) t.value=cur().ngay_kham; // ngày khám luôn phải có
 });
 document.addEventListener("input",e=>{ const t=e.target;
   if(t.dataset.note!=null) lyOf(+t.dataset.note).ghi_chu=t.value||null;
-  else if(t.id==="pkin") nhap=t.value; });
+  else if(t.dataset.po||t.dataset.pf||t.dataset.xn!=null) nhapPK(t); });
 document.addEventListener("toggle",e=>{ const i=e.target.dataset&&e.target.dataset.ct; if(i!=null&&cds[+i]) cds[+i].ct=e.target.open },true); // nhớ mục "Vì sao?" đang mở qua các lần vẽ lại
 document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("gdp").hidden) $("gdp").hidden=true });
 // bảng Giả định: nút ở thanh "2. Thông tin chỉ định dịch vụ" hoặc dấu * (ở lý do hay từng điều kiện)
@@ -562,11 +788,15 @@ document.addEventListener("click",e=>{ const p=$("gdp"), t=e.target;
   if(t.dataset.gdt){ gdTab=t.dataset.gdt; openGd(p._btn,(p.dataset.hl||"").split(",").filter(Boolean)); return }
   if(t.closest("[data-gdx]")||!t.closest("#gdp")) p.hidden=true; },true);
 
+fetch("/toi").then(r=>r.json()).then(j=>{$("tk").textContent=j.tai_khoan||""}).catch(()=>{});
+$("dxuat").addEventListener("click",()=>hangLuu.catch(()=>{}).then(()=>fetch("/dang-xuat",{method:"POST"})).finally(()=>{location.href="/dang-nhap"}));
 fetch("/gia-dinh").then(r=>r.json()).then(j=>{GD=j}).catch(()=>{});
-fetch("/danh-muc").then(r=>r.json()).then(j=>{dm=j; if(cases.length) render()}).catch(()=>{}); // không có danh mục vẫn gõ tự do được
-fetch("/icd").then(r=>r.json()).then(j=>{icdList=j; icdTen={}; j.forEach(e=>{const m=e.ma.replace(/[*+]$/,""); if(!icdTen[m]) icdTen[m]=e.ten}); if(cases.length) render()}).catch(()=>{});
-fetch("/cases").then(r=>r.json()).then(j=>{
-  cases=j; ca=cases[0].id; dsCa(); load();
+fetch("/danh-muc").then(r=>r.json()).then(j=>{dm=j; pkPhien++; if(cases.length) render()}).catch(()=>{}); // không có danh mục vẫn gõ tự do được
+fetch("/icd").then(r=>r.json()).then(j=>{icdList=j; icdTen={}; j.forEach(e=>{const m=e.ma.replace(/[*+]$/,""); if(!icdTen[m]) icdTen[m]=e.ten}); pkPhien++; if(cases.length) render()}).catch(()=>{});
+$("doman").addEventListener("click",e=>{ if(e.target.closest("[data-dobd]")) moCaDo(DO.hien_tai); else if(e.target.closest("[data-dobo]")) thoatDo() });
+$("vaodo").addEventListener("click",()=>location.reload());
+Promise.all([fetch("/cases").then(r=>r.json()),fetch("/do-luong").then(r=>r.json()).catch(()=>null)]).then(([j,d])=>{
+  caThuong=cases=j; ca=cases[0].id; dsCa(); if(d&&d.hien_tai) manDo(d); else load();
 }).catch(e=>{$("view").innerHTML='<div class="box err">Không tải được danh sách ca: '+esc(e.message)+'</div>'});
 </script>
 </body>

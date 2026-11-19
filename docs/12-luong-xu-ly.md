@@ -134,7 +134,7 @@ Bảng gộp vế → nhánh → điều kiện → loại trừ: [09-spec mục
 
 ### 3.6. Gọi lại AI khi nào
 
-`src/app.py` nhớ câu trả lời A1 theo khóa (phiếu khám đã chuẩn hóa, nội dung câu hỏi) trong `_NHO`.
+`src/app.py` nhớ câu trả lời A1 theo khóa (phiếu khám đã chuẩn hóa, nội dung câu hỏi) qua `src/luu_tru.py`.
 
 - Bấm "Kiểm tra BHYT" hoặc "Xác nhận sửa" phiếu khám → `doc_ai=true`. Câu hỏi đã nhớ thì dùng lại, câu mới thì gọi AI.
 - Sửa chỉ định hoặc ICD → `doc_ai=false`, chỉ chạy lại rule. Câu chưa có trong bộ nhớ → `chua_thay`, ghi `chua_doc`. Màn hình không hiện băng cảnh báo riêng; chỉ hỏi lại khi bác sĩ bấm Xác nhận lúc còn câu chưa đọc.
@@ -178,15 +178,17 @@ Cách chạy và định nghĩa chỉ số: [eval/README.md](../eval/README.md).
 
 Kết quả live (102 ca × 3 lần):
 
-| Chỉ số | Câu hỏi cũ | Câu hỏi mới (15/11) | Câu hỏi chặt (16/11) | Quy tắc chung trong prompt (16/11) |
-|---|---|---|---|---|
-| Dòng quá thuận lợi | 12 | 3 | 2 | **0** |
-| Vế AI đạt sai | 65 | 27 | 15 | 3 |
-| Bỏ sót đạt | 17 | 20 | 5 | 8 |
-| Trích sai chỗ | 33 | 1 | 3 | 2 |
-| Khớp `ket_qua` vế (mọi vế) | 68,7% | 85,6% | 91,9% | 94,4% |
-| Khớp trạng thái dòng | 93,0% | 95,8% | 98,6% | 99,6% |
-| Đổi kết quả giữa các lần | 2,7% | 1,4% | 2,0% | 1,4% |
+| Chỉ số | Câu hỏi cũ | Câu hỏi mới (15/11) | Câu hỏi chặt (16/11) | Quy tắc chung trong prompt (16/11) | gpt-6-luna, effort low, siết câu hỏi N2 (19/11) |
+|---|---|---|---|---|---|
+| Dòng quá thuận lợi | 12 | 3 | 2 | **0** | **0** |
+| Vế AI đạt sai | 65 | 27 | 15 | 3 | **0** |
+| Bỏ sót đạt | 17 | 20 | 5 | 8 | 6 |
+| Trích sai chỗ | 33 | 1 | 3 | 2 | 2 |
+| Khớp `ket_qua` vế (mọi vế) | 68,7% | 85,6% | 91,9% | 94,4% | 95,7% |
+| Khớp trạng thái dòng | 93,0% | 95,8% | 98,6% | 99,6% | 99,3% |
+| Đổi kết quả giữa các lần | 2,7% | 1,4% | 2,0% | 1,4% | 1,4% |
+
+Bản 19/11 (cột cuối) là cấu hình đang chạy trên bản host: `OPENAI_MODEL=gpt-6-luna`, `A1_REASONING_EFFORT=low`, `A1_TIMEOUT_S=20` (effort mặc định mất ~8 giây mỗi lượt, sát giới hạn 8 giây cũ). Câu hỏi vế N2 (Procalcitonin, rối loạn chức năng cơ quan) thêm câu "Dấu hiệu khám tại cơ quan đang bệnh (như ran phổi, giảm thông khí) mà phiếu không ghi là suy hay rối loạn chức năng thì không tính" để hết lỗi KHO-40; nhãn không đổi. Trước khi siết (cùng model, cùng effort) kết quả là: quá thuận lợi 0, đạt sai 3 (đều KHO-40 N2), khớp trạng thái dòng 100%. Hai dòng lệch sau khi siết là CRP-04 và CRP-05 (1/3 lần, xuống "Cần xem lại"); hai ca này chỉ có CRP nên câu hỏi N2 không nằm trong lượt gọi, đây là dao động của model. p50/p95 của `engine.check`: 3,1 / 6,1 giây. 219 lượt gọi: 363 nghìn token vào, 61 nghìn token ra, khoảng 0,07 USD.
 
 Bản chặt còn các lỗi: "Vết tiêm sưng nhẹ" bị tính là dấu hiệu viêm (A1-01, 2/3 lần, là 2 dòng quá thuận lợi duy nhất); chẩn đoán của lần khám trước bị tính là hiện tại (KHO-08, KHO-14); prompt injection (KHO-40, KHO-41); "Hết sốt 2 ngày nhưng còn ho…" bị coi là đã hết dấu hiệu (KHO-06 X1, chỉ hạ xuống Cần xem lại). Sau khi chuyển cách đọc chung vào prompt (cột cuối), các lỗi trên hết. Còn lại: AI coi "ran nổ, giảm thông khí" là rối loạn chức năng cơ quan (KHO-40, N2; vế này chỉ được trích, không tự đạt nên không đổi trạng thái); X1 thận trọng hơn, đôi lần bỏ sót "đã hết dấu hiệu" (A1-05, KHO-05). Báo cáo đầy đủ chưa lưu vào repo (`eval/reports/` chưa được bỏ khỏi git).
 
