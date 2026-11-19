@@ -119,6 +119,7 @@ mark{background:var(--hl);color:inherit;padding:0 2px}
 .bar1{background:var(--blue);color:#fff;font-weight:700;padding:6px 8px;margin:6px 0 0;display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:var(--fs-sm)}
 .bar1:first-child{margin-top:0}
 .bar1 .lk{color:#fff;text-decoration:underline}
+.bar1r{display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
 .row{display:grid;grid-template-columns:150px 1fr;border:1px solid var(--line);border-top:0}
 .row>label,.row>.lb{background:var(--soft);padding:8px;text-align:right;font-weight:700;font-size:var(--fs-sm);border-right:1px solid var(--line)}
 .row>div{padding:6px 8px;min-width:0}
@@ -463,11 +464,20 @@ function trang1(){
     <div>${phai}</div></div>`;
 }
 
+// dòng đang mở: bác sĩ đã bấm thì theo bác sĩ, chưa bấm thì mở dòng không xanh (Cần xem lại, Không được chi trả)
+const moOf=(d,r)=>d.open??(stOf(r)!=="ok");
+// nút ở thanh "2. Thông tin chỉ định dịch vụ": còn dòng nào đang mở thì thu gọn hết, không còn thì mở hết
+function nutGon(){
+  const co=cds.map((d,i)=>[d,res&&res.dong[i]]).filter(([,r])=>r);
+  if(!co.length) return "";
+  const dangMo=co.some(([d,r])=>moOf(d,r));
+  return `<button class="lk" data-gon="${dangMo?0:1}">${dangMo?"Thu gọn tất cả ▴":"Mở tất cả ▾"}</button>`;
+}
 // Trang 2: cột trái tích BHYT, cột phải từng khung chỉ định giải thích lý do
 function frame(i){
   const d=cds[i], r=res&&res.dong[i], ma=(r&&r.ma)||d.ma||"— chưa có mã";
   if(!r) return `<div class="fr" id="fr-${i}"><div class="frh"><span class="t">${esc(ma)} - ${esc(d.ten)}</span><span class="badge s-na">${dang?"Đang kiểm tra…":"Chưa kiểm tra"}</span></div></div>`;
-  const k=stOf(r), mo=d.open??(k!=="ok"), chon=chonOf(i), g=gy(r), cl=r.checklist||[], h=highlight(sent.phieu_kham,trichOf(r));
+  const k=stOf(r), mo=moOf(d,r), chon=chonOf(i), g=gy(r), cl=r.checklist||[], h=highlight(sent.phieu_kham,trichOf(r));
   const goiY=g==="tich"?"Hệ thống tích sẵn":g==="trong"?"Hệ thống để trống":"Bác sĩ tự chọn";
   const doi=g!=null&&chon!==(g==="tich");
   return `<div class="fr" id="fr-${i}"><div class="frh" data-fr="${i}"><span class="t">${esc(ma)} - ${esc(r.ten||d.ten)}</span><span class="badge s-${k}">${esc(nhan(r))}</span><span class="car">${mo?"▴":"▾"}</span></div>${mo?`
@@ -498,8 +508,9 @@ function trang2(){
       <div class="row"><label for="icdin">Chẩn đoán/ Lịch sử lâm sàng <i>*</i></label><div>${chipIcd()}
         <input type="text" id="icdin" autocomplete="off" placeholder="Nhập mã hoặc tên chẩn đoán (vd J18.9, viêm phổi)" style="width:100%">
         ${((res&&res.nhac)||[]).map(n=>`<div class="warn" role="status">${esc(n.noi_dung)} <details><summary>Căn cứ</summary>${(n.can_cu||[]).map(x=>{const y=canCu(x);return `<blockquote>“${esc(y.t)}”<cite>${esc(y.v)}</cite></blockquote>`}).join("")}</details></div>`).join("")}</div></div>
-      <div class="bar1">2. Thông tin chỉ định dịch vụ <button class="lk" data-gd="">${ng?`Giả định (${ng})`:"Giả định"}</button></div>
-      ${loi?`<div class="warn" role="status">AI chưa đọc được phiếu khám, nên các điều kiện cần đọc phiếu để “chưa thấy”. Bấm “Kiểm tra lại BHYT” để thử lại. (mã lỗi: ${esc(loi)})</div>`:""}
+      <div class="bar1">2. Thông tin chỉ định dịch vụ <span class="bar1r">${nutGon()}<button class="lk" data-gd="">${ng?`Giả định (${ng})`:"Giả định"}</button></span></div>
+      ${loi==="a1_tat"?`<div class="warn" role="status">Bản thử này chưa bật AI đọc phiếu khám. Các điều kiện cần đọc phiếu khám tạm để “Cần xem lại”, bác sĩ tự quyết định các dòng đó.</div>`
+        :loi?`<div class="warn" role="status">AI chưa đọc được phiếu khám, nên các điều kiện cần đọc phiếu để “chưa thấy”. Bấm “Kiểm tra lại BHYT” để thử lại. (mã lỗi: ${esc(loi)})</div>`:""}
       ${nhom.map(([h,ds])=>`<div class="grp"><div class="grph">${h}</div><div class="grpb">${ds.map(([,i])=>frame(i)).join("")}</div></div>`).join("")}
     </div></div>`;
 }
@@ -742,7 +753,8 @@ document.addEventListener("click",e=>{
   if(on("data-mr")){ moRong=!moRong; render(); return }
   if(on("data-nh")){ const k=v("data-nh"); nhomMo.has(k)?nhomMo.delete(k):nhomMo.add(k); render(); return }
   if(on("data-ls")){ const k=v("data-ls"); lsMo.has(k)?lsMo.delete(k):lsMo.add(k); render(); return }
-  if(on("data-fr")){ const i=+v("data-fr"), d=cds[i], k=stOf(res.dong[i]); d.open=!(d.open??(k!=="ok")); sel=d.open?i:null; render(); return }
+  if(on("data-fr")){ const i=+v("data-fr"), d=cds[i]; d.open=!moOf(d,res.dong[i]); sel=d.open?i:null; render(); return }
+  if(on("data-gon")){ const mo=v("data-gon")==="1"; cds.forEach((d,i)=>{ if(res&&res.dong[i]) d.open=mo }); sel=null; render(); return } // dòng chưa có kết quả giữ mặc định, để lần kiểm tra sau dòng vàng/đỏ vẫn tự mở
   if(on("data-go")){ const i=+v("data-go"); cds[i].open=true; sel=i; render(); $("fr-"+i).scrollIntoView({block:"center",behavior:"smooth"}); return }
   if(on("data-xcd")){ cds.splice(+v("data-xcd"),1); sel=null; check(false); return }
   if(on("data-xicd")){ icd.splice(+v("data-xicd"),1); pkPhien++; check(false); return }

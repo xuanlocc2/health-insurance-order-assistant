@@ -30,8 +30,10 @@ button:disabled{opacity:.65;cursor:wait}
   <p class="phu">Bản dùng thử cho bác sĩ Trung tâm Nhi</p>
   <form id="form">
     <label for="tk">Tài khoản</label>
-    <select id="tk" autocomplete="username">
-      <option>bs01</option><option>bs02</option><option>bs03</option><option>bs04</option><option>bs05</option>
+    <select id="tk" autocomplete="username" required>
+      <option value="" selected disabled>Chọn tài khoản được giao</option>
+      <option>bs01</option><option>bs02</option><option>bs03</option><option>bs04</option>
+      <option value="bs05">bs05 (duyệt và dùng thử, không tính vào số đo)</option>
     </select>
     <label for="mk">Mật khẩu</label>
     <input type="password" id="mk" required autocomplete="current-password">

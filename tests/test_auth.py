@@ -51,6 +51,13 @@ def test_trang_dang_nhap_mo_duoc_va_co_cam_ket():
     assert r.status_code == 200 and "dữ liệu giả" in r.text and 'type="password"' in r.text
 
 
+def test_trang_dang_nhap_bat_buoc_chon_tai_khoan():
+    """Không chọn sẵn tài khoản đo (bs01): người duyệt quên đổi sang bs05 sẽ lỡ vào màn đo."""
+    t = khach().get("/dang-nhap").text
+    assert '<select id="tk" autocomplete="username" required>' in t
+    assert '<option value="" selected disabled>' in t and "<option selected>bs0" not in t
+
+
 def test_dang_nhap_dung_vao_duoc_app():
     c = dang_nhap("bs03")
     assert c.dn.status_code == 200 and c.dn.json() == {"tai_khoan": "bs03"}
