@@ -12,7 +12,7 @@ MK = "mat-khau-gia"
 
 
 def ca(id_):
-    return {"id": id_, "ten": f"Tên lộ đáp án {id_}", "benh_nhan": {"tuoi_thang": 24}, "sinh_hieu": {"nhiet_do": 39},
+    return {"id": id_, "nguon": f"CRP-LO-{id_}", "ghi_chu": "Gợi ý lộ: CRP không tích", "ten": f"Tên lộ đáp án {id_}", "benh_nhan": {"tuoi_thang": 24}, "sinh_hieu": {"nhiet_do": 39},
             "icd": ["J18.9"], "phieu_kham": "Sốt 2 ngày", "chi_dinh": [
                 {"ma": "23.0228.1483", "ten": "Định lượng CRP", "dap_an": "tich"},
                 {"ma": "23.0130.1549", "ten": "Định lượng Pro-calcitonin [Máu]", "dap_an": "khong_tich"}]}
@@ -83,6 +83,10 @@ def test_chi_tra_ca_hien_tai_va_khong_lo_dap_an():
     assert h["id"] == "DO-A1" and h["che_do"] == "tu_tra" and h["thu_tu"] == 1 and h["luot_kham"] == "LK-DO-A1"
     assert h["ten"] == "Ca đo 1" and h["benh_nhan"]["the"] and h["lich_su"] == []
     assert "dap_an" not in r.text and "Tên lộ đáp án" not in r.text and "DO-A2" not in r.text and "DO-B1" not in r.text
+    # chỉ gửi đúng các trường bác sĩ cần để làm ca; trường mới thêm vào file ca đo không được tự lộ ra
+    assert set(h) == {"id", "ten", "benh_nhan", "sinh_hieu", "icd", "phieu_kham", "lich_su", "chi_dinh",
+                      "luot_kham", "ngay_kham", "che_do", "thu_tu"}
+    assert "CRP-LO" not in r.text and "Gợi ý lộ" not in r.text
 
 
 def test_ca_do_khong_nam_trong_danh_sach_ca_thuong():

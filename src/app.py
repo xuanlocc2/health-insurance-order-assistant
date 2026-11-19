@@ -36,6 +36,7 @@ F13 = ("thu_tu", "ma", "ten", "trang_thai", "o_bhyt_goi_y", "bac_si_chon", "chec
 DAU_VAO = ("tuoi", "the", "icd", "sinh_hieu", "lich_su_da_dung")
 PHIEU_O = ("ly_do", "benh_su", "tien_su", "kham", "chan_doan", "xu_tri")  # các ô của trang Phiếu khám ngoại trú
 LICH_SU_KHOA = ("ma", "ten", "ngay_cach", "ket_qua", "tham_chieu_tren", "don_vi")
+TRUONG_CA_DO = ("id", "benh_nhan", "sinh_hieu", "icd", "phieu_kham", "phieu_o", "lich_su", "ngay_kham")  # trường ca đo được gửi cho bác sĩ
 
 # test gán trực tiếp các khóa này
 state = {"rules": None, "check": None, "a1": None, "a1_mode": "off", "model": None, "reasoning_effort": None,
@@ -385,9 +386,10 @@ def _trang_thai_do(tai_khoan):
         return {"co_phan_cong": False, "tong": 0, "da_xong": 0, "hien_tai": None}
     muc = _muc_do_hien_tai(tai_khoan)
     hien_tai = None
-    if muc:  # chỉ gửi ca đang làm và bỏ đáp án, tên ca gốc
-        ca = _chuan_hoa_ca({**muc["ca"], "ten": f"Ca đo {muc['thu_tu']}",
-                            "chi_dinh": [{"ma": d.get("ma"), "ten": d["ten"]} for d in muc["ca"]["chi_dinh"]]})
+    if muc:  # chỉ gửi ca đang làm, đúng các trường cần để khám; tên ca, mã ca gốc, đáp án và ghi chú không đi xuống trình duyệt
+        goc = muc["ca"]
+        ca = _chuan_hoa_ca({**{k: goc[k] for k in TRUONG_CA_DO if k in goc}, "ten": f"Ca đo {muc['thu_tu']}",
+                            "chi_dinh": [{"ma": d.get("ma"), "ten": d["ten"]} for d in goc["chi_dinh"]]})
         hien_tai = {**ca, "che_do": muc["che_do"], "thu_tu": muc["thu_tu"]}
     return {"co_phan_cong": True, "tong": len(lich), "da_xong": muc["thu_tu"] - 1 if muc else len(lich), "hien_tai": hien_tai}
 
