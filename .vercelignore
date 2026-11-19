@@ -1,0 +1,24 @@
+# Khóa và cấu hình trên máy: không bao giờ tải lên
+.env
+.env.*
+.claude/
+
+# Môi trường và lịch sử git
+.git/
+.venv/
+.venv313/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Dữ liệu chạy trên máy
+logs/
+data/ca-tu-tao.yaml
+data/ca-tu-tao.tmp
+
+# Tài liệu gốc 150 MB và phần app không dùng khi chạy
+data/van-ban/
+eval/
+research/
+slides/
+prototypes/
