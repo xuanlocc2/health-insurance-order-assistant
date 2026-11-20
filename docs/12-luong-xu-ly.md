@@ -119,6 +119,7 @@ Hàm `verify` trong [src/a1.py](../src/a1.py), quy tắc F-08 ở [09-spec mục
 
 1. **Khớp nguyên văn:** sau khi chuẩn hóa (NFC, khoảng trắng, dấu phẩy thập phân), đoạn trích phải là chuỗi con của phiếu khám, trọn chữ, trọn số. Sai → bỏ, ghi `trich_dan_khong_khop`.
 2. **Không cắt mất phủ định:** nếu trong cùng mệnh đề, ngay ngoài đoạn trích, có từ phủ định (không, ko, chưa, chẳng, hết, âm tính, (-)) → bỏ, ghi `trich_dan_cat_phu_dinh`. Mệnh đề ngăn bởi `, ; ! ? xuống dòng`, dấu chấm (không phải dấu thập phân) và chữ "nhưng". Đoạn trích đã kết thúc ở ranh giới mệnh đề thì câu sau không tính (sửa 16/11).
+   **Không phủ nhận ngay trong đoạn trích (thêm 20/11):** đoạn trích có cụm chưa/không/ko + rõ, thấy, có, phát hiện, ghi nhận (vd "Chưa rõ ổ nhiễm trùng.") → bỏ, ghi `trich_dan_phu_nhan`. Phủ định khác trong đoạn trích vẫn hợp lệ ("phổi chưa hết ran", "chưa loại trừ…"). Lý do: eval live 20/11, ca CRP-07.
 3. **Gộp:** `dat` mà không còn đoạn trích nào hợp lệ → `chua_thay`. Đoạn chính hỏng mà đoạn thêm hợp lệ → đoạn thêm lên làm chính.
 4. **Số liệu:** phải chứa đúng con số như một token trọn vẹn và nằm trong `khoang_hop_le`.
 5. **Lỗi gọi** (mạng, hết giờ, model từ chối, bị cắt) → mọi vế AI `chua_thay`, mã `a1_*`. Không chặn bác sĩ.
@@ -189,6 +190,21 @@ Kết quả live (102 ca × 3 lần):
 | Đổi kết quả giữa các lần | 2,7% | 1,4% | 2,0% | 1,4% | 1,4% |
 
 Bản 19/11 (cột cuối) là cấu hình đang chạy trên bản host: `OPENAI_MODEL=gpt-6-luna`, `A1_REASONING_EFFORT=low`, `A1_TIMEOUT_S=20` (effort mặc định mất ~8 giây mỗi lượt, sát giới hạn 8 giây cũ). Câu hỏi vế N2 (Procalcitonin, rối loạn chức năng cơ quan) thêm câu "Dấu hiệu khám tại cơ quan đang bệnh (như ran phổi, giảm thông khí) mà phiếu không ghi là suy hay rối loạn chức năng thì không tính" để hết lỗi KHO-40; nhãn không đổi. Trước khi siết (cùng model, cùng effort) kết quả là: quá thuận lợi 0, đạt sai 3 (đều KHO-40 N2), khớp trạng thái dòng 100%. Hai dòng lệch sau khi siết là CRP-04 và CRP-05 (1/3 lần, xuống "Cần xem lại"); hai ca này chỉ có CRP nên câu hỏi N2 không nằm trong lượt gọi, đây là dao động của model. p50/p95 của `engine.check`: 3,1 / 6,1 giây. 219 lượt gọi: 363 nghìn token vào, 61 nghìn token ra, khoảng 0,07 USD.
+
+**Hai lượt 20/11 (cùng model, effort, bộ 102 ca × 3 lần):**
+
+| Chỉ số | Thêm ẩn danh (`968ef13`) | Thêm kiểm `trich_dan_phu_nhan` (cách B) |
+|---|---|---|
+| Dòng quá thuận lợi | 1 (CRP-07, lần 2) | 1 (A1-01, lần 2) |
+| Vế AI đạt sai | 1 (CRP-07 V3: "Chưa rõ ổ nhiễm trùng.") | 1 (A1-01 V3: "Vết tiêm sưng nhẹ.") |
+| Bỏ sót đạt | 8 | 7 |
+| Khớp `ket_qua` vế | 94,7% | 95,2% |
+| Khớp trạng thái dòng | 98,6% | 98,6% |
+| Đổi kết quả giữa các lần | 2,0% | 2,0% |
+| Đoạn trích bị loại / lượt gọi | 4/723 | 0/725 |
+| `engine.check` p50 / p95 | 2,8 / 4,7 giây | 2,8 / 4,7 giây |
+
+Lỗi CRP-07 không do lớp ẩn danh (phiếu sau `an_danh` giữ nguyên); `verify` chỉ kiểm phủ định ngoài đoạn trích nên để lọt. Cách B (Giang chọn 20/11) thêm bước loại đoạn trích có cụm phủ nhận dấu hiệu ngay bên trong (mục 3.4), có test cho CRP-07 và 9 câu trích đúng có phủ định khác. Ở lượt sau sửa, model trả đúng CRP-07 nên bước mới không loại đoạn nào; lỗi còn lại là A1-01 (1/3 lần), lỗi cũ đã ghi ở bản chặt bên dưới, quay lại do dao động của model, không liên quan bản sửa. Ba lượt chạy 19–20/11 cho thấy mức lỗi quá thuận lợi khoảng 0–1 trên 285 lượt dòng mỗi lượt. Báo cáo: `eval/reports/live-20261120-an-danh.md`, `eval/reports/live-20261120-phu-nhan.md` (365 nghìn token vào, 60 nghìn ra, khoảng 0,07 USD mỗi lượt).
 
 Bản chặt còn các lỗi: "Vết tiêm sưng nhẹ" bị tính là dấu hiệu viêm (A1-01, 2/3 lần, là 2 dòng quá thuận lợi duy nhất); chẩn đoán của lần khám trước bị tính là hiện tại (KHO-08, KHO-14); prompt injection (KHO-40, KHO-41); "Hết sốt 2 ngày nhưng còn ho…" bị coi là đã hết dấu hiệu (KHO-06 X1, chỉ hạ xuống Cần xem lại). Sau khi chuyển cách đọc chung vào prompt (cột cuối), các lỗi trên hết. Còn lại: AI coi "ran nổ, giảm thông khí" là rối loạn chức năng cơ quan (KHO-40, N2; vế này chỉ được trích, không tự đạt nên không đổi trạng thái); X1 thận trọng hơn, đôi lần bỏ sót "đã hết dấu hiệu" (A1-05, KHO-05). Báo cáo đầy đủ chưa lưu vào repo (`eval/reports/` chưa được bỏ khỏi git).
 

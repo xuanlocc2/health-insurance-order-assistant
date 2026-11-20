@@ -192,7 +192,8 @@ Không được chi trả > Cần xem lại > Đủ căn cứ · bác sĩ xác n
 - `so_lieu`: trích dẫn khớp, chứa `gia_tri` như **một token số trọn vẹn** (58 không khớp "158"), và nằm trong `khoang_hop_le`. Không đạt → trường vẫn trống.
 - Lỗi mạng, hết giờ (`A1_TIMEOUT_S`), model từ chối (`message.refusal`), hoặc `finish_reason` là `length` / `content_filter` → mọi vế AI `chua_thay`, ghi `loi`. Không chặn bác sĩ.
 - Đoạn trích phải trọn chữ/trọn số (không cắt giữa hai chữ cái, hai chữ số hay phần thập phân). Trích `dat` mà mệnh đề chứa nó có từ phủ định nằm ngoài đoạn trích (không, chưa, hết, âm tính, (-)…) → `chua_thay`, `loi: trich_dan_cat_phu_dinh`.
-- Mã `loi`: `a1_tat`, `a1_tu_choi`, `a1_bi_cat_do_dai`, `a1_bi_chan_noi_dung`, `a1_json_loi`, `a1_loi_<Exception>`, `trich_dan_khong_khop`, `trich_dan_cat_phu_dinh`.
+- Trích `dat` mà chính đoạn trích có cụm phủ nhận dấu hiệu (chưa/không/ko + rõ, thấy, có, phát hiện, ghi nhận; vd "Chưa rõ ổ nhiễm trùng.") → `chua_thay`, `loi: trich_dan_phu_nhan`. Phủ định khác trong đoạn trích vẫn hợp lệ ("phổi chưa hết ran", "chưa loại trừ…", "Hết sốt 48 giờ"). Thêm 20/11 sau eval live (ca CRP-07), Giang chọn cách này.
+- Mã `loi`: `a1_tat`, `a1_tu_choi`, `a1_bi_cat_do_dai`, `a1_bi_chan_noi_dung`, `a1_json_loi`, `a1_loi_<Exception>`, `trich_dan_khong_khop`, `trich_dan_cat_phu_dinh`, `trich_dan_phu_nhan`.
 - Hiển thị: mở rộng đoạn trích ra trọn câu chứa nó, để bác sĩ thấy ngữ cảnh ("Mẹ đang viêm họng").
 
 **Model:** `.env` (`OPENAI_API_KEY`, `OPENAI_MODEL`, `A1_TIMEOUT_S`). Chỉ dữ liệu giả hoặc đã ẩn danh. Kết quả chỉ cố định ở chế độ stub.

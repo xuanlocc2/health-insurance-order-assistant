@@ -52,6 +52,9 @@ _MENH_DE = re.compile(r"[,;!?\n]|\.(?!\d)|(?<!\w)nhưng(?!\w)", re.I)
 # ponytail: danh sách từ phủ định cố định; phủ định kéo qua dấu phẩy ("không ho, sốt") không bắt được,
 # màn hình mở rộng trọn câu để bác sĩ thấy. Thêm từ vào đây khi số đo live cho thấy lọt.
 _PHU_DINH = re.compile(r"(?<!\w)(?:không|ko|kg|k|chưa|chẳng|hết|âm tính)(?!\w)|\(-\)", re.I)
+# cụm nói dấu hiệu KHÔNG có, nằm ngay trong đoạn trích ("Chưa rõ ổ nhiễm trùng."): không phải căn cứ "có ghi".
+# Phủ định khác trong đoạn trích vẫn hợp lệ ("phổi chưa hết ran", "chưa loại trừ…", "Hết sốt 48 giờ"). Eval live 20/11, ca CRP-07.
+_PHU_NHAN = re.compile(r"(?<!\w)(?:chưa|không|ko)\s+(?:rõ|thấy|có|phát hiện|ghi nhận)(?!\w)", re.I)
 
 
 def _norm_map(s: str, nl: str = " "):
@@ -153,6 +156,8 @@ def verify(phieu_kham: str, raw: dict, khoang_hop_le=None, cau_hoi=None) -> dict
                 bo = bo or "trich_dan_khong_khop"
             elif not (ok := [(i, j) for i, j in sp if not _cat_phu_dinh(note, i, j)]):
                 bo = bo or "trich_dan_cat_phu_dinh"
+            elif _PHU_NHAN.search(flat[ok[0][0]:ok[0][1]]):
+                bo = bo or "trich_dan_phu_nhan"
             elif (c := cat(*ok[0])) not in hop:
                 hop.append(c)
         if kq == "dat" and hop:

@@ -146,6 +146,33 @@ def test_quote_cutting_off_negation_rejected():
     assert verify(NEG, ve(None, "chua_thay", ["ran"]), None)["ve"][0]["trich_lien_quan"] == ["ran"]
 
 
+# ---- eval live 20/11: ca CRP-07, AI lấy câu phủ nhận làm căn cứ (cách B, Giang chọn 20/11) ----
+
+CRP07 = "Sốt từ sáng, bú giảm. Thóp phẳng. Họng không đỏ, phổi không ran, bụng mềm, rốn khô. Chưa rõ ổ nhiễm trùng."
+
+
+def test_quote_saying_sign_is_absent_rejected():
+    assert kq(CRP07, "Chưa rõ ổ nhiễm trùng.") == ("chua_thay", "trich_dan_phu_nhan")
+    for q in ["Không thấy ổ nhiễm trùng", "không có dấu hiệu nhiễm trùng", "chưa phát hiện ổ nhiễm khuẩn", "không ghi nhận tổn thương"]:
+        assert kq(q, q) == ("chua_thay", "trich_dan_phu_nhan"), q
+
+
+def test_quote_with_other_negation_still_counts():
+    # câu trích đúng có từ phủ định, lấy từ eval live 19–20/11 (đạt cả 2 lượt)
+    for q in ["Phổi chưa hết ran nổ đáy P (lần khám trước đã có).", "Phổi: ran ẩm vừa hạt rải rác 2 đáy, không rít.",
+              "Hết sốt 3 ngày", "chưa loại trừ nhiễm trùng đường tiểu", "Chưa loại trừ được NKH, chuyển cấp cứu theo dõi.",
+              "Hết sốt 48 giờ", "Phổi: ran ẩm nhỏ hạt (+) đáy P, ran rít (-), RLLN (-).", "Phổi hết ran, thông khí đều 2 bên.",
+              "Rốn chưa rụng, chân rốn ướt, chảy mủ vàng, quầng đỏ quanh rốn # 2 cm."]:
+        assert kq(q, q) == ("dat", None), q
+
+
+def test_absent_main_quote_falls_back_to_valid_extra_quote():
+    note = CRP07 + " Nghi viêm phổi."
+    raw = {"ve": [{"khoa": "1:V3", "ket_qua": "dat", "trich_dan": "Chưa rõ ổ nhiễm trùng.", "trich_them": ["Nghi viêm phổi."]}], "so_lieu": []}
+    v = verify(note, raw, None)["ve"][0]
+    assert (v["ket_qua"], v["trich_dan"]) == ("dat", "Nghi viêm phổi.")
+
+
 def test_unicode_variants():
     import unicodedata
     note = unicodedata.normalize("NFD", "Họng\u00a0đỏ – amidan “sưng to”\u200b, có mủ")
