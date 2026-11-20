@@ -9,6 +9,12 @@ HERE = Path(__file__).parent
 CASES = HERE.parent / "test-cases"
 BHYT = {"co", "dieu_kien", "khong_thay", "xac_minh"}
 NGUON = {"van_ban", "tu_dung", "bac_si_duyet"}
+# Loại kiểm engine hiểu (src/engine.py kiem_tra) → khóa bắt buộc. Thêm loại mới ở engine thì thêm ở đây.
+KIEM = {"so_sanh": ("truong", "toan_tu", "gia_tri"), "nguong_theo_tuoi": ("truong", "bang"), "icd_trong": ("ds",),
+        "ai_doc": ("cau_hoi",), "lich_su_so_sanh": ("ma", "toan_tu"), "khong_cung_luot": ("ma_hoac_bi_danh",)}
+TRUONG = {"nhiet_do", "mach", "nhip_tho"}  # sinh hiệu engine đọc (NHAN trong engine)
+TOAN_TU = {"<=", "<", ">=", ">", "=="}
+AP_DUNG = {"tuoi_thang", "tuoi_ngay", "nguon", "diem_mo_ho"}
 
 
 def load(p):
@@ -25,12 +31,8 @@ def walk(x):
         yield from walk(c)
 
 
-def main():
-    sys.stdout.reconfigure(encoding="utf-8")  # console Windows không in được tiếng Việt theo mặc định
-    dm = load(HERE / "danh-muc.yaml")["dich_vu"]
-    dk = load(HERE / "dieu-kien.yaml")
-    ts = load(HERE / "tham-so.yaml")
-
+def kiem(dm, dk, ts):
+    """Cấu trúc 3 file rule (chưa gồm ca thử). Sai → AssertionError. tests/test_check_rules.py gọi hàm này."""
     def giai(v):  # "@ten" → giá trị trong tham-so.yaml
         if isinstance(v, str) and v.startswith("@"):
             t = ts.get(v[1:])
@@ -49,6 +51,13 @@ def main():
         assert e.get("ten") and e.get("bhyt") in BHYT, f"dòng danh mục thiếu ten/bhyt: {e}"
         if e["bhyt"] in ("co", "dieu_kien"):
             assert (e.get("ma") or e.get("ma_chung")) and e.get("can_cu"), f"{e['ten']}: co/dieu_kien phải có ma (hoặc ma_chung) và can_cu"
+    theo_ten = {}
+    for e in dm:
+        for t in {chuan(x) for x in [e["ten"], *(e.get("bi_danh") or [])]}:
+            theo_ten.setdefault(t, []).append(e)
+    for t, ds in theo_ten.items():  # cùng quy tắc với engine.tra_danh_muc (nhap_nhang)
+        assert len(ds) == 1 or (len({e["bhyt"] for e in ds}) == 1 and ds[0]["bhyt"] != "dieu_kien"), \
+            f"tên '{t}' khớp {len(ds)} dòng danh mục khác kết luận: chỉ định theo tên sẽ ra Cần xem lại"
     co_dk = {e["ma"] for e in dm if e["bhyt"] == "dieu_kien"}
     assert co_dk == set(dk), f"dieu_kien lệch giữa 2 file: {co_dk ^ set(dk)}"
 
@@ -58,7 +67,16 @@ def main():
         ve = [v for n in d["nhanh"] for v in n["ve"]] + (d.get("loai_tru") or {}).get("ve", [])
         ids = [v["id"] for v in ve]
         assert len(ids) == len(set(ids)) and all(v.get("mo_ta") for v in ve), f"{m}: id vế trùng hoặc thiếu mo_ta"
+        for v in ve:  # vế không có kiem/hoac = "chưa mã hóa" (engine → Cần xem lại), được phép
+            for k in [v["kiem"]] if v.get("kiem") else v.get("hoac") or []:
+                thieu = [f for f in KIEM.get(k.get("loai"), ()) if f not in k]
+                assert k.get("loai") in KIEM and not thieu, f"{m}/{v['id']}: loại kiểm lạ hoặc thiếu {thieu}: {k}"
+                assert k.get("truong", "nhiet_do") in TRUONG, f"{m}/{v['id']}: trường sinh hiệu lạ: {k['truong']}"
+                assert k.get("toan_tu", "<") in TOAN_TU, f"{m}/{v['id']}: toán tử lạ: {k['toan_tu']}"
+                assert k.get("neu_khong_khop") in (None, "ai_doc") and \
+                    (k.get("neu_khong_khop") != "ai_doc" or k.get("cau_hoi")), f"{m}/{v['id']}: neu_khong_khop sai"
         for n in d["nhanh"]:
+            assert set(n.get("ap_dung") or {}) <= AP_DUNG, f"{m}/{n['id']}: khóa ap_dung lạ: {n['ap_dung']}"
             for k, v in (n.get("ap_dung") or {}).items():
                 if k in ("tuoi_thang", "tuoi_ngay"):
                     khoang(v[0], v[1], f"{m}/{n['id']}")
@@ -78,6 +96,16 @@ def main():
         if isinstance(x, dict) and "nguon" in x:
             assert x["nguon"] in NGUON, f"nguon lạ: {x['nguon']}"
             assert x["nguon"] != "tu_dung" or x.get("diem_mo_ho"), f"tu_dung thiếu diem_mo_ho: {x}"
+
+
+
+def main():
+    sys.stdout.reconfigure(encoding="utf-8")  # console Windows không in được tiếng Việt theo mặc định
+    dm = load(HERE / "danh-muc.yaml")["dich_vu"]
+    dk = load(HERE / "dieu-kien.yaml")
+    ts = load(HERE / "tham-so.yaml")
+    kiem(dm, dk, ts)
+    ma = {e["ma"] for e in dm if e.get("ma")}
 
     # ca thử: mọi chỉ định phải tra được, trừ dòng ca thử chủ ý để ngoài danh sách
     ten = {chuan(t) for e in dm for t in [e["ten"], *(e.get("bi_danh") or [])]}

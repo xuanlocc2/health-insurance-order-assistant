@@ -123,6 +123,7 @@ def test_check_luu_y_ho_so_chi_dong_danh_muc(client, monkeypatch):
     {**LUOT, "benh_nhan": {"tuoi_thang": 24, "the": {"han_den": "hôm qua"}}},
     {**LUOT, "sinh_hieu": {"nhiet_do": "38,5"}},
     {**LUOT, "lich_su": [{"ma": "x", "ngay_cach": "1"}]},
+    {**LUOT, "lich_su": [{"ma": "x", "ngay_cach": -1}]},
     {**LUOT, "chi_dinh": [{"ma": None, "ten": "CRP"}] * 51},
 ])
 def test_check_bad_body_422(client, bad):
@@ -276,3 +277,11 @@ def test_ca_tu_tao_giu_du_lieu_phieu_kham(client):
     for sai in ({"phieu_o": {"la": "x"}}, {"phieu_o": {"kham": 1}}, {"phieu_o": "x"}, {"lich_su": "x"}, {"lich_su": {}}, {"lich_su": [1]},
                 {"lich_su": [{"ket_qua": "cao"}]}, {"ngay_kham": "15/11/2026"}):
         assert client.put("/cases/TU-B3", json={**ca, **sai}).status_code == 422
+
+
+@pytest.mark.parametrize("so", ["NaN", "Infinity"])
+def test_check_so_khong_huu_han_422(client, so):
+    # json của Python nhận NaN/Infinity: phải chặn ở biên, nếu không NaN làm vế trượt → Không được chi trả
+    body = json.dumps({**LUOT, "sinh_hieu": {"nhiet_do": 0}}).replace('"nhiet_do": 0', f'"nhiet_do": {so}')
+    r = client.post("/check", content=body, headers={"content-type": "application/json"})
+    assert r.status_code == 422 and not client.calls

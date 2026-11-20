@@ -15,6 +15,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 from openai import OpenAI
 
+from src.an_danh import an_danh
+
 SYSTEM_PROMPT = """Bạn là bộ đọc phiếu khám cho trợ lý kiểm tra chỉ định BHYT. Mỗi yêu cầu gồm ba phần theo thứ tự: CÂU HỎI (các vế cần kiểm), SỐ LIỆU CẦN TRÍCH, và cuối cùng là PHIẾU KHÁM (văn bản tự do của bác sĩ). Chỉ trả lời theo đúng định dạng JSON được yêu cầu.
 
 Quy tắc bắt buộc:
@@ -250,10 +252,12 @@ def make_live(model: str, timeout_s: float, khoang_hop_le=None, reasoning_effort
 
     def a1(req: dict) -> dict:
         try:
+            # gửi và kiểm trích dẫn trên CÙNG bản đã ẩn danh: model chỉ thấy bản này
+            req = {**req, "phieu_kham": an_danh(req.get("phieu_kham"))}
             if not client:
                 client.append(OpenAI(timeout=timeout_s, max_retries=0))
             raw, loi = _goi(client[0], timeout_s, dict(
-                model=model,
+                model=model, store=False,
                 messages=[{"role": "system", "content": SYSTEM_PROMPT},
                           {"role": "user", "content": _user_msg(req)}],
                 response_format={"type": "json_schema", "json_schema": {
@@ -329,11 +333,12 @@ def make_lien_quan(model: str, timeout_s: float, reasoning_effort=None):
 
     def lq(req: dict) -> dict:
         try:
+            req = {**req, "phieu_kham": an_danh(req.get("phieu_kham"))}
             if not client:
                 client.append(OpenAI(timeout=timeout_s, max_retries=0))
             n = len(req["dich_vu"])
             raw, loi = _goi(client[0], timeout_s, dict(
-                model=model,
+                model=model, store=False,
                 messages=[{"role": "system", "content": LQ_PROMPT}, {"role": "user", "content": _lq_msg(req)}],
                 response_format={"type": "json_schema", "json_schema": {
                     "name": "luu_y_ho_so", "strict": True, "schema": _lq_schema(n)}},

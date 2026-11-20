@@ -12,6 +12,8 @@ from types import SimpleNamespace as Rules
 
 import yaml
 
+from src.engine import chi_muc
+
 
 def load_rules(dir="data/rules") -> Rules:
     p = Path(dir)
@@ -22,7 +24,9 @@ def load_rules(dir="data/rules") -> Rules:
     for f in sorted(x for x in p.rglob("*") if x.is_file()):
         h.update(f.relative_to(p).as_posix().encode())
         h.update(f.read_bytes())
-    return Rules(danh_muc=_danh_sach(doc["danh-muc"]),
+    dm = _danh_sach(doc["danh-muc"])
+    return Rules(danh_muc=dm,
+                 chi_muc=chi_muc(dm),  # tra mã/tên O(1): danh mục cả viện vài nghìn dòng
                  dieu_kien=_giai(doc["dieu-kien"], tham_so, []),
                  tham_so=tham_so,
                  phien_ban_rule=h.hexdigest())

@@ -327,3 +327,25 @@ def test_phu_dinh_khong_tran_sang_cau_sau():
         assert verify(note, ve(q), None)["ve"][0]["ket_qua"] == "dat"
     assert verify("Phổi ran ẩm, không sốt.", ve("Phổi ran ẩm"), None)["ve"][0]["ket_qua"] == "dat"  # phẩy ngắt mệnh đề như cũ
     assert verify("Phổi không ran ẩm.", ve("ran ẩm."), None)["ve"][0]["ket_qua"] == "chua_thay"     # phủ định phía trước vẫn chặn
+
+
+# ---------- ẩn danh trước khi gửi OpenAI ----------
+
+PII = "Bé Minh Anh, SĐT mẹ 0912 345 678. "
+
+
+def test_live_gui_phieu_da_an_danh_va_khong_luu(monkeypatch):
+    calls = fake(monkeypatch, choice("{}"))
+    make_live("m", 5)({**REQ, "phieu_kham": PII + NOTE})
+    a1.make_lien_quan("m", 5)({"dich_vu": ["PT"], "icd": [], "phieu_kham": PII + NOTE})
+    gui = " ".join(m["content"] for c in calls for m in c["messages"])
+    assert "0912 345 678" not in gui and "Minh Anh" not in gui
+    assert len(calls) == 2 and all(c["store"] is False for c in calls)
+
+
+def test_live_trich_dan_lam_sang_van_khop_khi_phieu_co_dinh_danh(monkeypatch):
+    raw = {"ve": [{"khoa": "1:V3", "ket_qua": "dat", "trich_dan": Q, "trich_lien_quan": []}],
+           "so_lieu": [{"truong": "nhip_tho", "gia_tri": 58, "trich_dan": "58 l/p"}]}
+    fake(monkeypatch, choice(json.dumps(raw)))
+    r = make_live("m", 5)({**REQ, "phieu_kham": PII + NOTE})
+    assert r["ve"][0]["ket_qua"] == "dat" and r["ve"][0]["trich_dan"] in NOTE and r["so_lieu"][0]["gia_tri"] == 58

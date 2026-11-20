@@ -60,6 +60,11 @@ def _la_so(x):
     return isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x)
 
 
+def _ma_icd(c):
+    """'d69.0', 'D690', 'D69 .0' → 'D690': HIS có thể bỏ dấu chấm, so khớp tiền tố không được lệ thuộc định dạng."""
+    return c.replace(".", "").replace(" ", "").upper()
+
+
 def _kq(ket_qua, nguon=None, bang_chung="", trich_dan=None, trich_lien_quan=()):
     return {"ket_qua": ket_qua, "nguon": nguon, "bang_chung": bang_chung,
             "trich_dan": trich_dan, "trich_lien_quan": list(trich_lien_quan)}
@@ -144,11 +149,24 @@ def _la_ai(ve):
     return (ve.get("kiem") or {}).get("loai") == "ai_doc"
 
 
+def _hop_le(truong, v, khoang):
+    """Số hữu hạn và trong khoang_hop_le (tham-so.yaml): chặn số gõ nhầm (385 thay cho 38,5) và NaN."""
+    r = (khoang or {}).get(truong)
+    return _la_so(v) and (not r or r[0] <= v <= r[1])
+
+
+def _thieu(truong, ctx):
+    v, nhan = ctx["sinh_hieu"].get(truong), NHAN.get(truong, truong)
+    return _kq("chua_du_du_lieu", None, f"{nhan}: trống" if v is None else
+               f"{nhan} {v} ngoài khoảng hợp lệ, kiểm tra lại số đã nhập")
+
+
 def _so_lieu(truong, kiem, ctx):
-    """(giá trị, nguồn, trích dẫn). Ô trống → nhờ A1 (pha 1 ghi nhu cầu, pha 2 đọc kết quả)."""
+    """(giá trị, nguồn, trích dẫn). Ô trống → nhờ A1 (pha 1 ghi nhu cầu, pha 2 đọc kết quả).
+    Số nhập sai khoảng → không dùng, không nhờ A1 (bác sĩ sửa số)."""
     v = ctx["sinh_hieu"].get(truong)
     if v is not None:
-        return v, "nhap", None
+        return (v, "nhap", None) if _hop_le(truong, v, ctx.get("khoang")) else (None, None, None)
     if ctx["so"] is None:
         ctx["can"].append(("so", truong, kiem.get("don_vi")))
         return None, None, None
@@ -190,7 +208,7 @@ def kiem_tra(k, ve, ctx):
     if loai == "so_sanh":
         v, nguon, trich = _so_lieu(k["truong"], k, ctx)
         if v is None:
-            return _kq("chua_du_du_lieu", None, f"{NHAN.get(k['truong'], k['truong'])}: trống")
+            return _thieu(k["truong"], ctx)
         return _so_sanh(k["truong"], v, nguon, trich, k["toan_tu"], k["gia_tri"])
     if loai == "nguong_theo_tuoi":
         nhan, thang = NHAN.get(k["truong"], k["truong"]), ctx["tuoi_thang"]
@@ -200,11 +218,11 @@ def kiem_tra(k, ve, ctx):
             return _kq("chua_du_du_lieu", None, f"{nhan}: chưa có ngưỡng cho tuổi này")
         v, nguon, trich = _so_lieu(k["truong"], k, ctx)
         if v is None:
-            return _kq("chua_du_du_lieu", None, f"{nhan}: trống")
+            return _thieu(k["truong"], ctx)
         return _so_sanh(k["truong"], v, nguon, trich, ">=", dong["nguong"])
     if loai == "icd_trong":
         icd = [c.strip().upper() for c in ctx["icd"] if c]
-        khop = [c for c in icd if any(c.startswith(p.upper()) for p in k["ds"])]
+        khop = [c for c in icd if any(_ma_icd(c).startswith(_ma_icd(p)) for p in k["ds"])]
         if khop:
             return _kq("dat", "nhap", f"ICD {', '.join(khop)}")
         if k.get("neu_khong_khop") == "ai_doc":  # cả khi chưa có ICD (xem báo cáo: CRP-13)
@@ -390,14 +408,28 @@ def _checklist(ds, lt_kq, ts):
 
 # ---------- R1, R2 ----------
 
-def tra_danh_muc(cd, danh_muc):
-    if cd.get("ma"):
-        e = next((e for e in danh_muc if e.get("ma") == cd["ma"]), None)
-        if e:
-            return e
-    ten = chuan_hoa(cd.get("ten"))
-    return next((e for e in danh_muc if ten and ten in
-                 {chuan_hoa(x) for x in [e.get("ten"), *(e.get("bi_danh") or [])]}), None) if ten else None
+NHAP_NHANG = (XEM_LAI, "nhap_nhang", "Tên chỉ định khớp nhiều dòng danh mục có kết luận khác nhau, cần chọn đúng mã dịch vụ")
+
+
+def chi_muc(danh_muc):
+    """Mã → dòng; tên/bí danh đã chuẩn hóa → [dòng] theo thứ tự file. Dựng một lần khi nạp rule (rules.py)."""
+    ma, ten = {}, {}
+    for e in danh_muc:
+        if e.get("ma"):
+            ma.setdefault(e["ma"], e)
+        for t in {chuan_hoa(x) for x in [e.get("ten"), *(e.get("bi_danh") or [])]} - {""}:
+            ten.setdefault(t, []).append(e)
+    return {"ma": ma, "ten": ten}
+
+
+def tra_danh_muc(cd, cm):
+    """→ dòng danh mục | None (không thấy) | NHAP_NHANG (tên khớp nhiều dòng mà không cùng một kết luận)."""
+    if cd.get("ma") in cm["ma"]:
+        return cm["ma"][cd["ma"]]
+    ds = cm["ten"].get(chuan_hoa(cd.get("ten"))) or []
+    if len(ds) > 1 and (len({e.get("bhyt") for e in ds}) > 1 or any(e.get("bhyt") == "dieu_kien" for e in ds)):
+        return NHAP_NHANG
+    return ds[0] if ds else None
 
 
 def _r2(luot):
@@ -441,17 +473,23 @@ def _can_cu(dk, e):
 def check(luot, rules, a1, mode="full"):
     ts, cds = rules.tham_so, luot.get("chi_dinh") or []
     tuoi_ngay, tuoi_thang = tuoi(luot.get("benh_nhan") or {})
+    khoang = (ts or {}).get("khoang_hop_le") or {}
     base = {"mode": mode, "tuoi_ngay": tuoi_ngay, "tuoi_thang": tuoi_thang, "icd": luot.get("icd") or [],
-            "sinh_hieu": luot.get("sinh_hieu") or {}, "lich_su": luot.get("lich_su") or [], "chi_dinh": cds}
+            "sinh_hieu": luot.get("sinh_hieu") or {}, "lich_su": luot.get("lich_su") or [], "chi_dinh": cds,
+            "khoang": khoang.get("gia_tri", khoang)}
+    cm = getattr(rules, "chi_muc", None) or chi_muc(rules.danh_muc)
     r2 = _r2(luot)
     the = (luot.get("benh_nhan") or {}).get("the") or {}
     da_thay, dong = set(), []
 
     # pha 1: bước 1–5c cho mọi dòng, gom câu hỏi
     for tt, cd in enumerate(cds, 1):
-        e = tra_danh_muc(cd, rules.danh_muc)
+        e = tra_danh_muc(cd, cm)
+        r1 = NHAP_NHANG if e is NHAP_NHANG else None
+        if r1:
+            e = None
         dk = rules.dieu_kien.get(e.get("ma")) if e and e.get("ma") else None
-        buoc = [b for b in (r2, _r1(e, dk, ts)) if b]
+        buoc = [b for b in (r2, r1 or _r1(e, dk, ts)) if b]
         dd = {dinh_danh(cd)} | ({id(e)} if e else set())  # cùng mã/tên, hoặc cùng một dòng danh mục (mã ↔ bí danh)
         if dd & da_thay:
             buoc.append((XEM_LAI, "trung_dong", "Trùng dịch vụ trong cùng lượt khám"))

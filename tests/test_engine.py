@@ -438,3 +438,34 @@ def test_nhac_thieu_chan_doan_khong_doi_trang_thai(rules):
     assert co["nhac"] == [] and [n["ma"] for n in khong["nhac"]] == ["thieu_chan_doan"]
     assert khong["dong"][0]["trang_thai"] == co["dong"][0]["trang_thai"] == PHU_HOP  # chưa ICD lúc chỉ định là bình thường
     assert all(c["van_ban"].startswith("QĐ 4750") and c["trich"] for c in khong["nhac"][0]["can_cu"])
+
+
+# ---------- dữ liệu nhập lệch dạng, danh mục lớn ----------
+
+def test_icd_khong_dau_cham_van_khop(rules):
+    # HIS có thể gửi "D690" thay cho "D69.0": khác định dạng không được thành Không được chi trả
+    d = row(check(luot([CRP], icd=["d690"], sinh_hieu={}), rules, None))
+    assert ve(d, "D1")["ket_qua"] == "dat" and d["trang_thai"] == PHU_HOP
+
+
+@pytest.mark.parametrize("gia_tri", [385, float("nan"), float("inf")])
+def test_sinh_hieu_nhap_ngoai_khoang_khong_lam_can_cu(rules, gia_tri):
+    # 385 = gõ nhầm 38,5 → không được làm vế đạt; NaN → không được làm vế trượt (thành Không được chi trả)
+    a1 = Stub(ve={"V3": ("dat", "Ran ẩm đáy phổi phải.")})
+    d = row(check(luot([CRP], sinh_hieu={"nhiet_do": gia_tri, "mach": 150, "nhip_tho": 46}), rules, a1))
+    v1 = ve(d, "V1")
+    assert v1["ket_qua"] == "chua_du_du_lieu" and "ngoài khoảng hợp lệ" in v1["bang_chung"]
+    assert d["trang_thai"] == XEM_LAI
+    assert not any(s["truong"] == "nhiet_do" for c in a1.calls for s in c["so_lieu"])  # bác sĩ sửa số, không nhờ AI
+
+
+def test_ten_khop_nhieu_dong_danh_muc():
+    def r(bhyt_b):
+        return SimpleNamespace(danh_muc=[{"ma": "A", "ten": "Xét nghiệm X", "bhyt": "co"},
+                                         {"ma": "B", "ten": "Xét nghiệm X máy 2", "bi_danh": ["Xét nghiệm X"], "bhyt": bhyt_b}],
+                               tham_so={}, phien_ban_rule="t", dieu_kien={})
+    ten = {"ma": None, "ten": "Xét nghiệm X"}
+    d = row(check(luot([ten]), r("xac_minh"), None))   # khác kết luận: không được lặng lẽ chọn dòng đầu
+    assert (d["trang_thai"], d["ma_ly_do"]) == (XEM_LAI, "nhap_nhang")
+    assert row(check(luot([{"ma": "A", "ten": "Xét nghiệm X"}]), r("xac_minh"), None))["trang_thai"] == PHU_HOP  # có mã
+    assert row(check(luot([ten]), r("co"), None))["trang_thai"] == PHU_HOP  # cùng kết luận (vd Mycoplasma 2 mã giá)

@@ -2,6 +2,7 @@
 import functools
 import importlib
 import json
+import math
 import os
 import re
 import uuid
@@ -177,7 +178,8 @@ def _fail(msg):
 
 
 def _num(x):
-    return x is None or (isinstance(x, (int, float)) and not isinstance(x, bool))
+    # json của Python nhận NaN/Infinity: phải chặn, NaN làm mọi phép so sánh sai → vế trượt
+    return x is None or (isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x))
 
 
 def _ngay(x):
@@ -221,7 +223,8 @@ def _validate_luot(b, cho_rong=False):
         _fail("'icd' là danh sách mã chuỗi.")
     for r in b.get("lich_su") or []:
         if not (isinstance(r, dict) and isinstance(r.get("ma"), (str, type(None)))
-                and all(_num(r.get(k)) for k in ("ngay_cach", "ket_qua", "tham_chieu_tren"))):
+                and all(_num(r.get(k)) for k in ("ngay_cach", "ket_qua", "tham_chieu_tren"))
+                and (r.get("ngay_cach") or 0) >= 0):  # âm = làm "trong tương lai" → tần suất < 24 giờ sai
             _fail("'lich_su' sai kiểu dữ liệu.")
 
 
